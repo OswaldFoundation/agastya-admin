@@ -1,0 +1,30 @@
+{
+  "name": "agastya-admin",
+  "version": "0.1",
+  "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.5",
+    "@fortawesome/fontawesome-free-solid": "^5.0.9",
+    "@oswaldlabs/agastya": "^1.0.2",
+    "babel-polyfill": "^6.26.0",
+    "bootstrap-vue": "^2.0.0-rc.2",
+    "vue": "^2.5.16",
+    "vue-router": "^3.0.1",
+    "vue-toasted": "^1.1.24",
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.5.1",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "devDependencies": {
+    "node-sass": "^4.8.3",
+    "offline-plugin": "^4.9.0",
+    "onchange": "^3.3.0",
+    "poi": "^9.6.13",
+    "prettier": "^1.11.1",
+    "sass-loader": "^6.0.7"
+  },
+  "scripts": {
+    "build": "poi build",
+    "start:dev": "poi",
+    "start:prettier": "onchange '**/*.{js,vue}' -- prettier --use-tabs --print-width 130 --write {{changed}}"
+  }
+}
