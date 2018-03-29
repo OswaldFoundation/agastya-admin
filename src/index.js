@@ -9,6 +9,8 @@ import "whatwg-fetch";
 
 import router from "./modules/router.js";
 
+import Navbar from "./components/Navbar.vue";
+
 // Progressive Web App support
 if (process.env.NODE_ENV === "production") {
 	require("./modules/pwa");
@@ -26,10 +28,19 @@ const app = new Vue({
 	render() {
 		return (
 			<div>
-				{/* <Nav /> */}
+				<Navbar />
 				<transition name="fade" mode="out-in">
 					<router-view />
 				</transition>
+				<footer class="footer">
+					<div class="container">
+						<div class="content has-text-centered">
+							<p>
+								&copy; 2018 <strong>Agastya</strong> by <a href="https://oswaldlabs.com">Oswald Labs</a>
+							</p>
+						</div>
+					</div>
+				</footer>
 			</div>
 		);
 	}
