@@ -1,4 +1,9 @@
 import Vue from "vue";
+
+import Buefy from "buefy";
+Vue.use(Buefy);
+import "buefy/lib/buefy.css";
+
 import "babel-polyfill";
 import "whatwg-fetch";
 
@@ -9,7 +14,7 @@ if (process.env.NODE_ENV === "production") {
 	require("./modules/pwa");
 }
 
-import "@oswaldlabs/agastya";
+// import "@oswaldlabs/agastya";
 // window.a11ySettings = { token: "5rlsghx", bottom: 75 };
 
 // App

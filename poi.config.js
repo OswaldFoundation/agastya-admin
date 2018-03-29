@@ -4,10 +4,10 @@ module.exports = options => ({
 	entry: "./src/index.js",
 	extendWebpack(config) {
 		if (options.mode === "production") {
-			config.plugin("offline").use(OfflinePlugin)
+			config.plugin("offline").use(OfflinePlugin);
 		}
 	},
 	html: {
-		template: "./layout.ejs"
+		template: "./src/layout.ejs"
 	}
-})
+});
