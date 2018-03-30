@@ -2,7 +2,9 @@ import Vue from "vue";
 
 import Buefy from "buefy";
 Vue.use(Buefy);
+
 import "buefy/lib/buefy.css";
+import css from "./styles.scss";
 
 import "babel-polyfill";
 import "whatwg-fetch";

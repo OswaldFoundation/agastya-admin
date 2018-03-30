@@ -1,8 +1,8 @@
 <template>
-	<nav class="navbar is-transparent">
+	<nav class="navbar is-transparent" v-if="user">
 		<div class="container">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="https://bulma.io"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Oswald_Labs_Logo.svg" alt="Oswald Labs logo" height="28"></a>
+				<router-link class="navbar-item" to="/"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Oswald_Labs_Logo.svg" alt="Oswald Labs logo" height="28"></router-link>
 				<div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
 					<span></span>
 					<span></span>
@@ -11,23 +11,23 @@
 			</div>
 			<div id="navbarExampleTransparentExample" class="navbar-menu">
 				<div class="navbar-start">
-					<a class="navbar-item" href="#">Dashboard</a>
+					<router-link class="navbar-item" to="/Dashboard">Dashboard</router-link>
 					<div class="navbar-item has-dropdown is-hoverable">
-						<a class="navbar-link" href="#">Analytics</a>
+						<a class="navbar-link" href="/analytics/overview">Analytics</a>
 						<div class="navbar-dropdown is-boxed">
-							<a class="navbar-item" href="#">Overview</a>
-							<a class="navbar-item" href="#">Apps &amp; modes</a>
-							<a class="navbar-item" href="#">User sessions</a>
+							<router-link class="navbar-item" to="/analytics/overview">Overview</router-link>
+							<router-link class="navbar-item" to="/analytics/apps">Apps &amp; modes</router-link>
+							<router-link class="navbar-item" to="/analytics/user">User sessions</router-link>
 							<hr class="navbar-divider">
-							<a class="navbar-item" href="#">Export data</a>
+							<router-link class="navbar-item" to="/analytics/export">Export data</router-link>
 						</div>
 					</div>
 					<div class="navbar-item has-dropdown is-hoverable">
 						<a class="navbar-link" href="#">Customize</a>
 						<div class="navbar-dropdown is-boxed">
-							<a class="navbar-item" href="#">Plugin settings</a>
-							<a class="navbar-item" href="#">Apps &amp; modes</a>
-							<a class="navbar-item" href="#">Domains</a>
+							<router-link class="navbar-item" to="/customize/plugin">Plugin settings</router-link>
+							<router-link class="navbar-item" to="/customize/apps">Apps &amp; modes</router-link>
+							<router-link class="navbar-item" to="/customize/domains">Domains</router-link>
 						</div>
 					</div>
 				</div>
@@ -35,20 +35,20 @@
 					<div class="navbar-item has-dropdown is-hoverable">
 						<a class="navbar-link" href="#">Anand Chowdhary</a>
 						<div class="navbar-dropdown is-boxed">
-							<a class="navbar-item" href="#">Account</a>
-							<a class="navbar-item" href="/form/general/">Subscription</a>
-							<a class="navbar-item" href="/modifiers/syntax/">Billing</a>
-							<a class="navbar-item" href="/columns/basics/">Payment</a>
-							<a class="navbar-item" href="/layout/container/">Invoices</a>
+							<router-link class="navbar-item" to="/settings/account">Account</router-link>
+							<router-link class="navbar-item" to="/settings/subscription">Subscription</router-link>
+							<router-link class="navbar-item" to="/settings/billing">Billing</router-link>
+							<router-link class="navbar-item" to="/settings/payment">Payment</router-link>
+							<router-link class="navbar-item" to="/settings/invoices">Invoices</router-link>
 							<hr class="navbar-divider">
-							<a class="navbar-item" href="#">Developer API</a>
-							<a class="navbar-item is-active" href="/components/breadcrumb/">Logout</a>
+							<router-link class="navbar-item" to="/settings/api-keys">Developer API</router-link>
+							<a class="navbar-item is-active" @click.prevent="logout">Logout</a>
 						</div>
 					</div>
 					<div class="navbar-item">
 						<div class="field is-grouped">
 						<p class="control">
-							<a class="button is-primary" href="#">
+							<a class="button is-primary" href="/customize/code">
 								<span class="icon">
 									<font-awesome-icon :icon="faCode" />
 								</span>
@@ -64,13 +64,27 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import store from "../modules/store";
+import router from "../modules/router";
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import faCode from "@fortawesome/fontawesome-free-solid/faCode";
 export default {
+	computed: {
+		...mapGetters({
+			user: "getUser"
+		})
+	},
 	data: () => {
 		return {
 			faCode: faCode
 		};
+	},
+	methods: {
+		logout() {
+			store.dispatch("logoutUser");
+			router.push("/");
+		}
 	},
 	components: {
 		FontAwesomeIcon

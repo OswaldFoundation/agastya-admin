@@ -11,10 +11,10 @@ export default new Vuex.Store({
 		getUser: state => state.user
 	},
 	mutations: {
-		updateUser(state, userObject) {
-			state.user = userObject.user;
+		updateUser(state, user) {
+			state.user = user;
 		},
-		clearAuth(state) {
+		logoutUser(state) {
 			state.user = null;
 		}
 	},
@@ -22,8 +22,8 @@ export default new Vuex.Store({
 		updateUser({ commit, state }, user) {
 			commit("updateUser", user);
 		},
-		clearAuth(context) {
-			context.commit("clearAuth");
+		logoutUser(context) {
+			context.commit("logoutUser");
 		}
 	},
 	plugins: [createPersistedState()]
