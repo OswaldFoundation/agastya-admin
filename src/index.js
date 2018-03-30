@@ -7,7 +7,8 @@ import "buefy/lib/buefy.css";
 import "babel-polyfill";
 import "whatwg-fetch";
 
-import router from "./modules/router.js";
+import store from "./modules/store";
+import router from "./modules/router";
 
 import Navbar from "./components/Navbar.vue";
 
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV === "production") {
 const app = new Vue({
 	el: "#app",
 	router,
+	store,
 	mounted() {},
 	methods: {},
 	render() {
