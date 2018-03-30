@@ -1,6 +1,6 @@
-export default function(url, body, token, method) {
+export default function(endpoint, body, token, method) {
 	return new Promise((resolve, reject) => {
-		fetch("http://localhost:8888/agastyaapi/" + url, {
+		fetch("http://localhost:8888/agastyaapi/" + endpoint, {
 			body: JSON.stringify(body),
 			cache: "no-cache",
 			headers: {

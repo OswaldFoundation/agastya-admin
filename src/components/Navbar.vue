@@ -11,9 +11,9 @@
 			</div>
 			<div id="navbarExampleTransparentExample" class="navbar-menu">
 				<div class="navbar-start">
-					<router-link class="navbar-item" to="/Dashboard">Dashboard</router-link>
+					<router-link class="navbar-item" to="/">Dashboard</router-link>
 					<div class="navbar-item has-dropdown is-hoverable">
-						<a class="navbar-link" href="/analytics/overview">Analytics</a>
+						<router-link class="navbar-link" to="/analytics/overview">Analytics</router-link>
 						<div class="navbar-dropdown is-boxed">
 							<router-link class="navbar-item" to="/analytics/overview">Overview</router-link>
 							<router-link class="navbar-item" to="/analytics/apps">Apps &amp; modes</router-link>
@@ -23,7 +23,7 @@
 						</div>
 					</div>
 					<div class="navbar-item has-dropdown is-hoverable">
-						<a class="navbar-link" href="#">Customize</a>
+						<router-link class="navbar-link" to="/customize/plugin">Customize</router-link>
 						<div class="navbar-dropdown is-boxed">
 							<router-link class="navbar-item" to="/customize/plugin">Plugin settings</router-link>
 							<router-link class="navbar-item" to="/customize/apps">Apps &amp; modes</router-link>
@@ -33,7 +33,7 @@
 				</div>
 				<div class="navbar-end">
 					<div class="navbar-item has-dropdown is-hoverable">
-						<a class="navbar-link" href="#">Anand Chowdhary</a>
+						<router-link class="navbar-link" to="/settings/account">{{user.name}}</router-link>
 						<div class="navbar-dropdown is-boxed">
 							<router-link class="navbar-item" to="/settings/account">Account</router-link>
 							<router-link class="navbar-item" to="/settings/subscription">Subscription</router-link>
@@ -42,18 +42,18 @@
 							<router-link class="navbar-item" to="/settings/invoices">Invoices</router-link>
 							<hr class="navbar-divider">
 							<router-link class="navbar-item" to="/settings/api-keys">Developer API</router-link>
-							<a class="navbar-item is-active" @click.prevent="logout">Logout</a>
+							<a class="navbar-item ito-active" @click.prevent="logout">Logout</a>
 						</div>
 					</div>
 					<div class="navbar-item">
 						<div class="field is-grouped">
 						<p class="control">
-							<a class="button is-primary" href="/customize/code">
+							<router-link class="button is-primary" to="/customize/code">
 								<span class="icon">
 									<font-awesome-icon :icon="faCode" />
 								</span>
 								<span>Install code</span>
-							</a>
+							</router-link>
 						</p>
 						</div>
 					</div>
@@ -83,7 +83,7 @@ export default {
 	methods: {
 		logout() {
 			store.dispatch("logoutUser");
-			router.push("/");
+			router.push("/login");
 		}
 	},
 	components: {
