@@ -33,7 +33,10 @@
 				</div>
 				<div class="navbar-end">
 					<div class="navbar-item has-dropdown is-hoverable">
-						<router-link class="navbar-link" to="/settings/account">{{user.name}}</router-link>
+						<router-link class="navbar-link" to="/settings">
+							<img :src="user.profile_picture" alt="" class="avatar">
+							{{user.name}}
+						</router-link>
 						<div class="navbar-dropdown is-boxed">
 							<router-link class="navbar-item" to="/settings/account">Account</router-link>
 							<router-link class="navbar-item" to="/settings/subscription">Subscription</router-link>

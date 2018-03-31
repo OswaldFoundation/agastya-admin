@@ -11,13 +11,13 @@ const handleError = error => {
 	}
 };
 
-const refreshToken = () => {
+const refreshToken = (force = 0) => {
 	return new Promise((resolve, reject) => {
 		const user = store.getters.getUser;
 		if (user && user.token) {
 			if (user.token.auth && user.token.refresh) {
 				const decoded = jwt_decode(user.token.auth);
-				if (parseInt(decoded.expires) * 1000 > new Date().getTime()) {
+				if (force === 0 && parseInt(decoded.expires) * 1000 > new Date().getTime()) {
 					resolve();
 				} else {
 					fetch(API_BASE + "auth/refresh", {
@@ -86,6 +86,10 @@ export default function(endpoint, body, token, method) {
 							if (json.error) {
 								reject(json.error);
 							} else {
+								if (json.refresh) {
+									console.log("needs to refresh");
+									refreshToken(1);
+								}
 								resolve(json);
 							}
 						})

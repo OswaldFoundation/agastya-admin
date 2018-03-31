@@ -7,6 +7,7 @@ import Error404 from "../components/pages/Error404.vue";
 import Login from "../components/pages/auth/Login.vue";
 
 import settingsAccount from "../components/pages/settings/Account.vue";
+import settingsSecurity from "../components/pages/settings/Security.vue";
 
 const routes = [
 	{
@@ -26,6 +27,14 @@ const routes = [
 		alias: "/settings",
 		meta: {
 			title: "Account / Settings"
+		}
+	},
+	{
+		path: "/settings/security",
+		component: settingsSecurity,
+		alias: "/settings",
+		meta: {
+			title: "Security / Settings"
 		}
 	},
 	{

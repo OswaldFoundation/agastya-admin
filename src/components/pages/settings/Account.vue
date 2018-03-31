@@ -13,6 +13,13 @@
 							<b-field label="Email">
 								<b-input type="email" v-model="fields.email" v-bind:disabled="isLoading" placeholder="Enter your email" />
 							</b-field>
+							<b-field label="Timezone">
+								<b-select expanded v-model="fields.timezone" v-bind:disabled="isLoading" placeholder="Select your timezone">
+									<option v-for="option in fields.timezones" :value="option" :key="option">
+										{{ option }}
+									</option>
+								</b-select>
+							</b-field>
 							<button :class="'button is-primary' + (isLoading ? ' is-loading' : '')">
 								<span>Update settings</span>
 								<span><font-awesome-icon :icon="faArrowRight" /></span>
@@ -95,6 +102,7 @@ export default {
 			callApi("settings/account", {
 				name: this.fields.name,
 				email: this.fields.email,
+				timezone: this.fields.timezone,
 				notifications: this.fields.notifications
 			})
 				.then(response => {
