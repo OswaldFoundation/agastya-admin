@@ -6,6 +6,8 @@ import Error404 from "../components/pages/Error404.vue";
 
 import Login from "../components/pages/auth/Login.vue";
 
+import settingsAccount from "../components/pages/settings/Account.vue";
+
 const routes = [
 	{
 		path: "/",
@@ -16,6 +18,14 @@ const routes = [
 		component: Login,
 		meta: {
 			title: "Login"
+		}
+	},
+	{
+		path: "/settings/account",
+		component: settingsAccount,
+		alias: "/settings",
+		meta: {
+			title: "Account / Settings"
 		}
 	},
 	{

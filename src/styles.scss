@@ -3,9 +3,30 @@
 }
 
 form button {
-	margin-top: 1.25rem;
+	margin-top: 0.5rem;
 }
 
 .router-link-exact-active {
 	font-weight: bold;
+}
+.menu-list .router-link-exact-active {
+	background-color: #7957d5;
+	color: white;
+}
+
+.container.is-small {
+	max-width: 800px;
+}
+
+.menu.column.is-one-quarter > div {
+	position: sticky;
+	top: 1rem;
+}
+
+p:not(:last-child) {
+	margin-bottom: 1rem;
+}
+
+.mt {
+	margin-top: 1rem;
 }
