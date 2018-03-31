@@ -9,6 +9,10 @@ import Login from "../components/pages/auth/Login.vue";
 import settingsAccount from "../components/pages/settings/Account.vue";
 import settingsSecurity from "../components/pages/settings/Security.vue";
 
+import codeUnviersal from "../components/pages/customize/code/Universal.vue";
+import codeNpm from "../components/pages/customize/code/Npm.vue";
+import codeWordpress from "../components/pages/customize/code/Wordpress.vue";
+
 const routes = [
 	{
 		path: "/",
@@ -35,6 +39,27 @@ const routes = [
 		alias: "/settings",
 		meta: {
 			title: "Security / Settings"
+		}
+	},
+	{
+		path: "/customize/code",
+		component: codeUnviersal,
+		meta: {
+			title: "Code / Customize"
+		}
+	},
+	{
+		path: "/customize/code/npm",
+		component: codeNpm,
+		meta: {
+			title: "NPM / Code / Customize"
+		}
+	},
+	{
+		path: "/customize/code/wordpress",
+		component: codeWordpress,
+		meta: {
+			title: "WordPress / Code / Customize"
 		}
 	},
 	{

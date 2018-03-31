@@ -30,6 +30,9 @@ p:not(:last-child) {
 .mt {
 	margin-top: 1rem;
 }
+.mt-2 {
+	margin-top: 2rem;
+}
 .mr {
 	margin-right: 0.25rem;
 }
@@ -37,4 +40,16 @@ p:not(:last-child) {
 .avatar {
 	border-radius: 100%;
 	margin-right: 0.5rem;
+}
+
+.navbar.is-transparent {
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+pre + * {
+	margin-top: 1.25rem;
+}
+
+* + .title {
+	margin-top: 2rem;
 }

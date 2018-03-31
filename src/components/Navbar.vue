@@ -2,7 +2,7 @@
 	<nav class="navbar is-transparent" v-if="user">
 		<div class="container">
 			<div class="navbar-brand">
-				<router-link class="navbar-item" to="/"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Oswald_Labs_Logo.svg" alt="Oswald Labs logo" height="28"></router-link>
+				<router-link class="navbar-item" to="/"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Agastya.svg" alt="Agastya logo" height="28"></router-link>
 				<div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
 					<span></span>
 					<span></span>
