@@ -20,7 +20,9 @@ export default new Vuex.Store({
 	},
 	actions: {
 		updateUser({ commit, state }, user) {
-			commit("updateUser", user);
+			if (user) {
+				commit("updateUser", user);
+			}
 		},
 		logoutUser(context) {
 			context.commit("logoutUser");
