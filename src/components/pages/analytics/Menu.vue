@@ -1,26 +1,36 @@
 <template>
 	<aside class="menu column is-one-quarter">
 		<div>
-			<p class="menu-label">General</p>
+			<p class="menu-label">Overview</p>
 			<ul class="menu-list">
-				<li><router-link to="/customize/plugin">Settings</router-link></li>
-				<li><router-link to="/customize/domains">Domains</router-link></li>
-			</ul>
-			<p class="menu-label">Apps &amp; Modes</p>
-			<ul class="menu-list">
-				<li><router-link to="/customize/apps">Modes</router-link></li>
+				<li><router-link to="/analytics/overview">Overview</router-link></li>
+				<li><router-link to="/analytics/sessions">Sessions</router-link></li>
+				<li><router-link to="/analytics/apps">Apps &amp; modes</router-link></li>
 				<li>
-					<router-link to="/customize/apps">Apps</router-link>
+					<router-link to="/analytics/locations">Locations</router-link>
 					<ul>
-						<li><router-link to="/customize/apps/live-chat">Live chat</router-link></li>
+						<li><router-link to="/analytics/locations/countries">Countries</router-link></li>
+						<li><router-link to="/analytics/locations/cities">Cities</router-link></li>
+						<li><router-link to="/analytics/locations/regions">Regions</router-link></li>
+						<li><router-link to="/analytics/locations/zip">ZIP codes</router-link></li>
 					</ul>
 				</li>
 			</ul>
-			<p class="menu-label">Code</p>
+			<p class="menu-label">Technology</p>
 			<ul class="menu-list">
-				<li><router-link to="/customize/code">Universal</router-link></li>
-				<li><router-link to="/customize/code/npm">NPM package</router-link></li>
-				<li><router-link to="/customize/code/wordpress">WordPress</router-link></li>
+				<li><router-link to="/analytics/browsers">Browsers</router-link></li>
+				<li><router-link to="/analytics/os">Operating systems</router-link></li>
+				<li><router-link to="/analytics/devices">Devices</router-link></li>
+			</ul>
+			<p class="menu-label">Website</p>
+			<ul class="menu-list">
+				<li><router-link to="/analytics/domains">Domains</router-link></li>
+				<li><router-link to="/analytics/pages">Pages</router-link></li>
+				<li><router-link to="/analytics/referrers">Referrers</router-link></li>
+			</ul>
+			<p class="menu-label">Developer</p>
+			<ul class="menu-list">
+				<li><router-link to="/analytics/export">Export</router-link></li>
 			</ul>
 		</div>
 	</aside>
