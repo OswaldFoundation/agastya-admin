@@ -88,6 +88,15 @@ export default {
 		callApi("settings/account")
 			.then(response => {
 				this.fields = response;
+				if (response.timezone === "UTC") {
+					fetch("https://freegeoip.net/json/")
+						.then(response =>
+							response.json().then(json => {
+								this.fields.timezone = json.time_zone;
+							})
+						)
+						.catch(error => console.log(error));
+				}
 			})
 			.catch(error => {
 				alert(error.message);

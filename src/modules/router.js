@@ -8,10 +8,13 @@ import Login from "../components/pages/auth/Login.vue";
 
 import settingsAccount from "../components/pages/settings/Account.vue";
 import settingsSecurity from "../components/pages/settings/Security.vue";
+import settingsSubscription from "../components/pages/settings/Subscription.vue";
 
 import codeUnviersal from "../components/pages/customize/code/Universal.vue";
 import codeNpm from "../components/pages/customize/code/Npm.vue";
 import codeWordpress from "../components/pages/customize/code/Wordpress.vue";
+
+import analyticsOverview from "../components/pages/analytics/Overview.vue";
 
 const routes = [
 	{
@@ -26,6 +29,14 @@ const routes = [
 		}
 	},
 	{
+		path: "/analytics/overview",
+		component: analyticsOverview,
+		alias: "/analytics",
+		meta: {
+			title: "Overview / Analytics"
+		}
+	},
+	{
 		path: "/settings/account",
 		component: settingsAccount,
 		alias: "/settings",
@@ -36,9 +47,15 @@ const routes = [
 	{
 		path: "/settings/security",
 		component: settingsSecurity,
-		alias: "/settings",
 		meta: {
 			title: "Security / Settings"
+		}
+	},
+	{
+		path: "/settings/subscription",
+		component: settingsSubscription,
+		meta: {
+			title: "Subscription / Settings"
 		}
 	},
 	{

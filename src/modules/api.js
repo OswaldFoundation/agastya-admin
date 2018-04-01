@@ -76,7 +76,7 @@ export default function(endpoint, body, token, method) {
 						"content-type": "application/json",
 						Authorization: token ? "Bearer " + token : ""
 					},
-					method: method || body ? "POST" : "GET",
+					method: method ? method : body ? "POST" : "GET",
 					mode: "cors",
 					redirect: "follow",
 					referrer: "no-referrer"
