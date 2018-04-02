@@ -31,7 +31,19 @@
 			<p class="menu-label">Developer</p>
 			<ul class="menu-list">
 				<li><router-link to="/analytics/export">Export</router-link></li>
+				<li><a @click.prevent="clearCache">Clear cache</a></li>
 			</ul>
 		</div>
 	</aside>
 </template>
+
+<script>
+export default {
+	methods: {
+		clearCache() {
+			sessionStorage.clear();
+			alert("Cache has been cleared!");
+		}
+	}
+};
+</script>

@@ -6,8 +6,8 @@ http: Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		user: null,
-		from: new Date(),
-		to: new Date()
+		from: new Date(new Date().setDate(new Date().getDate() - 1)),
+		to: new Date(new Date().setDate(new Date().getDate() + 1))
 	},
 	getters: {
 		getUser: state => state.user,

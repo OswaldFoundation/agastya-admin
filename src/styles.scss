@@ -61,6 +61,23 @@ pre + * {
 	width: 100%;
 }
 
+.table.rank-half {
+	td:first-child {
+		width: 15%;
+	}
+	td:nth-child(2) {
+		word-break: break-all;
+	}
+	td:last-child {
+		width: 25%;
+	}
+	td div {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow-x: hidden;
+	}
+}
+
 .mb-0 {
 	margin-bottom: 0 !important;
 }
@@ -70,4 +87,21 @@ pre + * {
 	vertical-align: middle;
 	margin-top: -4px;
 	margin-right: 10px;
+}
+
+.loader-2 {
+	margin: 3rem auto;
+	width: 3rem;
+	height: 3rem;
+}
+
+.empty-state {
+	text-align: center;
+	img {
+		max-width: 80%;
+		margin-top: 0.5rem;
+	}
+	.title {
+		color: #999;
+	}
 }

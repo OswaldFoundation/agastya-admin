@@ -2,7 +2,7 @@ import jwt_decode from "jwt-decode";
 import store from "./store";
 import router from "./router";
 
-const API_BASE = "http://localhost:8888/agastyaapi/";
+const API_BASE = "https://api.oswaldlabs.com/public-apis/agastya/";
 
 const handleError = error => {
 	if (error.code === "invalid_refresh_token") {
@@ -103,17 +103,27 @@ export const callApi = (endpoint, body, token, method) => {
 export const analyticsList = (column, perPage = 10, currentPage = 1) => {
 	const filterFrom = store.getters.getFrom;
 	const filterTo = store.getters.getTo;
+	const from = "2018-01-01";
+	const to = "2018-04-03";
+	const dataTitle = "analytics__list__" + column + perPage + currentPage + from + to + dataTitle;
 	return new Promise((resolve, reject) => {
-		callApi("analytics/list", {
-			column: column,
-			perPage: perPage,
-			currentPage: currentPage
-		})
-			.then(data => {
-				resolve(data);
+		if (sessionStorage[dataTitle]) {
+			resolve(JSON.parse(sessionStorage.getItem(dataTitle)));
+		} else {
+			callApi("analytics/list", {
+				column: column,
+				perPage: perPage,
+				currentPage: currentPage,
+				from: from,
+				to: to
 			})
-			.catch(error => {
-				reject(error);
-			});
+				.then(data => {
+					sessionStorage.setItem(dataTitle, JSON.stringify(data));
+					resolve(data);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		}
 	});
 };
