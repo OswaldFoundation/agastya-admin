@@ -336,6 +336,9 @@ export default (name = "") => {
 		case "bing-preview":
 			return "https://image.flaticon.com/icons/svg/174/174838.svg";
 			break;
+		case "europe":
+			return "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/eu.svg";
+			break;
 	}
 	if (
 		[

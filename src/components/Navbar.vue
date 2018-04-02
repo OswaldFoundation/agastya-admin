@@ -90,6 +90,9 @@ export default {
 			this.isLoading = true;
 			callApi("settings/session/" + this.user.token.refresh, null, null, "DELETE").finally(() => {
 				this.isLoading = false;
+				if ("sessionStorage" in window) {
+					window.sessionStorage.clear();
+				}
 				store.dispatch("logoutUser");
 				router.push("/login");
 			});

@@ -102,14 +102,14 @@ export const callApi = (endpoint, body, token, method) => {
 };
 
 export const analyticsList = (column, perPage = 10, currentPage = 1) => {
-	const filterFrom = store.getters.getFrom;
-	const filterTo = store.getters.getTo;
-	const from = "2018-01-01";
-	const to = "2018-04-03";
+	const filterFrom = new Date(store.getters.getFrom);
+	const filterTo = new Date(store.getters.getTo);
+	const from = filterFrom.getFullYear() + "-" + filterFrom.getMonth() + "-" + filterFrom.getDate();
+	const to = filterTo.getFullYear() + "-" + filterTo.getMonth() + "-" + filterTo.getDate();
 	const dataTitle = "analytics__list__" + column + perPage + currentPage + from + to + dataTitle;
 	return new Promise((resolve, reject) => {
-		if (sessionStorage[dataTitle]) {
-			resolve(JSON.parse(sessionStorage.getItem(dataTitle)));
+		if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {
+			resolve(JSON.parse(window.sessionStorage.getItem(dataTitle)));
 		} else {
 			callApi("analytics/list", {
 				column: column,
@@ -119,7 +119,9 @@ export const analyticsList = (column, perPage = 10, currentPage = 1) => {
 				to: to
 			})
 				.then(data => {
-					sessionStorage.setItem(dataTitle, JSON.stringify(data));
+					if ("sessionStorage" in window) {
+						window.sessionStorage.setItem(dataTitle, JSON.stringify(data));
+					}
 					resolve(data);
 				})
 				.catch(error => {

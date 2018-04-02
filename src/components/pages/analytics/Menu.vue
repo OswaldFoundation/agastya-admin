@@ -41,7 +41,9 @@
 export default {
 	methods: {
 		clearCache() {
-			sessionStorage.clear();
+			if ("sessionStorage" in window) {
+				window.sessionStorage.clear();
+			}
 			alert("Cache has been cleared!");
 		}
 	}

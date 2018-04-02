@@ -21,8 +21,8 @@
 								<div>events</div>
 							</div>
 							<div class="column">
-								<div class="title is-5 mb-0">{{overview.sessions.toLocaleString()}}</div>
-								<div>sessions</div>
+								<div class="title is-5 mb-0">{{ip.records.toLocaleString()}}</div>
+								<div>users</div>
 							</div>
 						</div>
 					</div>
@@ -122,7 +122,7 @@ import FilterPanel from "./FilterPanel.vue";
 import { Bar } from "vue-chartjs";
 import { callApi, analyticsList } from "../../../modules/api";
 import iconify from "../../../modules/iconify";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 export default {
 	data: () => {
 		return {
@@ -167,23 +167,50 @@ export default {
 		};
 	},
 	mounted() {
-		analyticsList("country_name", 5).then(data => {
-			this.country_name = data;
-		});
-		analyticsList("os_name", 5).then(data => {
-			this.os_name = data;
-		});
-		analyticsList("ip", 5).then(data => {
-			this.ip = data;
-		});
-		analyticsList("browser_name", 5).then(data => {
-			this.browser_name = data;
-		});
-		analyticsList("overview", 5).then(data => {
-			this.overview = data;
-		});
+		this.updateRecords();
+	},
+	computed: {
+		...mapGetters({
+			from: "getFrom",
+			to: "getTo"
+		})
+	},
+	watch: {
+		from() {
+			this.updateRecords();
+		},
+		to() {
+			this.updateRecords();
+		}
 	},
 	methods: {
+		updateRecords() {
+			this.country_name.isLoading = true;
+			this.country_name.results = [];
+			analyticsList("country_name", 5).then(data => {
+				this.country_name = data;
+			});
+			this.os_name.isLoading = true;
+			this.os_name.results = [];
+			analyticsList("os_name", 5).then(data => {
+				this.os_name = data;
+			});
+			this.ip.isLoading = true;
+			this.ip.results = [];
+			analyticsList("ip", 5).then(data => {
+				this.ip = data;
+			});
+			this.browser_name.isLoading = true;
+			this.browser_name.results = [];
+			analyticsList("browser_name", 5).then(data => {
+				this.browser_name = data;
+			});
+			this.overview.isLoading = true;
+			this.overview.results = [];
+			analyticsList("overview", 5).then(data => {
+				this.overview = data;
+			});
+		},
 		paginate(a) {
 			this[a].results = [];
 			this[a].isLoading = true;
