@@ -45,7 +45,7 @@
 							<router-link class="navbar-item" to="/settings/invoices">Invoices</router-link>
 							<hr class="navbar-divider">
 							<router-link class="navbar-item" to="/settings/api-keys">Developer API</router-link>
-							<a class="navbar-item ito-active" @click.prevent="logout">Logout</a>
+							<a class="navbar-item ito-active" @click.prevent="logout">{{isLoading ? "Logging you out..." : "Logout"}}</a>
 						</div>
 					</div>
 					<div class="navbar-item">
@@ -72,6 +72,7 @@ import store from "../modules/store";
 import router from "../modules/router";
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import faCode from "@fortawesome/fontawesome-free-solid/faCode";
+import { callApi } from "../modules/api";
 export default {
 	computed: {
 		...mapGetters({
@@ -80,13 +81,18 @@ export default {
 	},
 	data: () => {
 		return {
-			faCode: faCode
+			faCode: faCode,
+			isLoading: false
 		};
 	},
 	methods: {
 		logout() {
-			store.dispatch("logoutUser");
-			router.push("/login");
+			this.isLoading = true;
+			callApi("settings/session/" + this.user.token.refresh, null, null, "DELETE").finally(() => {
+				this.isLoading = false;
+				store.dispatch("logoutUser");
+				router.push("/login");
+			});
 		}
 	},
 	components: {
