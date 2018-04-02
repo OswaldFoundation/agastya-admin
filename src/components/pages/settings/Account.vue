@@ -66,7 +66,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import callApi from "../../../modules/api";
+import { callApi } from "../../../modules/api";
 import Menu from "./Menu.vue";
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import faArrowRight from "@fortawesome/fontawesome-free-solid/faArrowRight";

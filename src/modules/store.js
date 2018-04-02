@@ -5,14 +5,24 @@ import createPersistedState from "vuex-persistedstate";
 http: Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
-		user: null
+		user: null,
+		from: new Date(),
+		to: new Date()
 	},
 	getters: {
-		getUser: state => state.user
+		getUser: state => state.user,
+		getFrom: state => state.from,
+		getTo: state => state.to
 	},
 	mutations: {
 		updateUser(state, user) {
 			state.user = user;
+		},
+		updateFrom(state, from) {
+			state.from = from;
+		},
+		updateTo(state, to) {
+			state.to = to;
 		},
 		logoutUser(state) {
 			state.user = null;
@@ -22,6 +32,16 @@ export default new Vuex.Store({
 		updateUser({ commit, state }, user) {
 			if (user) {
 				commit("updateUser", user);
+			}
+		},
+		updateFrom({ commit, state }, from) {
+			if (from) {
+				commit("updateFrom", from);
+			}
+		},
+		updateTo({ commit, state }, to) {
+			if (to) {
+				commit("updateTo", to);
 			}
 		},
 		logoutUser(context) {

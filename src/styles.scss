@@ -17,6 +17,9 @@ form button {
 .container.is-small {
 	max-width: 800px;
 }
+.container.is-medium {
+	max-width: 960px;
+}
 
 .menu.column.is-one-quarter > div {
 	position: sticky;
@@ -60,4 +63,11 @@ pre + * {
 
 .mb-0 {
 	margin-bottom: 0 !important;
+}
+
+.flag-icon {
+	height: 20px;
+	vertical-align: middle;
+	margin-top: -4px;
+	margin-right: 10px;
 }

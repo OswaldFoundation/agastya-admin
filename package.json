@@ -9,6 +9,7 @@
     "babel-polyfill": "^6.26.0",
     "bootstrap-vue": "^2.0.0-rc.2",
     "buefy": "^0.6.5",
+    "chart.js": "^2.7.2",
     "jwt-decode": "^2.2.0",
     "moment": "^2.22.0",
     "vue": "^2.5.16",

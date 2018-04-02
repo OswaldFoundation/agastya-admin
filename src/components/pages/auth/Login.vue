@@ -24,7 +24,7 @@
 import { mapGetters } from "vuex";
 import store from "../../../modules/store";
 import router from "../../../modules/router";
-import callApi from "../../../modules/api";
+import { callApi } from "../../../modules/api";
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import faLock from "@fortawesome/fontawesome-free-solid/faLock";
 export default {

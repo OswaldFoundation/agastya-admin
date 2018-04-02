@@ -1,7 +1,9 @@
 import Vue from "vue";
 
 import Buefy from "buefy";
-Vue.use(Buefy);
+Vue.use(Buefy, {
+	defaultIconPack: "fas"
+});
 
 import "buefy/lib/buefy.css";
 import css from "./styles.scss";

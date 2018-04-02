@@ -59,7 +59,7 @@ const refreshToken = (force = 0) => {
 	});
 };
 
-export default function(endpoint, body, token, method) {
+export const callApi = (endpoint, body, token, method) => {
 	return new Promise((resolve, reject) => {
 		refreshToken()
 			.then(() => {
@@ -98,4 +98,22 @@ export default function(endpoint, body, token, method) {
 			})
 			.catch(error => console.log(error));
 	});
-}
+};
+
+export const analyticsList = (column, perPage = 10, currentPage = 1) => {
+	const filterFrom = store.getters.getFrom;
+	const filterTo = store.getters.getTo;
+	return new Promise((resolve, reject) => {
+		callApi("analytics/list", {
+			column: column,
+			perPage: perPage,
+			currentPage: currentPage
+		})
+			.then(data => {
+				resolve(data);
+			})
+			.catch(error => {
+				reject(error);
+			});
+	});
+};
