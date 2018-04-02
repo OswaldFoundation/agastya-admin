@@ -62,6 +62,7 @@ export default (name = "") => {
 		Cuba: "CU",
 		Cyprus: "CY",
 		"Czech Republic": "CZ",
+		Czechia: "CZ",
 		Denmark: "DK",
 		Djibouti: "DJ",
 		Dominica: "DM",
@@ -120,7 +121,9 @@ export default (name = "") => {
 		Kenya: "KE",
 		Kiribati: "KI",
 		"North Korea": "KP",
-		"South Korea": "KR",
+		"North Korea": "KP",
+		"Democratic People's Republic of Korea": "KR",
+		"Republic of Korea": "KR",
 		Kuwait: "KW",
 		Kyrgyzstan: "KG",
 		"Lao PDR": "LA",
@@ -243,6 +246,7 @@ export default (name = "") => {
 		Uruguay: "UY",
 		Uzbekistan: "UZ",
 		Vanuatu: "VU",
+		Vietnam: "VN",
 		"Venezuela (Bolivarian Republic)": "VE",
 		"Viet Nam": "VN",
 		"Virgin Islands": "VI",
@@ -296,6 +300,9 @@ export default (name = "") => {
 		case "facebook":
 			return "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/240px-Facebook_logo_%28square%29.png";
 			break;
+		case "twitter":
+			return "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/300px-Twitter_bird_logo_2012.svg.png";
+			break;
 		case "ubuntu":
 			return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Ubuntu-Logo_ohne_Schriftzug.svg/200px-Ubuntu-Logo_ohne_Schriftzug.svg.png";
 			break;
@@ -310,6 +317,12 @@ export default (name = "") => {
 			break;
 		case "uc-browser-mini":
 			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/uc/uc_48x48.png";
+			break;
+		case "chrome-os":
+			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/chrome/chrome_48x48.png";
+			break;
+		case "yandex-browser":
+			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/yandex/yandex_48x48.png";
 			break;
 		case "firefox-mobile":
 			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/firefox/firefox_48x48.png";

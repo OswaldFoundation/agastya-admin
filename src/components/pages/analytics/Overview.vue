@@ -9,19 +9,19 @@
 						<h2 class="title is-4">Overview</h2>
 						<div class="columns">
 							<div class="column">
-								<div class="title is-5 mb-0">0%</div>
+								<div class="title is-5 mb-0">{{overview.quota.toLocaleString()}}%</div>
 								<div>quota</div>
 							</div>
 							<div class="column">
-								<div class="title is-5 mb-0">0</div>
+								<div class="title is-5 mb-0">{{overview.pageviews.toLocaleString()}}</div>
 								<div>pageviews</div>
 							</div>
 							<div class="column">
-								<div class="title is-5 mb-0">0</div>
+								<div class="title is-5 mb-0">{{overview.events.toLocaleString()}}</div>
 								<div>events</div>
 							</div>
 							<div class="column">
-								<div class="title is-5 mb-0">0</div>
+								<div class="title is-5 mb-0">{{overview.sessions.toLocaleString()}}</div>
 								<div>sessions</div>
 							</div>
 						</div>
@@ -40,7 +40,7 @@
 										<tr v-for="(item, index) in country_name.results" :key="'country_name' + index">
 											<td>{{index + ((country_name.currentPage - 1) * 5) + 1}}</td>
 											<td><div><img class="flag-icon" alt="" :src="getBrowserIcon(item.name)">{{item.name}}</div></td>
-											<td>{{item.value}}</td>
+											<td>{{item.value.toLocaleString()}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -60,7 +60,7 @@
 										<tr v-for="(item, index) in os_name.results" :key="'os_name' + index">
 											<td>{{index + ((os_name.currentPage - 1) * 5) + 1}}</td>
 											<td><div><img class="flag-icon" alt="" :src="getBrowserIcon(item.name)">{{item.name}}</div></td>
-											<td>{{item.value}}</td>
+											<td>{{item.value.toLocaleString()}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -82,7 +82,7 @@
 										<tr v-for="(item, index) in ip.results" :key="'ip' + index">
 											<td>{{index + ((ip.currentPage - 1) * 5) + 1}}</td>
 											<td><div>{{ipify(item.name)}}</div></td>
-											<td>{{item.value}}</td>
+											<td>{{item.value.toLocaleString()}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -102,7 +102,7 @@
 										<tr v-for="(item, index) in browser_name.results" :key="'browser_name' + index">
 											<td>{{index + ((browser_name.currentPage - 1) * 5) + 1}}</td>
 											<td><div><img class="flag-icon" alt="" :src="getBrowserIcon(item.name)">{{item.name}}</div></td>
-											<td>{{item.value}}</td>
+											<td>{{item.value.toLocaleString()}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -126,6 +126,12 @@ import { mapState } from "vuex";
 export default {
 	data: () => {
 		return {
+			overview: {
+				quota: 0,
+				pageviews: 0,
+				events: 0,
+				sessions: 0
+			},
 			country_name: {
 				isLoading: true,
 				results: [],
@@ -172,6 +178,9 @@ export default {
 		});
 		analyticsList("browser_name", 5).then(data => {
 			this.browser_name = data;
+		});
+		analyticsList("overview", 5).then(data => {
+			this.overview = data;
 		});
 	},
 	methods: {

@@ -2,6 +2,7 @@ import jwt_decode from "jwt-decode";
 import store from "./store";
 import router from "./router";
 
+// const API_BASE = "http://localhost:8888/agastyaapi/";
 const API_BASE = "https://api.oswaldlabs.com/public-apis/agastya/";
 
 const handleError = error => {
