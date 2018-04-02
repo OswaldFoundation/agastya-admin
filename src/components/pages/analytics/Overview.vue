@@ -39,7 +39,7 @@
 									<tbody>
 										<tr v-for="(item, index) in country_name.results" :key="'country_name' + index">
 											<td>{{index + ((country_name.currentPage - 1) * 5) + 1}}</td>
-											<td><div>{{item.name}}</div></td>
+											<td><div><img class="flag-icon" alt="" :src="getBrowserIcon(item.name)">{{item.name}}</div></td>
 											<td>{{item.value}}</td>
 										</tr>
 									</tbody>
