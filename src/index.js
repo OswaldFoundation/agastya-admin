@@ -14,7 +14,7 @@ import "whatwg-fetch";
 import store from "./modules/store";
 import router from "./modules/router";
 
-import Navbar from "./components/Navbar.vue";
+import App from "./components/App.vue";
 
 // Progressive Web App support
 if (process.env.NODE_ENV === "production") {
@@ -32,22 +32,6 @@ const app = new Vue({
 	mounted() {},
 	methods: {},
 	render() {
-		return (
-			<div>
-				<Navbar />
-				<transition name="fade" mode="out-in">
-					<router-view />
-				</transition>
-				<footer class="footer">
-					<div class="container">
-						<div class="content has-text-centered">
-							<p>
-								&copy; 2018 <strong>Agastya</strong> by <a href="https://oswaldlabs.com">Oswald Labs</a>
-							</p>
-						</div>
-					</div>
-				</footer>
-			</div>
-		);
+		return <App />;
 	}
 });

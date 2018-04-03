@@ -16,6 +16,7 @@ import codeWordpress from "../components/pages/customize/code/Wordpress.vue";
 
 import analyticsOverview from "../components/pages/analytics/Overview.vue";
 import analyticsLocations from "../components/pages/analytics/locations/Locations.vue";
+import analyticsLocationsColumn from "../components/pages/analytics/locations/Column.vue";
 import analyticsSessionLocation from "../components/pages/analytics/sessions/Country.vue";
 
 const routes = [
@@ -41,6 +42,13 @@ const routes = [
 	{
 		path: "/analytics/locations",
 		component: analyticsLocations,
+		meta: {
+			title: "Locations / Analytics"
+		}
+	},
+	{
+		path: "/analytics/locations/:column",
+		component: analyticsLocationsColumn,
 		meta: {
 			title: "Locations / Analytics"
 		}

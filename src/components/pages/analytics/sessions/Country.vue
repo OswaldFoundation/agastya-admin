@@ -5,20 +5,22 @@
 				<Menu />
 				<main class="column">
 					<FilterPanel />
-					<div class="columns">
-						<div class="column">
-							<div class="card">
-								<div class="card-image">
-									<figure class="image">
-										<img alt="" :src="'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCuiZevIb1G87KAoLRSECEdWNBQ06JCMjU&center=' + title + '&size=640x400&sensor=false'">
-									</figure>
-								</div>
-								<div class="card-content">
-									<h1 class="title is-4 mb-0">{{title}}</h1>
-									<div class="content mt">{{intro}}</div>
-								</div>
+					<div class="box">
+						<div class="columns">
+							<div class="column">
+								<img alt="" :src="'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCuiZevIb1G87KAoLRSECEdWNBQ06JCMjU&center=' + title + '&size=600x450&sensor=false'">
+							</div>
+							<div class="column">
+								<img alt="" :src="getBrowserIcon(title)">
+							</div>
+							<div class="column">
+								<img alt="" :src="'https://tse2.mm.bing.net/th?q=' + title + '+culture' + '&w=400&h=300&p=0&dpr=2&adlt=moderate&c=1'">
 							</div>
 						</div>
+						<h1 class="title is-4 mb-0 mt-0">{{title}}</h1>
+						<div class="content mt">{{intro}}</div>
+					</div>
+					<div class="columns">
 						<div class="column">
 							<div class="box">
 								<h3 class="title is-5">Countries</h3>
