@@ -18,7 +18,7 @@ import Navbar from "./components/Navbar.vue";
 
 // Progressive Web App support
 if (process.env.NODE_ENV === "production") {
-	require("./modules/pwa");
+	require("./pwa");
 }
 
 // import "@oswaldlabs/agastya";
