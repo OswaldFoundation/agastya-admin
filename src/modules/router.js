@@ -15,6 +15,7 @@ import codeNpm from "../components/pages/customize/code/Npm.vue";
 import codeWordpress from "../components/pages/customize/code/Wordpress.vue";
 
 import analyticsOverview from "../components/pages/analytics/Overview.vue";
+import analyticsLocations from "../components/pages/analytics/locations/Locations.vue";
 
 const routes = [
 	{
@@ -34,6 +35,13 @@ const routes = [
 		alias: "/analytics",
 		meta: {
 			title: "Overview / Analytics"
+		}
+	},
+	{
+		path: "/analytics/locations",
+		component: analyticsLocations,
+		meta: {
+			title: "Locations / Analytics"
 		}
 	},
 	{

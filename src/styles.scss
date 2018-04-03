@@ -71,7 +71,8 @@ pre + * {
 	td:last-child {
 		width: 25%;
 	}
-	td div {
+	td > * {
+		display: block;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow-x: hidden;
