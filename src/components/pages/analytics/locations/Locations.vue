@@ -18,12 +18,19 @@
 									<tbody>
 										<tr v-for="(item, index) in country_name.results" :key="'country_name' + index">
 											<td>{{index + ((country_name.currentPage - 1) * 10) + 1}}</td>
-											<td :title="item.name"><router-link :to="'/sessions/country_name/' + slugify(item.name)"><img class="flag-icon" alt="" :src="getBrowserIcon(item.name)">{{ipify(item.name)}}</router-link></td>
+											<td :title="item.name"><router-link :to="'/analytics/sessions/country/' + slugify(item.name)"><img class="flag-icon" alt="" :src="getBrowserIcon(item.name)">{{ipify(item.name)}}</router-link></td>
 											<td>{{item.value.toLocaleString()}}</td>
 										</tr>
 									</tbody>
 								</table>
-								<b-pagination class="mt" v-if="country_name.pages > 0" @change="paginate('country_name')" :total="country_name.records" :current.sync="country_name.currentPage" :simple="true" :per-page="country_name.perPage" />
+								<div class="columns">
+									<div class="column">
+										<b-pagination class="mt" v-if="country_name.pages > 0" @change="paginate('country_name')" :total="country_name.records" :current.sync="country_name.currentPage" :simple="true" :per-page="country_name.perPage" />
+									</div>
+									<div class="column r-b is-one-third">
+										<router-link class="button" to="/analytics/locations/countries">More</router-link>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="column">
@@ -38,12 +45,19 @@
 									<tbody>
 										<tr v-for="(item, index) in city.results" :key="'city' + index">
 											<td>{{index + ((city.currentPage - 1) * 10) + 1}}</td>
-											<td :title="item.name"><router-link :to="'/sessions/city/' + slugify(item.name)">{{ipify(item.name)}}</router-link></td>
+											<td :title="item.name"><router-link :to="'/analytics/sessions/city/' + slugify(item.name)">{{ipify(item.name)}}</router-link></td>
 											<td>{{item.value.toLocaleString()}}</td>
 										</tr>
 									</tbody>
 								</table>
-								<b-pagination class="mt" v-if="city.pages > 0" @change="paginate('city')" :total="city.records" :current.sync="city.currentPage" :simple="true" :per-page="city.perPage" />
+								<div class="columns">
+									<div class="column">
+										<b-pagination class="mt" v-if="city.pages > 0" @change="paginate('city')" :total="city.records" :current.sync="city.currentPage" :simple="true" :per-page="city.perPage" />
+									</div>
+									<div class="column r-b is-one-third">
+										<router-link class="button" to="/analytics/locations/cities">More</router-link>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -60,12 +74,19 @@
 									<tbody>
 										<tr v-for="(item, index) in region_name.results" :key="'region_name' + index">
 											<td>{{index + ((region_name.currentPage - 1) * 10) + 1}}</td>
-											<td :title="item.name"><router-link :to="'/sessions/region_name/' + slugify(item.name)">{{ipify(item.name)}}</router-link></td>
+											<td :title="item.name"><router-link :to="'/analytics/sessions/region/' + slugify(item.name)">{{ipify(item.name)}}</router-link></td>
 											<td>{{item.value.toLocaleString()}}</td>
 										</tr>
 									</tbody>
 								</table>
-								<b-pagination class="mt" v-if="region_name.pages > 0" @change="paginate('region_name')" :total="region_name.records" :current.sync="region_name.currentPage" :simple="true" :per-page="region_name.perPage" />
+								<div class="columns">
+									<div class="column">
+										<b-pagination class="mt" v-if="region_name.pages > 0" @change="paginate('region_name')" :total="region_name.records" :current.sync="region_name.currentPage" :simple="true" :per-page="region_name.perPage" />
+									</div>
+									<div class="column r-b is-one-third">
+										<router-link class="button" to="/analytics/locations/regions">More</router-link>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="column">
@@ -80,12 +101,19 @@
 									<tbody>
 										<tr v-for="(item, index) in zip_code.results" :key="'zip_code' + index">
 											<td>{{index + ((zip_code.currentPage - 1) * 10) + 1}}</td>
-											<td :title="item.name"><router-link :to="'/sessions/zip_code/' + slugify(item.name)">{{ipify(item.name)}}</router-link></td>
+											<td :title="item.name"><router-link :to="'/analytics/sessions/zip/' + slugify(item.name)">{{ipify(item.name)}}</router-link></td>
 											<td>{{item.value.toLocaleString()}}</td>
 										</tr>
 									</tbody>
 								</table>
-								<b-pagination class="mt" v-if="zip_code.pages > 0" @change="paginate('zip_code')" :total="zip_code.records" :current.sync="zip_code.currentPage" :simple="true" :per-page="zip_code.perPage" />
+								<div class="columns">
+									<div class="column">
+										<b-pagination class="mt" v-if="zip_code.pages > 0" @change="paginate('zip_code')" :total="zip_code.records" :current.sync="zip_code.currentPage" :simple="true" :per-page="zip_code.perPage" />
+									</div>
+									<div class="column r-b is-one-third">
+										<router-link class="button" to="/analytics/locations/zip">More</router-link>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -99,7 +127,7 @@
 import Menu from "../Menu.vue";
 import FilterPanel from "../FilterPanel.vue";
 import { Bar } from "vue-chartjs";
-import { callApi, analyticsList } from "../../../../modules/api";
+import { callApi, analyticsList, wikipediaIntro } from "../../../../modules/api";
 import iconify from "../../../../modules/iconify";
 import { mapGetters } from "vuex";
 export default {
@@ -200,7 +228,6 @@ export default {
 		},
 		slugify(x) {
 			if (typeof x === "string") {
-				x = x.replace(/\s+/g, "_");
 				x = encodeURIComponent(x);
 				return x;
 			}

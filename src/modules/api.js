@@ -41,7 +41,6 @@ const refreshToken = (force = 0) => {
 									reject();
 								} else {
 									store.dispatch("updateUser", json);
-									console.log("refreshed token");
 									resolve();
 								}
 							})
@@ -88,7 +87,6 @@ export const callApi = (endpoint, body, token, method) => {
 								reject(json.error);
 							} else {
 								if (json.refresh) {
-									console.log("needs to refresh");
 									refreshToken(1);
 								}
 								resolve(json);
@@ -98,6 +96,51 @@ export const callApi = (endpoint, body, token, method) => {
 					.catch(error => reject(error));
 			})
 			.catch(error => console.log(error));
+	});
+};
+
+export const wikipediaIntro = q => {
+	const better = text => {
+		text = text.replace(/ *\([^)]*\) */g, "");
+		if (text.length > 300) {
+			text = text.substring(0, 300) + "...";
+			console.log(text.split(". ").length);
+			if (text.split(". ").length > 2) {
+				return (text = text.split(". ")[0] + ". " + text.split(". ")[1] + "." || text.split(". ")[0] + ". ");
+			} else if (text.split(". ").length === 2) {
+				text = text.split(". ")[0] + ". ";
+			}
+		}
+		return text;
+	};
+	const dataTitle = "wikipedia__q" + encodeURIComponent(q);
+	return new Promise((resolve, reject) => {
+		if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {
+			resolve(better(window.sessionStorage.getItem(dataTitle)));
+		} else {
+			fetch(
+				"https://en.wikipedia.org/w/api.php?format=json&origin=*&action=query&prop=extracts&exintro=&explaintext=&titles=" + q
+			)
+				.then(response => response.json())
+				.then(data => {
+					if (data.query && data.query.pages) {
+						const text = Object.values(data.query.pages)[0].extract;
+						if (text) {
+							if ("sessionStorage" in window) {
+								window.sessionStorage.setItem(dataTitle, text);
+							}
+							resolve(better(text));
+						} else {
+							reject();
+						}
+					} else {
+						reject();
+					}
+				})
+				.catch(error => {
+					reject(error);
+				});
+		}
 	});
 };
 

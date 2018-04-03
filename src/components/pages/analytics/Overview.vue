@@ -44,7 +44,14 @@
 										</tr>
 									</tbody>
 								</table>
-								<b-pagination class="mt" v-if="country_name.pages > 0" @change="paginate('country_name')" :total="country_name.records" :current.sync="country_name.currentPage" :simple="true" :per-page="country_name.perPage" />
+								<div class="columns">
+									<div class="column">
+										<b-pagination class="mt" v-if="country_name.pages > 0" @change="paginate('country_name')" :total="country_name.records" :current.sync="country_name.currentPage" :simple="true" :per-page="country_name.perPage" />
+									</div>
+									<div class="column r-b">
+										<router-link class="button" to="/analytics/locations/countries">More</router-link>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="column">
