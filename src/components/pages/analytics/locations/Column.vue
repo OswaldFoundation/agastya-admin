@@ -21,7 +21,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<b-pagination class="mt" v-if="data.pages > 0" @change="paginate('data')" :total="data.records" :current.sync="data.currentPage" :simple="true" :per-page="data.perPage" />
+						<b-pagination class="mt" v-if="data.pages > 0" @change="paginate" :total="data.records" :current.sync="data.currentPage" :simple="true" :per-page="data.perPage" />
 					</div>
 				</main>
 			</div>
@@ -37,6 +37,12 @@ import { callApi, analyticsList, wikipediaIntro } from "../../../../modules/api"
 import iconify from "../../../../modules/iconify";
 import { mapGetters } from "vuex";
 import router from "../../../../modules/router";
+const slugs = {
+	countries: "country_name",
+	cities: "city",
+	regions: "region_name",
+	zip: "zip_code"
+};
 export default {
 	data: () => {
 		return {
@@ -93,12 +99,6 @@ export default {
 		updateRecords() {
 			this.data.isLoading = true;
 			this.data.results = [];
-			const slugs = {
-				countries: "country_name",
-				cities: "city",
-				regions: "region_name",
-				zip: "zip_code"
-			};
 			if (slugs[this.column]) {
 				analyticsList(slugs[this.column], 25).then(data => {
 					this.data = data;
@@ -107,12 +107,13 @@ export default {
 				router.push("/");
 			}
 		},
-		paginate(a) {
-			this[a].results = [];
-			this[a].isLoading = true;
+		paginate() {
+			this.data.results = [];
+			this.data.isLoading = true;
 			setTimeout(() => {
-				analyticsList(a, 25, this[a].currentPage).then(data => {
-					this[a] = data;
+				analyticsList(slugs[this.column], 25, this.data.currentPage).then(data => {
+					window.scrollTo(0, 0);
+					this.data = data;
 				});
 			}, 1);
 		},
