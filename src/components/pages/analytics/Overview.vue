@@ -205,8 +205,10 @@ export default {
 			analyticsList("browser_name", 5).then(data => {
 				this.browser_name = data;
 			});
-			this.overview.isLoading = true;
-			this.overview.results = [];
+			this.overview.quota = 0;
+			this.overview.pageviews = 0;
+			this.overview.events = 0;
+			this.overview.sessions = 0;
 			analyticsList("overview", 5).then(data => {
 				this.overview = data;
 			});

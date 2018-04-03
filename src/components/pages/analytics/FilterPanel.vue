@@ -2,7 +2,7 @@
 	<div class="columns">
 		<div class="column">
 			<b-field label="Filter preset">
-				<b-select v-model="preset" expanded>
+				<b-select v-model="preset" expanded @input="updateFilter">
 					<option value="today">Today</option>
 					<option value="week">Last 7 days</option>
 					<option value="month">Last 30 days</option>
@@ -14,12 +14,12 @@
 		</div>
 		<div class="column">
 			<b-field label="From">
-				<b-datepicker placeholder="From" v-model="from_field" />
+				<b-datepicker placeholder="From" v-model="from_field" @input="updatePreset" />
 			</b-field>
 		</div>
 		<div class="column">
 			<b-field label="To">
-				<b-datepicker placeholder="To" v-model="to_field" />
+				<b-datepicker placeholder="To" v-model="to_field" @input="updatePreset" />
 			</b-field>
 		</div>
 	</div>
@@ -53,8 +53,16 @@ export default {
 		},
 		to_field() {
 			this.$store.dispatch("updateTo", this.to_field);
+		}
+	},
+	methods: {
+		formatDate(date) {
+			return date.getTime() / 1000;
 		},
-		preset() {
+		updatePreset() {
+			this.preset = "custom";
+		},
+		updateFilter() {
 			if (this.preset === "today") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 1)));
 				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate())));
@@ -71,11 +79,6 @@ export default {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 365)));
 				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate())));
 			}
-		}
-	},
-	methods: {
-		formatDate(date) {
-			return date.getTime() / 1000;
 		}
 	}
 };
