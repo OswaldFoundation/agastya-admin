@@ -48,7 +48,8 @@ const slugs = {
 	domains: "domain",
 	pages: "url",
 	referrers: "referrer",
-	apps: "event"
+	apps: "event",
+	users: "ip"
 };
 export default {
 	data: () => {
@@ -80,7 +81,8 @@ export default {
 			domains: "domain",
 			pages: "page",
 			referrers: "referrer",
-			apps: "app"
+			apps: "app",
+			users: "user"
 		};
 		if (singularList[this.$route.params.column]) {
 			this.singular = singularList[this.$route.params.column];
@@ -96,7 +98,8 @@ export default {
 			domains: "Domains",
 			pages: "Pages",
 			referrers: "Referrers",
-			apps: "Apps & Modes"
+			apps: "Apps & Modes",
+			users: "Users"
 		};
 		if (titleList[this.$route.params.column]) {
 			this.title = titleList[this.$route.params.column];
@@ -121,9 +124,13 @@ export default {
 			this.data.isLoading = true;
 			this.data.results = [];
 			if (slugs[this.column]) {
-				analyticsList(slugs[this.column], 25).then(data => {
-					this.data = data;
-				});
+				analyticsList(slugs[this.column], 25)
+					.then(data => {
+						this.data = data;
+					})
+					.finally(() => {
+						this.data.isLoading = true;
+					});
 			} else {
 				router.push("/");
 			}

@@ -21,8 +21,8 @@
 								<div>events</div>
 							</div>
 							<div class="column">
-								<div class="title is-5 mb-0">{{ip.records.toLocaleString()}}</div>
-								<div>users</div>
+								<div class="title is-5 mb-0">{{overview.sessions.toLocaleString()}}</div>
+								<div>sessions</div>
 							</div>
 						</div>
 					</div>

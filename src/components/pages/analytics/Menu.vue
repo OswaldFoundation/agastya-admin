@@ -4,9 +4,9 @@
 			<p class="menu-label">Overview</p>
 			<ul class="menu-list">
 				<li><router-link to="/analytics/overview">Overview</router-link></li>
-				<li><router-link to="/analytics/sessions">Sessions</router-link></li>
+				<li><router-link to="/analytics/users">Users</router-link></li>
 				<li><router-link to="/analytics/apps">Apps &amp; modes</router-link></li>
-				<li>
+				<li class="subnav">
 					<router-link to="/analytics/locations">Locations</router-link>
 					<ul>
 						<li><router-link to="/analytics/locations/countries">Countries</router-link></li>
@@ -18,9 +18,30 @@
 			</ul>
 			<p class="menu-label">Technology</p>
 			<ul class="menu-list">
-				<li><router-link to="/analytics/technology/browsers">Browsers</router-link></li>
-				<li><router-link to="/analytics/technology/os">Operating systems</router-link></li>
-				<li><router-link to="/analytics/technology/devices">Devices</router-link></li>
+				<li class="subnav">
+					<router-link to="/analytics/technology/browsers">Browsers</router-link>
+					<ul>
+						<li><router-link to="/analytics/technology/browsers/families">Families</router-link></li>
+						<li><router-link to="/analytics/technology/browsers/engines">Engines</router-link></li>
+						<li><router-link to="/analytics/technology/browsers/versions">Versions</router-link></li>
+						<li><router-link to="/analytics/technology/browsers/subversions">Subversions</router-link></li>
+					</ul>
+				</li>
+				<li class="subnav">
+					<router-link to="/analytics/technology/os">Operating systems</router-link>
+					<ul>
+						<li><router-link to="/analytics/technology/os/families">Families</router-link></li>
+						<li><router-link to="/analytics/technology/os/versions">Versions</router-link></li>
+					</ul>
+				</li>
+				<li class="subnav">
+					<router-link to="/analytics/technology/devices">Devices</router-link>
+					<ul>
+						<li><router-link to="/analytics/technology/devices/manufacturers">Manufacturers</router-link></li>
+						<li><router-link to="/analytics/technology/devices/models">Models</router-link></li>
+						<li><router-link to="/analytics/technology/devices/types">Types</router-link></li>
+					</ul>
+				</li>
 			</ul>
 			<p class="menu-label">Website</p>
 			<ul class="menu-list">
