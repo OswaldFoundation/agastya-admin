@@ -9,7 +9,7 @@
 						<h3 class="title is-5">{{title}}</h3>
 						<div v-if="data.isLoading" class="loader loader-2"></div>
 						<div v-else-if="data.results.length === 0" class="empty-state">
-							<img v-if="column === 'countries'" alt="" src="https://42f2671d685f51e10fc6-b9fcecea3e50b3b59bdc28dead054ebc.ssl.cf5.rackcdn.com/illustrations/address_udes.svg">
+							<img alt="" src="https://42f2671d685f51e10fc6-b9fcecea3e50b3b59bdc28dead054ebc.ssl.cf5.rackcdn.com/illustrations/address_udes.svg">
 							<div class="title is-6">No results found</div>
 						</div>
 						<table class="table rank-full w-100 mb-0">
@@ -118,7 +118,15 @@ export default {
 			}, 1);
 		},
 		getBrowserIcon(name) {
-			return iconify(name);
+			if (this.column !== "regions") {
+				return iconify(name);
+			} else {
+				if (iconify(name) === "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/us.svg") {
+					return "https://tse2.mm.bing.net/th?q=" + name.split(", ")[0] + "+flag" + "&w=400&h=300&p=0&dpr=2&adlt=moderate&c=1";
+				} else {
+					return iconify(name);
+				}
+			}
 		},
 		ipify(ip) {
 			if (ip && ip.length > 50) {

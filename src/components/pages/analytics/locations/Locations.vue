@@ -220,7 +220,7 @@ export default {
 			return iconify(name);
 		},
 		ipify(ip) {
-			if (ip.length > 15) {
+			if (ip && ip.length > 15) {
 				return ip.substring(0, 15) + "...";
 			} else {
 				return ip;

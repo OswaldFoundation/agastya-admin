@@ -6,18 +6,33 @@
 				<main class="column">
 					<FilterPanel />
 					<div class="box">
-						<div class="columns">
-							<div class="column">
-								<img alt="" :src="'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCuiZevIb1G87KAoLRSECEdWNBQ06JCMjU&center=' + title + '&size=600x450&sensor=false'">
-							</div>
-							<div class="column">
-								<img alt="" :src="getBrowserIcon(title)">
-							</div>
-							<div class="column">
-								<img alt="" :src="'https://tse2.mm.bing.net/th?q=' + title + '+culture' + '&w=400&h=300&p=0&dpr=2&adlt=moderate&c=1'">
+						<div v-if="column === 'country'">
+							<div class="columns">
+								<div class="column">
+									<img alt="" :src="'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCuiZevIb1G87KAoLRSECEdWNBQ06JCMjU&center=' + title + '&size=600x450&sensor=false'">
+								</div>
+								<div class="column">
+									<img alt="" :src="getBrowserIcon(title)">
+								</div>
+								<div class="column">
+									<img alt="" :src="'https://tse2.mm.bing.net/th?q=' + title + '+culture' + '&w=400&h=300&p=0&dpr=2&adlt=moderate&c=1'">
+								</div>
 							</div>
 						</div>
-						<h1 class="title is-4 mb-0 mt-0">{{title}}</h1>
+						<div v-if="column === 'city' || column === 'region'">
+							<div class="columns">
+								<div class="column">
+									<img alt="" :src="'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCuiZevIb1G87KAoLRSECEdWNBQ06JCMjU&center=' + title + '&size=600x450&sensor=false'">
+								</div>
+								<div class="column">
+									<img alt="" :src="'https://tse2.mm.bing.net/th?q=' + only(title) + '&w=400&h=300&p=0&dpr=2&adlt=moderate&c=1'">
+								</div>
+								<div class="column">
+									<img alt="" :src="'https://tse2.mm.bing.net/th?q=' + title + '&w=400&h=300&p=0&dpr=2&adlt=moderate&c=1'">
+								</div>
+							</div>
+						</div>
+						<h1 class="title is-4 mb-0 mt">{{title}}</h1>
 						<div class="content mt">{{intro}}</div>
 					</div>
 					<div class="columns">
@@ -82,7 +97,11 @@ export default {
 		this.title = this.$route.params.title;
 		this.column = this.$route.params.column;
 		this.updateRecords();
-		wikipediaIntro(this.title)
+		let wikiTitle = this.title;
+		if (["city", "region"].includes(this.$route.params.column)) {
+			wikiTitle = wikiTitle.split(", ")[0];
+		}
+		wikipediaIntro(wikiTitle)
 			.then(intro => {
 				this.intro = intro;
 			})
@@ -135,6 +154,9 @@ export default {
 				return x;
 			}
 			return x;
+		},
+		only(title) {
+			return title.split(", ")[0];
 		}
 	},
 	components: {

@@ -101,10 +101,18 @@ export const callApi = (endpoint, body, token, method) => {
 
 export const wikipediaIntro = q => {
 	const better = text => {
-		text = text.replace(/ *\([^)]*\) */g, "");
+		if (text.indexOf("refers to") > -1) {
+			return false;
+		}
+		if (text.indexOf("refer to") > -1) {
+			return false;
+		}
+		text = text.replace(/ *\([^)]*\) */g, " ");
+		text = text.replace(/[\])}[{(]/g, " ");
+		text = text.replace(/[ \t]+,/g, ",");
+		text = text.replace(/[ \t]+\./g, ".");
 		if (text.length > 300) {
 			text = text.substring(0, 300) + "...";
-			console.log(text.split(". ").length);
 			if (text.split(". ").length > 2) {
 				return (text = text.split(". ")[0] + ". " + text.split(". ")[1] + "." || text.split(". ")[0] + ". ");
 			} else if (text.split(". ").length === 2) {
@@ -116,7 +124,11 @@ export const wikipediaIntro = q => {
 	const dataTitle = "wikipedia__q" + encodeURIComponent(q);
 	return new Promise((resolve, reject) => {
 		if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {
-			resolve(better(window.sessionStorage.getItem(dataTitle)));
+			if (better(window.sessionStorage.getItem(dataTitle))) {
+				resolve(better(window.sessionStorage.getItem(dataTitle)));
+			} else {
+				reject();
+			}
 		} else {
 			fetch(
 				"https://en.wikipedia.org/w/api.php?format=json&origin=*&action=query&prop=extracts&exintro=&explaintext=&titles=" + q
@@ -125,7 +137,7 @@ export const wikipediaIntro = q => {
 				.then(data => {
 					if (data.query && data.query.pages) {
 						const text = Object.values(data.query.pages)[0].extract;
-						if (text) {
+						if (better(text)) {
 							if ("sessionStorage" in window) {
 								window.sessionStorage.setItem(dataTitle, text);
 							}

@@ -423,6 +423,15 @@ export default (name = "") => {
 		return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/" + slug + "/" + slug + "_48x48.png";
 	} else if (countries[name]) {
 		return "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/" + countries[name].toLowerCase() + ".svg";
+	} else if (name.indexOf(", " > -1)) {
+		let countryName = name.split(", ")[1];
+		if (countries[countryName]) {
+			return (
+				"https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/" + countries[countryName].toLowerCase() + ".svg"
+			);
+		} else {
+			return null;
+		}
 	} else {
 		return null;
 	}
