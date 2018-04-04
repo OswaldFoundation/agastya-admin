@@ -29,7 +29,7 @@
 								</div>
 								<div class="column is-one-quarter">
 									<div><strong>Events</strong></div>
-									<div>0</div>
+									<div>{{sessions.length}}</div>
 								</div>
 							</div>
 						</div>
@@ -101,6 +101,25 @@
 								</div>
 							</div>
 						</div>
+						<div class="box">
+							<h2 class="title is-5">Session details</h2>
+							<table class="table w-100 mb-0">
+								<thead>
+									<tr>
+										<th>Page</th>
+										<th>Event</th>
+										<th>Time</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(item, index) in sessions" :key="'item_' + index">
+										<td>{{datify(item.created_at).text}}</td>
+										<td><router-link :to="'/analytics/sessions/page/' + urlencode(item.url)">{{item.url}}</router-link></td>
+										<td>{{item.event}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</main>
 			</div>
@@ -121,6 +140,7 @@ export default {
 		return {
 			sessionId: "Loading...",
 			session: {},
+			sessions: [],
 			isLoading: false
 		};
 	},
@@ -140,6 +160,7 @@ export default {
 		this.sessionId = this.$route.params.sessionId;
 		if ("sessionStorage" in window && window.sessionStorage["session_" + this.$route.params.sessionId]) {
 			this.session = JSON.parse(window.sessionStorage["session_" + this.$route.params.sessionId]).session;
+			this.sessions = JSON.parse(window.sessionStorage["session_" + this.$route.params.sessionId]).sessions;
 			this.isLoading = false;
 		} else {
 			callApi("analytics/session/" + this.$route.params.sessionId)
@@ -148,6 +169,7 @@ export default {
 						window.sessionStorage.setItem("session_" + this.$route.params.sessionId, JSON.stringify(data));
 					}
 					this.session = data.session;
+					this.sessions = data.sessions;
 				})
 				.catch(error => {})
 				.finally(() => {
