@@ -16,7 +16,7 @@
 							<tbody>
 								<tr v-for="(item, index) in data.results" :key="'data' + index">
 									<td>{{index + ((data.currentPage - 1) * 25) + 1}}</td>
-									<td :title="item.name"><router-link :to="'/analytics/sessions/' + singular + '/' + slugify(item.name)"><img class="flag-icon is-lg" alt="" :src="getBrowserIcon(item.name)">{{ipify(item.name)}}</router-link></td>
+									<td :title="item.name"><router-link :to="'/analytics/' + (singular !== 'session' ? 'sessions/' + singular + '/' : 'session/') + slugify(item.name)"><img class="flag-icon is-lg" alt="" :src="getBrowserIcon(item.name)">{{ipify(item.name)}}</router-link></td>
 									<td>{{item.value.toLocaleString()}}</td>
 								</tr>
 							</tbody>
@@ -49,7 +49,8 @@ const slugs = {
 	pages: "url",
 	referrers: "referrer",
 	apps: "event",
-	users: "ip"
+	users: "ip",
+	sessions: "session_id"
 };
 export default {
 	data: () => {
@@ -82,7 +83,8 @@ export default {
 			pages: "page",
 			referrers: "referrer",
 			apps: "app",
-			users: "user"
+			users: "user",
+			sessions: "session"
 		};
 		if (singularList[this.$route.params.column]) {
 			this.singular = singularList[this.$route.params.column];
@@ -99,7 +101,8 @@ export default {
 			pages: "Pages",
 			referrers: "Referrers",
 			apps: "Apps & Modes",
-			users: "Users"
+			users: "Users",
+			sessions: "Sessions"
 		};
 		if (titleList[this.$route.params.column]) {
 			this.title = titleList[this.$route.params.column];
@@ -151,6 +154,8 @@ export default {
 					return iconify(name, "logo");
 				} else if (["domains"].includes(this.column)) {
 					return iconify(name, "favicon");
+				} else if (["browsers"].includes(this.column)) {
+					return iconify(name, "icon");
 				} else {
 					return iconify(name);
 				}

@@ -18,6 +18,7 @@ import analyticsOverview from "../components/pages/analytics/Overview.vue";
 import analyticsLocations from "../components/pages/analytics/locations/Locations.vue";
 import analyticsLocationsColumn from "../components/pages/analytics/locations/Column.vue";
 import analyticsSessionColumn from "../components/pages/analytics/sessions/Column.vue";
+import analyticsSessionSingle from "../components/pages/analytics/Session.vue";
 
 const routes = [
 	{
@@ -44,6 +45,13 @@ const routes = [
 		component: analyticsLocations,
 		meta: {
 			title: "Locations / Analytics"
+		}
+	},
+	{
+		path: "/analytics/session/:sessionId",
+		component: analyticsSessionSingle,
+		meta: {
+			title: "Session / Analytics"
 		}
 	},
 	{

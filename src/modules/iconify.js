@@ -300,6 +300,9 @@ export default (name = "", addon) => {
 		case "facebook":
 			return "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/240px-Facebook_logo_%28square%29.png";
 			break;
+		case "facebook-messenger":
+			return "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Facebook_Messenger_logo.svg/200px-Facebook_Messenger_logo.svg.png";
+			break;
 		case "twitter":
 			return "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/300px-Twitter_bird_logo_2012.svg.png";
 			break;
@@ -323,6 +326,12 @@ export default (name = "", addon) => {
 			break;
 		case "yandex-browser":
 			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/yandex/yandex_48x48.png";
+			break;
+		case "samsung-browser":
+			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/samsung-internet/samsung-internet_48x48.png";
+			break;
+		case "phantomjs":
+			return "https://pbs.twimg.com/profile_images/1884362265/phantomjs_400x400.png";
 			break;
 		case "firefox-mobile":
 			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/firefox/firefox_48x48.png";
@@ -435,9 +444,13 @@ export default (name = "", addon) => {
 	} else if (addon) {
 		if (addon === "favicon") {
 			return "https://www.google.com/s2/favicons?sz=32&domain=" + encodeURIComponent(name);
-		} else {
+		} else if (addon === "flag") {
 			return (
 				"https://tse2.mm.bing.net/th?q=" + encodeURIComponent(name + " " + addon) + "&w=400&h=300&p=0&dpr=2&adlt=moderate&c=1"
+			);
+		} else {
+			return (
+				"https://tse2.mm.bing.net/th?q=" + encodeURIComponent(name + " " + addon) + "&w=300&h=300&p=0&dpr=2&adlt=moderate&c=1"
 			);
 		}
 	} else {

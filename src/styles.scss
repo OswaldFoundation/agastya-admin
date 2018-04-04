@@ -146,3 +146,7 @@ pre + * {
 .subnav a.router-link-active + ul {
 	display: block;
 }
+
+td {
+	vertical-align: middle !important;
+}
