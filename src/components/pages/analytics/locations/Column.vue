@@ -41,7 +41,14 @@ const slugs = {
 	countries: "country_name",
 	cities: "city",
 	regions: "region_name",
-	zip: "zip_code"
+	zip: "zip_code",
+	browsers: "browser_name",
+	os: "os_name",
+	devices: "device_manufacturer",
+	domains: "domain",
+	pages: "url",
+	referrers: "referrer",
+	apps: "event"
 };
 export default {
 	data: () => {
@@ -66,7 +73,14 @@ export default {
 			countries: "country",
 			cities: "city",
 			regions: "region",
-			zip: "zip"
+			zip: "zip",
+			browsers: "browser",
+			os: "os",
+			devices: "device",
+			domains: "domain",
+			pages: "page",
+			referrers: "referrer",
+			apps: "app"
 		};
 		if (singularList[this.$route.params.column]) {
 			this.singular = singularList[this.$route.params.column];
@@ -75,7 +89,14 @@ export default {
 			countries: "Countries",
 			cities: "Cities",
 			regions: "Regions",
-			zip: "ZIP codes"
+			zip: "ZIP codes",
+			browsers: "Browsers",
+			os: "Operating systems",
+			devices: "Devices",
+			domains: "Domains",
+			pages: "Pages",
+			referrers: "Referrers",
+			apps: "Apps & Modes"
 		};
 		if (titleList[this.$route.params.column]) {
 			this.title = titleList[this.$route.params.column];
@@ -111,18 +132,24 @@ export default {
 			this.data.results = [];
 			this.data.isLoading = true;
 			setTimeout(() => {
+				window.scrollTo(0, 0);
 				analyticsList(slugs[this.column], 25, this.data.currentPage).then(data => {
-					window.scrollTo(0, 0);
 					this.data = data;
 				});
 			}, 1);
 		},
 		getBrowserIcon(name) {
 			if (this.column !== "regions") {
-				return iconify(name);
+				if (["devices", "os"].includes(this.column)) {
+					return iconify(name, "logo");
+				} else if (["domains"].includes(this.column)) {
+					return iconify(name, "favicon");
+				} else {
+					return iconify(name);
+				}
 			} else {
 				if (iconify(name) === "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/us.svg") {
-					return "https://tse2.mm.bing.net/th?q=" + name.split(", ")[0] + "+flag" + "&w=400&h=300&p=0&dpr=2&adlt=moderate&c=1";
+					return iconify(name.split(", ")[0], "flag");
 				} else {
 					return iconify(name);
 				}

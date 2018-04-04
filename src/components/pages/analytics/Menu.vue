@@ -18,15 +18,15 @@
 			</ul>
 			<p class="menu-label">Technology</p>
 			<ul class="menu-list">
-				<li><router-link to="/analytics/browsers">Browsers</router-link></li>
-				<li><router-link to="/analytics/os">Operating systems</router-link></li>
-				<li><router-link to="/analytics/devices">Devices</router-link></li>
+				<li><router-link to="/analytics/technology/browsers">Browsers</router-link></li>
+				<li><router-link to="/analytics/technology/os">Operating systems</router-link></li>
+				<li><router-link to="/analytics/technology/devices">Devices</router-link></li>
 			</ul>
 			<p class="menu-label">Website</p>
 			<ul class="menu-list">
-				<li><router-link to="/analytics/domains">Domains</router-link></li>
-				<li><router-link to="/analytics/pages">Pages</router-link></li>
-				<li><router-link to="/analytics/referrers">Referrers</router-link></li>
+				<li><router-link to="/analytics/website/domains">Domains</router-link></li>
+				<li><router-link to="/analytics/website/pages">Pages</router-link></li>
+				<li><router-link to="/analytics/website/referrers">Referrers</router-link></li>
 			</ul>
 			<p class="menu-label">Developer</p>
 			<ul class="menu-list">

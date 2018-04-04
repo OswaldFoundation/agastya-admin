@@ -54,10 +54,31 @@ const routes = [
 		}
 	},
 	{
+		path: "/analytics/technology/:column",
+		component: analyticsLocationsColumn,
+		meta: {
+			title: "Technology / Analytics"
+		}
+	},
+	{
+		path: "/analytics/website/:column",
+		component: analyticsLocationsColumn,
+		meta: {
+			title: "Website / Analytics"
+		}
+	},
+	{
 		path: "/analytics/sessions/:column/:title",
 		component: analyticsSessionColumn,
 		meta: {
 			title: "Sessions / Analytics"
+		}
+	},
+	{
+		path: "/analytics/:column/",
+		component: analyticsLocationsColumn,
+		meta: {
+			title: "Analytics"
 		}
 	},
 	{

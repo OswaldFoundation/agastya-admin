@@ -1,4 +1,4 @@
-export default (name = "") => {
+export default (name = "", addon) => {
 	if (name === null) return;
 	const countries = {
 		Afghanistan: "AF",
@@ -423,7 +423,7 @@ export default (name = "") => {
 		return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/" + slug + "/" + slug + "_48x48.png";
 	} else if (countries[name]) {
 		return "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/" + countries[name].toLowerCase() + ".svg";
-	} else if (name.indexOf(", " > -1)) {
+	} else if (name.indexOf(", ") > -1) {
 		let countryName = name.split(", ")[1];
 		if (countries[countryName]) {
 			return (
@@ -431,6 +431,14 @@ export default (name = "") => {
 			);
 		} else {
 			return null;
+		}
+	} else if (addon) {
+		if (addon === "favicon") {
+			return "https://www.google.com/s2/favicons?sz=32&domain=" + encodeURIComponent(name);
+		} else {
+			return (
+				"https://tse2.mm.bing.net/th?q=" + encodeURIComponent(name + " " + addon) + "&w=400&h=300&p=0&dpr=2&adlt=moderate&c=1"
+			);
 		}
 	} else {
 		return null;
