@@ -38,8 +38,22 @@
 					<div class="columns">
 						<div class="column">
 							<div class="box">
-								<h3 class="title is-5">Countries</h3>
-								{{data}}
+								<h3 class="title is-5">Sessions</h3>
+								<div v-if="data.isLoading" class="loader loader-2"></div>
+								<div v-else-if="data.results.length === 0" class="empty-state">
+									<img alt="" src="https://42f2671d685f51e10fc6-b9fcecea3e50b3b59bdc28dead054ebc.ssl.cf5.rackcdn.com/illustrations/address_udes.svg">
+									<div class="title is-6">No results found</div>
+								</div>
+								<table class="table rank-full w-100 mb-0 rank-sessions">
+									<tbody>
+										<tr v-for="(item, index) in data.results" :key="'data' + index">
+											<td>{{index + ((data.currentPage - 1) * 25) + 1}}</td>
+											<td :title="item.name"><router-link :to="'/analytics/session/' + item.session_id">{{ipify(removeDomain(item.session_id))}}</router-link></td>
+											<td>{{datify(item.created_at).text}} ({{datify(item.created_at).fromNow}})</td>
+										</tr>
+									</tbody>
+								</table>
+								<b-pagination class="mt" v-if="data.pages > 0" @change="paginate" :total="data.records" :current.sync="data.currentPage" :simple="true" :per-page="data.perPage" />
 							</div>
 						</div>
 					</div>
@@ -56,6 +70,7 @@ import { Bar } from "vue-chartjs";
 import { callApi, analyticsList, wikipediaIntro } from "../../../../modules/api";
 import iconify from "../../../../modules/iconify";
 import { mapGetters } from "vuex";
+import datify from "../../../../modules/datify";
 export default {
 	data: () => {
 		return {
@@ -69,7 +84,7 @@ export default {
 				records: 0,
 				pages: 0,
 				perPage: 0,
-				currentPage: 0
+				currentPage: 1
 			}
 		};
 	},
@@ -102,60 +117,54 @@ export default {
 		})
 	},
 	watch: {
-		// from() {
-		// 	this.updateRecords();
-		// },
-		// to() {
-		// 	this.updateRecords();
-		// }
+		from() {
+			this.updateRecords();
+		},
+		to() {
+			this.updateRecords();
+		}
 	},
 	methods: {
 		updateRecords() {
-			console.log(this.from);
-			// const perPage = 10;
-			// let currentPage = 1;
-			// const from = parseInt(this.from.getTime() / 1000);
-			// const to = parseInt(this.to.getTime() / 1000);
-			// const dataTitle = "session_list__" + this.searchColumn + perPage + currentPage + from + to + dataTitle;
-
-			// if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {
-			// 	this.data = JSON.parse(window.sessionStorage.getItem(dataTitle));
-			// } else {
-			// 	callApi("analytics/sessions", {
-			// 		column: this.searchColumn,
-			// 		perPage: perPage,
-			// 		currentPage: currentPage,
-			// 		from: from,
-			// 		to: to
-			// 	})
-			// 		.then(data => {
-			// 			if ("sessionStorage" in window) {
-			// 				window.sessionStorage.setItem(dataTitle, JSON.stringify(data));
-			// 			}
-			// 			this.data = data;
-			// 		})
-			// 		.catch(error => {
-			// 			reject(error);
-			// 		});
-			// }
+			const perPage = 20;
+			let currentPage = this.data.currentPage;
+			const from = parseInt(this.from.getTime() / 1000);
+			const to = parseInt(this.to.getTime() / 1000);
+			const dataTitle = "session_list__" + this.searchColumn + perPage + "_" + currentPage + "_" + from + to + this.title;
+			console.log(dataTitle);
+			if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {
+				this.data = JSON.parse(window.sessionStorage.getItem(dataTitle));
+			} else {
+				callApi("analytics/sessions", {
+					column: this.searchColumn,
+					value: this.title,
+					perPage: perPage,
+					currentPage: currentPage,
+					from: from,
+					to: to
+				})
+					.then(data => {
+						if ("sessionStorage" in window) {
+							window.sessionStorage.setItem(dataTitle, JSON.stringify(data));
+						}
+						this.data = data;
+					})
+					.catch(error => {});
+			}
 		},
 		paginate() {
-			// this.data.results = [];
-			// this.data.isLoading = true;
-			// setTimeout(() => {
-			// 	analyticsList(a, 10, this.currentPage).then(data => {
-			// 		this.data = data;
-			// 	});
-			// }, 1);
+			this.data.results = [];
+			this.data.isLoading = true;
+			setTimeout(() => {
+				this.updateRecords();
+			}, 1);
 		},
 		getBrowserIcon(name) {
 			return iconify(name);
 		},
 		ipify(ip) {
-			if (ip.length > 15) {
-				return ip.substring(0, 15) + "...";
-			} else {
-				return ip;
+			if (ip) {
+				return ip.substring(0, 10);
 			}
 		},
 		slugify(x) {
@@ -167,6 +176,13 @@ export default {
 		},
 		only(title) {
 			return title.split(", ")[0];
+		},
+		datify(d) {
+			return datify(d);
+		},
+		removeDomain(url) {
+			if (!url) return;
+			return url.replace(/^.*\/\/[^\/]+/, "");
 		}
 	},
 	components: {
