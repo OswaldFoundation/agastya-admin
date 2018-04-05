@@ -76,7 +76,8 @@ export default {
 			if (date > new Date()) {
 				return "Today";
 			} else {
-				return moment(date).fromNow();
+				const string = moment(date).fromNow();
+				return string.charAt(0).toUpperCase() + string.slice(1);
 			}
 		},
 		formatDate(date) {
@@ -94,16 +95,40 @@ export default {
 				this.$store.dispatch("updateFrom", new Date().setHours(0, 0, 0, 0));
 				this.$store.dispatch("updateTo", endOfDay);
 			} else if (this.preset === "week") {
-				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 7)));
+				this.$store.dispatch(
+					"updateFrom",
+					moment(new Date(new Date().setDate(new Date().getDate() - 7)))
+						.utc()
+						.startOf("day")
+						.toDate()
+				);
 				this.$store.dispatch("updateTo", endOfDay);
 			} else if (this.preset === "month") {
-				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 30)));
+				this.$store.dispatch(
+					"updateFrom",
+					moment(new Date(new Date().setDate(new Date().getDate() - 30)))
+						.utc()
+						.startOf("day")
+						.toDate()
+				);
 				this.$store.dispatch("updateTo", endOfDay);
 			} else if (this.preset === "quarter") {
-				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 90)));
+				this.$store.dispatch(
+					"updateFrom",
+					moment(new Date(new Date().setDate(new Date().getDate() - 90)))
+						.utc()
+						.startOf("day")
+						.toDate()
+				);
 				this.$store.dispatch("updateTo", endOfDay);
 			} else if (this.preset === "year") {
-				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 365)));
+				this.$store.dispatch(
+					"updateFrom",
+					moment(new Date(new Date().setDate(new Date().getDate() - 365)))
+						.utc()
+						.startOf("day")
+						.toDate()
+				);
 				this.$store.dispatch("updateTo", endOfDay);
 			}
 		}
