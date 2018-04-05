@@ -5,7 +5,7 @@
 				<Menu />
 				<main class="column">
 					<div class="box">
-						<h2 class="title is-4">Subscription <span :class="'tag ml ' + fields.status">{{fields.status}}</span></h2>
+						<h2 class="title is-4">Subscription <span v-if="fields.status" :class="'tag ml ' + fields.status">{{fields.status}}</span></h2>
 						<div v-if="isLoading" class="loader loader-2"></div>
 						<div v-else>
 							<div class="columns">
