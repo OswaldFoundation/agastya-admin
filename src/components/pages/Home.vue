@@ -19,6 +19,8 @@ export default {
 	mounted() {
 		if (!this.user) {
 			router.push("/login");
+		} else {
+			router.push("/analytics/overview");
 		}
 	}
 };

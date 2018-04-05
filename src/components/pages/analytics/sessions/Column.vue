@@ -5,7 +5,24 @@
 				<Menu />
 				<main class="column">
 					<FilterPanel />
-					<div class="box">
+					<div class="box" v-if="column === 'page'">
+						<div v-if="loadingInfo">
+							<div class="loader loader-2"></div>
+							<div style="text-align: center; margin-bottom: 3rem">Loading info for {{title}}...</div>
+						</div>
+						<div v-else>
+							<img v-if="metaData.data.screenshot.url" style="margin: -1.25rem -1.25rem 1rem -1.25rem; max-width: calc(100% + 2.5rem); width: calc(100% + 2.5rem)" alt=""
+							:src="metaData.data.screenshot.url">
+							<h1 v-if="metaData.data.title" class="title is-4 mt">{{metaData.data.title}}</h1>
+							<div v-if="metaData.data.description">{{metaData.data.description}}</div>
+							<a :href="title" class="button mt" target="_blank">
+								<img v-if="metaData.data.logo.url" alt="" :src="metaData.data.logo.url">
+								Visit webpage
+								<i class="fas fa-arrow-right"></i>
+							</a>
+						</div>
+					</div>
+					<div v-else class="box">
 						<div v-if="column === 'country'">
 							<div class="columns">
 								<div class="column">
@@ -78,6 +95,8 @@ export default {
 			column: "",
 			intro: "",
 			searchColumn: "",
+			loadingInfo: false,
+			metaData: {},
 			data: {
 				isLoading: true,
 				results: [],
@@ -101,7 +120,24 @@ export default {
 			})
 			.catch(error => {});
 		const searchCols = {
-			country: "country_name"
+			user: "ip",
+			country: "country_name",
+			region: "region_name",
+			city: "city",
+			zip: "zip_code",
+			browser: "browser_name",
+			"browser-version": "browser_version",
+			"browser-subversion": "browser_subversion",
+			engine: "browser_engine",
+			manufacturer: "device_manufacturer",
+			model: "device_model",
+			type: "device_type",
+			os: "os_name",
+			"os-version": "os_version",
+			page: "url",
+			app: "event",
+			domain: "domain",
+			referrer: "referrer"
 		};
 		if (searchCols[this.$route.params.column]) {
 			this.searchColumn = searchCols[this.$route.params.column];
@@ -131,7 +167,6 @@ export default {
 			const from = parseInt(this.from.getTime() / 1000);
 			const to = parseInt(this.to.getTime() / 1000);
 			const dataTitle = "session_list__" + this.searchColumn + perPage + "_" + currentPage + "_" + from + to + this.title;
-			console.log(dataTitle);
 			if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {
 				this.data = JSON.parse(window.sessionStorage.getItem(dataTitle));
 			} else {
@@ -150,6 +185,26 @@ export default {
 						this.data = data;
 					})
 					.catch(error => {});
+			}
+			this.loadingInfo = true;
+			const infoTitle = "microlink__" + this.title;
+			if (this.column === "page") {
+				if ("sessionStorage" in window && window.sessionStorage[infoTitle]) {
+					this.metaData = JSON.parse(window.sessionStorage.getItem(infoTitle));
+					this.loadingInfo = false;
+				} else {
+					fetch("https://api.microlink.io/?url=" + this.title + "&screenshot")
+						.then(response =>
+							response.json().then(json => {
+								window.sessionStorage.setItem(infoTitle, JSON.stringify(json));
+								this.metaData = json;
+							})
+						)
+						.catch(() => {})
+						.finally(() => {
+							this.loadingInfo = false;
+						});
+				}
 			}
 		},
 		paginate() {

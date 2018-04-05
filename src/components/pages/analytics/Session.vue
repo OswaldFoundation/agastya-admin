@@ -97,7 +97,7 @@
 								</div>
 								<div class="column" v-if="session.os_version">
 									<div><strong>Version</strong></div>
-									<div><router-link :to="'/analytics/sessions/' + urlencode(session.os_version)">{{session.os_version}}</router-link></div>
+									<div><router-link :to="'/analytics/sessions/os-version/' + urlencode(session.os_version)">{{session.os_version}}</router-link></div>
 								</div>
 							</div>
 						</div>
