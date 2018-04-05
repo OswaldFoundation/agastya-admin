@@ -21,6 +21,9 @@ if (process.env.NODE_ENV === "production") {
 	require("./pwa");
 }
 
+store.dispatch("updateFrom", new Date(store.state.from));
+store.dispatch("updateTo", new Date(store.state.to));
+
 // import "@oswaldlabs/agastya";
 // window.a11ySettings = { token: "5rlsghx", bottom: 75 };
 

@@ -14,12 +14,12 @@
 		</div>
 		<div class="column">
 			<b-field label="From">
-				<b-datepicker placeholder="From" v-model="from_field" @input="updatePreset" />
+				<b-datepicker placeholder="From" v-model="from_field" @input="updatePreset" :date-formatter="showDate" />
 			</b-field>
 		</div>
 		<div class="column">
 			<b-field label="To">
-				<b-datepicker placeholder="To" v-model="to_field" @input="updatePreset" />
+				<b-datepicker placeholder="To" v-model="to_field" @input="updatePreset" :date-formatter="showDate" />
 			</b-field>
 		</div>
 	</div>
@@ -27,6 +27,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import moment from "moment";
 export default {
 	data() {
 		return {
@@ -39,6 +40,8 @@ export default {
 		this.preset = "custom";
 		this.from_field = this.from;
 		this.to_field = this.to;
+		this.$store.dispatch("updateFrom", new Date(this.$store.state.from));
+		this.$store.dispatch("updateTo", new Date(this.$store.state.to));
 	},
 	computed: {
 		...mapGetters({
@@ -48,10 +51,18 @@ export default {
 	},
 	watch: {
 		from() {
-			this.from_field = this.from;
+			if (typeof this.from.getMonth === "function") {
+				this.from_field = this.from;
+			} else {
+				this.from_field = new Date(this.from);
+			}
 		},
 		to() {
-			this.to_field = this.to;
+			if (typeof this.to.getMonth === "function") {
+				this.to_field = this.to;
+			} else {
+				this.to_field = new Date(this.to);
+			}
 		},
 		from_field() {
 			this.$store.dispatch("updateFrom", this.from_field);
@@ -61,6 +72,13 @@ export default {
 		}
 	},
 	methods: {
+		showDate(date) {
+			if (date > new Date()) {
+				return "Today";
+			} else {
+				return moment(date).fromNow();
+			}
+		},
 		formatDate(date) {
 			return date.getTime() / 1000;
 		},
@@ -68,21 +86,25 @@ export default {
 			this.preset = "custom";
 		},
 		updateFilter() {
+			const endOfDay = moment
+				.utc()
+				.endOf("day")
+				.toDate();
 			if (this.preset === "today") {
-				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 1)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
+				this.$store.dispatch("updateFrom", new Date().setHours(0, 0, 0, 0));
+				this.$store.dispatch("updateTo", endOfDay);
 			} else if (this.preset === "week") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 7)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
+				this.$store.dispatch("updateTo", endOfDay);
 			} else if (this.preset === "month") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 30)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
+				this.$store.dispatch("updateTo", endOfDay);
 			} else if (this.preset === "quarter") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 90)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
+				this.$store.dispatch("updateTo", endOfDay);
 			} else if (this.preset === "year") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 365)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
+				this.$store.dispatch("updateTo", endOfDay);
 			}
 		}
 	}

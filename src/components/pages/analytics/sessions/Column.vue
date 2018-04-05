@@ -39,28 +39,7 @@
 						<div class="column">
 							<div class="box">
 								<h3 class="title is-5">Countries</h3>
-								<div v-if="country_name.isLoading" class="loader loader-2"></div>
-								<div v-else-if="country_name.results.length === 0" class="empty-state">
-									<img alt="" src="https://42f2671d685f51e10fc6-b9fcecea3e50b3b59bdc28dead054ebc.ssl.cf5.rackcdn.com/illustrations/address_udes.svg">
-									<div class="title is-6">No countries found</div>
-								</div>
-								<table class="table rank-half w-100 mb-0">
-									<tbody>
-										<tr v-for="(item, index) in country_name.results" :key="'country_name' + index">
-											<td>{{index + ((country_name.currentPage - 1) * 10) + 1}}</td>
-											<td :title="item.name"><router-link :to="'/sessions/country/' + slugify(item.name)"><img class="flag-icon" alt="" :src="getBrowserIcon(item.name)">{{ipify(item.name)}}</router-link></td>
-											<td>{{item.value.toLocaleString()}}</td>
-										</tr>
-									</tbody>
-								</table>
-								<div class="columns">
-									<div class="column">
-										<b-pagination class="mt" v-if="country_name.pages > 0" @change="paginate('country_name')" :total="country_name.records" :current.sync="country_name.currentPage" :simple="true" :per-page="country_name.perPage" />
-									</div>
-									<div class="column r-b is-one-third">
-										<router-link class="button" to="/analytics/locations/countries">More</router-link>
-									</div>
-								</div>
+								{{data}}
 							</div>
 						</div>
 					</div>
@@ -83,7 +62,8 @@ export default {
 			title: "",
 			column: "",
 			intro: "",
-			country_name: {
+			searchColumn: "",
+			data: {
 				isLoading: true,
 				results: [],
 				records: 0,
@@ -96,7 +76,6 @@ export default {
 	mounted() {
 		this.title = this.$route.params.title;
 		this.column = this.$route.params.column;
-		this.updateRecords();
 		let wikiTitle = this.title;
 		if (["city", "region"].includes(this.$route.params.column)) {
 			wikiTitle = wikiTitle.split(", ")[0];
@@ -106,6 +85,15 @@ export default {
 				this.intro = intro;
 			})
 			.catch(error => {});
+		const searchCols = {
+			country: "country_name"
+		};
+		if (searchCols[this.$route.params.column]) {
+			this.searchColumn = searchCols[this.$route.params.column];
+		} else {
+			this.$router.push("/");
+		}
+		this.updateRecords();
 	},
 	computed: {
 		...mapGetters({
@@ -114,29 +102,51 @@ export default {
 		})
 	},
 	watch: {
-		from() {
-			this.updateRecords();
-		},
-		to() {
-			this.updateRecords();
-		}
+		// from() {
+		// 	this.updateRecords();
+		// },
+		// to() {
+		// 	this.updateRecords();
+		// }
 	},
 	methods: {
 		updateRecords() {
-			this.country_name.isLoading = true;
-			this.country_name.results = [];
-			analyticsList("country_name", 10).then(data => {
-				this.country_name = data;
-			});
+			console.log(this.from);
+			// const perPage = 10;
+			// let currentPage = 1;
+			// const from = parseInt(this.from.getTime() / 1000);
+			// const to = parseInt(this.to.getTime() / 1000);
+			// const dataTitle = "session_list__" + this.searchColumn + perPage + currentPage + from + to + dataTitle;
+
+			// if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {
+			// 	this.data = JSON.parse(window.sessionStorage.getItem(dataTitle));
+			// } else {
+			// 	callApi("analytics/sessions", {
+			// 		column: this.searchColumn,
+			// 		perPage: perPage,
+			// 		currentPage: currentPage,
+			// 		from: from,
+			// 		to: to
+			// 	})
+			// 		.then(data => {
+			// 			if ("sessionStorage" in window) {
+			// 				window.sessionStorage.setItem(dataTitle, JSON.stringify(data));
+			// 			}
+			// 			this.data = data;
+			// 		})
+			// 		.catch(error => {
+			// 			reject(error);
+			// 		});
+			// }
 		},
-		paginate(a) {
-			this[a].results = [];
-			this[a].isLoading = true;
-			setTimeout(() => {
-				analyticsList(a, 10, this[a].currentPage).then(data => {
-					this[a] = data;
-				});
-			}, 1);
+		paginate() {
+			// this.data.results = [];
+			// this.data.isLoading = true;
+			// setTimeout(() => {
+			// 	analyticsList(a, 10, this.currentPage).then(data => {
+			// 		this.data = data;
+			// 	});
+			// }, 1);
 		},
 		getBrowserIcon(name) {
 			return iconify(name);
