@@ -136,6 +136,7 @@ export default {
 					alert(error.message);
 				})
 				.finally(() => {
+					alert("Your password has been updated");
 					this.isLoading = false;
 				});
 		},

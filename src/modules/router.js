@@ -7,6 +7,7 @@ import Error404 from "../components/pages/Error404.vue";
 import Login from "../components/pages/auth/Login.vue";
 
 import settingsAccount from "../components/pages/settings/Account.vue";
+import settingsBilling from "../components/pages/settings/Billing.vue";
 import settingsSecurity from "../components/pages/settings/Security.vue";
 import settingsSubscription from "../components/pages/settings/Subscription.vue";
 
@@ -95,6 +96,13 @@ const routes = [
 		alias: "/settings",
 		meta: {
 			title: "Account / Settings"
+		}
+	},
+	{
+		path: "/settings/billing",
+		component: settingsBilling,
+		meta: {
+			title: "Billing / Settings"
 		}
 	},
 	{
