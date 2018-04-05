@@ -159,8 +159,8 @@ export const wikipediaIntro = q => {
 export const analyticsList = (column, perPage = 10, currentPage = 1) => {
 	const filterFrom = new Date(store.getters.getFrom);
 	const filterTo = new Date(store.getters.getTo);
-	const from = filterFrom.getFullYear() + "-" + filterFrom.getMonth() + "-" + filterFrom.getDate();
-	const to = filterTo.getFullYear() + "-" + filterTo.getMonth() + "-" + filterTo.getDate();
+	const from = parseInt(filterFrom.getTime() / 1000);
+	const to = parseInt(filterTo.getTime() / 1000);
 	const dataTitle = "analytics__list__" + column + perPage + currentPage + from + to + dataTitle;
 	return new Promise((resolve, reject) => {
 		if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {

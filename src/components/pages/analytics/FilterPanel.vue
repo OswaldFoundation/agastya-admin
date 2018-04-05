@@ -8,7 +8,7 @@
 					<option value="month">Last 30 days</option>
 					<option value="quarter">Last 3 months</option>
 					<option value="year">Last year</option>
-					<option value="custom">Custom</option>
+					<option value="custom">Select preset</option>
 				</b-select>
 			</b-field>
 		</div>
@@ -34,6 +34,11 @@ export default {
 			from_field: new Date(),
 			to_field: new Date()
 		};
+	},
+	mounted() {
+		this.preset = "custom";
+		this.from_field = this.from;
+		this.to_field = this.to;
 	},
 	computed: {
 		...mapGetters({
@@ -65,19 +70,19 @@ export default {
 		updateFilter() {
 			if (this.preset === "today") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 1)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate())));
+				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
 			} else if (this.preset === "week") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 7)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate())));
+				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
 			} else if (this.preset === "month") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 30)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate())));
+				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
 			} else if (this.preset === "quarter") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 90)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate())));
+				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
 			} else if (this.preset === "year") {
 				this.$store.dispatch("updateFrom", new Date(new Date().setDate(new Date().getDate() - 365)));
-				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate())));
+				this.$store.dispatch("updateTo", new Date(new Date().setDate(new Date().getDate() + 2)));
 			}
 		}
 	}

@@ -92,6 +92,11 @@ pre + * {
 	td:last-child {
 		width: 25%;
 	}
+	&.rank-sessions {
+		td:last-child {
+			width: 50%;
+		}
+	}
 	td > * {
 		display: block;
 		white-space: nowrap;

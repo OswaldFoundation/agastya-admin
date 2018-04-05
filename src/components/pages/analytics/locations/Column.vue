@@ -12,12 +12,13 @@
 							<img alt="" src="https://42f2671d685f51e10fc6-b9fcecea3e50b3b59bdc28dead054ebc.ssl.cf5.rackcdn.com/illustrations/address_udes.svg">
 							<div class="title is-6">No results found</div>
 						</div>
-						<table class="table rank-full w-100 mb-0">
+						<table :class="'table rank-full w-100 mb-0 rank-' + column">
 							<tbody>
 								<tr v-for="(item, index) in data.results" :key="'data' + index">
 									<td>{{index + ((data.currentPage - 1) * 25) + 1}}</td>
-									<td :title="item.name"><router-link :to="'/analytics/' + (singular !== 'session' ? 'sessions/' + singular + '/' : 'session/') + slugify(item.name)"><img class="flag-icon is-lg" alt="" :src="getBrowserIcon(item.name)">{{ipify(item.name)}}</router-link></td>
-									<td>{{item.value.toLocaleString()}}</td>
+									<td :title="item.name"><router-link :to="'/analytics/' + (singular !== 'session' ? 'sessions/' + singular + '/' : 'session/') + slugify(item.name)"><img class="flag-icon is-lg" alt="" :src="getBrowserIcon(item.name)">{{ipify(removeDomain(item.name))}}</router-link></td>
+									<td v-if="column === 'sessions'">{{datify(item.created_at).text}} ({{datify(item.created_at).fromNow}})</td>
+									<td v-else>{{item.value.toLocaleString()}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -33,6 +34,7 @@
 import Menu from "../Menu.vue";
 import FilterPanel from "../FilterPanel.vue";
 import { Bar } from "vue-chartjs";
+import datify from "../../../../modules/datify";
 import { callApi, analyticsList, wikipediaIntro } from "../../../../modules/api";
 import iconify from "../../../../modules/iconify";
 import { mapGetters } from "vuex";
@@ -168,10 +170,14 @@ export default {
 			}
 		},
 		ipify(ip) {
-			if (ip && ip.length > 50) {
-				return ip.substring(0, 50) + "...";
+			if (this.column === "sessions") {
+				return ip.substring(0, 10);
 			} else {
-				return ip;
+				if (ip && ip.length > 50) {
+					return ip.substring(0, 50) + "...";
+				} else {
+					return ip;
+				}
 			}
 		},
 		slugify(x) {
@@ -180,6 +186,13 @@ export default {
 				return x;
 			}
 			return x;
+		},
+		datify(d) {
+			return datify(d);
+		},
+		removeDomain(url) {
+			if (!url) return;
+			return url.replace(/^.*\/\/[^\/]+/, "");
 		}
 	},
 	components: {
