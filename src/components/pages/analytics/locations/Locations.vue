@@ -4,7 +4,7 @@
 			<div class="columns">
 				<Menu />
 				<main class="column">
-					<FilterPanel />
+					<FilterPanel :update="updateRecords" />
 					<div class="columns">
 						<div class="column">
 							<div class="box">
@@ -175,14 +175,6 @@ export default {
 			from: "getFrom",
 			to: "getTo"
 		})
-	},
-	watch: {
-		from() {
-			this.updateRecords();
-		},
-		to() {
-			this.updateRecords();
-		}
 	},
 	methods: {
 		updateRecords() {

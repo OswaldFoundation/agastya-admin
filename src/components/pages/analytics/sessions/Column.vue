@@ -4,7 +4,7 @@
 			<div class="columns">
 				<Menu />
 				<main class="column">
-					<FilterPanel />
+					<FilterPanel :update="updateRecords" />
 					<div class="box" v-if="column === 'page'">
 						<div v-if="loadingInfo">
 							<div class="loader loader-2"></div>
@@ -151,14 +151,6 @@ export default {
 			from: "getFrom",
 			to: "getTo"
 		})
-	},
-	watch: {
-		from() {
-			this.updateRecords();
-		},
-		to() {
-			this.updateRecords();
-		}
 	},
 	methods: {
 		updateRecords() {

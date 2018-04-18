@@ -4,7 +4,7 @@
 			<div class="columns">
 				<Menu />
 				<main class="column">
-					<FilterPanel />
+					<FilterPanel :update="updateRecords" />
 					<div class="box">
 						<h3 class="title is-5">{{title}}</h3>
 						<div v-if="data.isLoading" class="loader loader-2"></div>
@@ -116,14 +116,6 @@ export default {
 			to: "getTo"
 		})
 	},
-	watch: {
-		from() {
-			this.updateRecords();
-		},
-		to() {
-			this.updateRecords();
-		}
-	},
 	methods: {
 		updateRecords() {
 			this.data.isLoading = true;
@@ -191,8 +183,9 @@ export default {
 			return datify(d);
 		},
 		removeDomain(url) {
-			if (!url) return;
-			return url.replace(/^.*\/\/[^\/]+/, "");
+			return url;
+			// if (!url) return;
+			// return url.replace(/^.*\/\/[^\/]+/, "");
 		}
 	},
 	components: {

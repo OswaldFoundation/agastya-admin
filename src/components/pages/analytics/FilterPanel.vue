@@ -22,6 +22,9 @@
 				<b-datepicker placeholder="To" v-model="to_field" @input="updatePreset" :date-formatter="showDate" />
 			</b-field>
 		</div>
+		<div class="column" style="display: flex">
+			<button class="button is-block is-light" style="align-self: flex-end" @click.prevent="updateRecords">Update</button>
+		</div>
 	</div>
 </template>
 
@@ -36,6 +39,7 @@ export default {
 			to_field: new Date()
 		};
 	},
+	props: ["update"],
 	mounted() {
 		this.preset = "custom";
 		this.from_field = this.from;
@@ -72,9 +76,14 @@ export default {
 		}
 	},
 	methods: {
+		updateRecords() {
+			if (typeof this.update === "function") {
+				this.update();
+			}
+		},
 		showDate(date) {
 			if (date > new Date()) {
-				return "Today";
+				return "Now";
 			} else {
 				const string = moment(date).fromNow();
 				return string.charAt(0).toUpperCase() + string.slice(1);

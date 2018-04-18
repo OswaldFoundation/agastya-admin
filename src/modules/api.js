@@ -59,6 +59,7 @@ const refreshToken = (force = 0) => {
 	});
 };
 
+const previousCalls = {};
 export const callApi = (endpoint, body, token, method) => {
 	return new Promise((resolve, reject) => {
 		refreshToken()
@@ -68,6 +69,11 @@ export const callApi = (endpoint, body, token, method) => {
 					if (user.token.auth && user.token.refresh) {
 						token = user.token.auth;
 					}
+				}
+				if (previousCalls[endpoint + JSON.stringify(body)] && new Date() - previousCalls[endpoint + JSON.stringify(body)] < 1000) {
+					reject(); return;
+				} else {
+					previousCalls[endpoint + JSON.stringify(body)] = new Date();
 				}
 				fetch(API_BASE + endpoint, {
 					body: JSON.stringify(body),

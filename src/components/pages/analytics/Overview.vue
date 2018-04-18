@@ -4,7 +4,7 @@
 			<div class="columns">
 				<Menu />
 				<main class="column">
-					<FilterPanel />
+					<FilterPanel :update="updateRecords" />
 					<div class="box">
 						<h2 class="title is-4">Overview</h2>
 						<div class="columns">
@@ -182,16 +182,9 @@ export default {
 			to: "getTo"
 		})
 	},
-	watch: {
-		from() {
-			this.updateRecords();
-		},
-		to() {
-			this.updateRecords();
-		}
-	},
 	methods: {
 		updateRecords() {
+			console.log("update called");
 			this.country_name.isLoading = true;
 			this.country_name.results = [];
 			analyticsList("country_name", 5).then(data => {
