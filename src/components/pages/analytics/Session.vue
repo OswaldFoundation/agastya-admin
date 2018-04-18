@@ -124,7 +124,7 @@
 							<h2 class="title is-5" style="margin-bottom: 2.5rem">Referrer</h2>
 							<div v-if="loadingMicroLink">
 								<div class="loader loader-2"></div>
-								<div style="text-align: center; margin-bottom: 3rem">Loading info for {{session.referrer}}...</div>
+								<div style="text-align: center; margin-bottom: 3rem">Loading info for {{ipify(session.referrer)}}...</div>
 							</div>
 							<div v-else-if="metaData.data">
 								<img v-if="metaData.data.screenshot.url" style="margin: -1.25rem -1.25rem 1rem -1.25rem; max-width: calc(100% + 2.5rem); width: calc(100% + 2.5rem)" alt=""
@@ -138,7 +138,7 @@
 								</a>
 							</div>
 							<div v-else>
-								<p>{{session.referrer}}</p>
+								<p>{{ipify(session.referrer)}}</p>
 								<a :href="session.referrer" class="button mt" target="_blank">
 									Visit webpage
 									<i class="fas fa-arrow-right"></i>
@@ -184,6 +184,17 @@ export default {
 		},
 		removeDomain(url) {
 			return url.replace(/^.*\/\/[^\/]+/, "");
+		},
+		ipify(ip) {
+			if (this.column === "sessions") {
+				return ip.substring(0, 10);
+			} else {
+				if (ip && ip.length > 50) {
+					return ip.substring(0, 50) + "...";
+				} else {
+					return ip;
+				}
+			}
 		},
 		getReferrerDetails(url) {
 			this.loadingMicroLink = true;

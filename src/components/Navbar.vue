@@ -30,6 +30,7 @@
 								<router-link class="navbar-item" to="/customize/plugin">Plugin settings</router-link>
 								<router-link class="navbar-item" to="/customize/apps">Apps &amp; modes</router-link>
 								<router-link class="navbar-item" to="/customize/domains">Domains</router-link>
+								<router-link class="navbar-item" to="/customize/code">Install code</router-link>
 							</div>
 						</div>
 					</div>
