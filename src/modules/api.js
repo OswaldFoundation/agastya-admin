@@ -166,8 +166,11 @@ export const analyticsList = (column, perPage = 10, currentPage = 1) => {
 	const filterFrom = new Date(store.getters.getFrom);
 	const filterTo = new Date(store.getters.getTo);
 	const from = parseInt(filterFrom.getTime() / 1000);
-	const to = parseInt(filterTo.getTime() / 1000);
+	let to = parseInt(filterTo.getTime() / 1000);
 	const dataTitle = "analytics__list__" + column + perPage + currentPage + from + to + dataTitle;
+	if (new Date().getTime() / 1000 < to) {
+		to = "now";
+	}
 	return new Promise((resolve, reject) => {
 		if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {
 			resolve(JSON.parse(window.sessionStorage.getItem(dataTitle)));

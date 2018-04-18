@@ -77,6 +77,9 @@ export default {
 	},
 	methods: {
 		updateRecords() {
+			if ("sessionStorage" in window) {
+				window.sessionStorage.clear();
+			}
 			if (typeof this.update === "function") {
 				this.update();
 			}
