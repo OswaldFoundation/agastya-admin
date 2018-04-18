@@ -20,7 +20,7 @@
 			<p class="menu-label">Technology</p>
 			<ul class="menu-list">
 				<li class="subnav">
-					<router-link to="/analytics/technology/browsers/families">Browsers</router-link>
+					<router-link to="/analytics/technology/browsers">Browsers</router-link>
 					<ul>
 						<li><router-link to="/analytics/technology/browsers/families">Families</router-link></li>
 						<li><router-link to="/analytics/technology/browsers/engines">Engines</router-link></li>
@@ -29,14 +29,14 @@
 					</ul>
 				</li>
 				<li class="subnav">
-					<router-link to="/analytics/technology/os/families">Operating systems</router-link>
+					<router-link to="/analytics/technology/os">Operating systems</router-link>
 					<ul>
 						<li><router-link to="/analytics/technology/os/families">Families</router-link></li>
 						<li><router-link to="/analytics/technology/os/versions">Versions</router-link></li>
 					</ul>
 				</li>
 				<li class="subnav">
-					<router-link to="/analytics/technology/devices/manufacturers">Devices</router-link>
+					<router-link to="/analytics/technology/devices">Devices</router-link>
 					<ul>
 						<li><router-link to="/analytics/technology/devices/manufacturers">Manufacturers</router-link></li>
 						<li><router-link to="/analytics/technology/devices/models">Models</router-link></li>
