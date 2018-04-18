@@ -25,7 +25,7 @@
 								</div>
 								<div class="column is-one-quarter">
 									<div><strong>Pageviews</strong></div>
-									<div>0</div>
+									<div>{{nPageviews}}</div>
 								</div>
 								<div class="column is-one-quarter" v-if="sessions.length">
 									<div><strong>Events</strong></div>
@@ -34,7 +34,7 @@
 							</div>
 						</div>
 						<div class="box">
-							<img style="margin: -1.25rem -1.25rem 1rem -1.25rem; max-width: calc(100% + 2.5rem); width: calc(100% + 2.5rem)" alt="" :src="'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCuiZevIb1G87KAoLRSECEdWNBQ06JCMjU&center=' + (session.zip_code ? (session.zip_code + ', ' + session.city + ', ' + session.country_name) : (session.city + ', ' + session.country_name)) + '&size=640x350&sensor=false'">
+							<img v-if="session.country_name" style="margin: -1.25rem -1.25rem 1rem -1.25rem; max-width: calc(100% + 2.5rem); width: calc(100% + 2.5rem)" alt="" :src="'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCuiZevIb1G87KAoLRSECEdWNBQ06JCMjU&center=' + (session.zip_code ? (session.zip_code + ', ' + session.city + ', ' + session.country_name) : (session.city + ', ' + session.country_name)) + '&size=640x350&sensor=false'">
 							<div class="columns">
 								<div class="column" v-if="session.country_name">
 									<div><strong>Country</strong></div>
@@ -120,6 +120,31 @@
 								</tbody>
 							</table>
 						</div>
+						<div class="box">
+							<h2 class="title is-5" style="margin-bottom: 2.5rem">Referrer</h2>
+							<div v-if="loadingMicroLink">
+								<div class="loader loader-2"></div>
+								<div style="text-align: center; margin-bottom: 3rem">Loading info for {{session.referrer}}...</div>
+							</div>
+							<div v-else-if="metaData.data">
+								<img v-if="metaData.data.screenshot.url" style="margin: -1.25rem -1.25rem 1rem -1.25rem; max-width: calc(100% + 2.5rem); width: calc(100% + 2.5rem)" alt=""
+								:src="metaData.data.screenshot.url">
+								<h1 v-if="metaData.data.title" class="title is-4 mt">{{metaData.data.publisher && metaData.data.publisher !== metaData.data.title ? metaData.data.publisher + ":" : ""}} {{metaData.data.title}}</h1>
+								<div v-if="metaData.data.description" class="mb">{{metaData.data.description}}</div>
+								<a :href="session.referrer" class="button" target="_blank">
+									<img v-if="metaData.data.logo.url" alt="" :src="metaData.data.logo.url">
+									Visit {{metaData.data.publisher || "webpage"}}
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</div>
+							<div v-else>
+								<p>{{session.referrer}}</p>
+								<a :href="session.referrer" class="button mt" target="_blank">
+									Visit webpage
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</div>
+						</div>
 					</div>
 				</main>
 			</div>
@@ -138,10 +163,13 @@ import router from "../../../modules/router";
 export default {
 	data: () => {
 		return {
+			metaData: {},
 			sessionId: "Loading...",
 			session: {},
 			sessions: [],
-			isLoading: false
+			isLoading: false,
+			nPageviews: 0,
+			loadingMicroLink: true,
 		};
 	},
 	methods: {
@@ -156,6 +184,37 @@ export default {
 		},
 		removeDomain(url) {
 			return url.replace(/^.*\/\/[^\/]+/, "");
+		},
+		getReferrerDetails(url) {
+			this.loadingMicroLink = true;
+			const infoTitle = "microlink__" + url;
+			if ("sessionStorage" in window && window.sessionStorage[infoTitle]) {
+				this.metaData = JSON.parse(window.sessionStorage.getItem(infoTitle));
+				this.loadingMicroLink = false;
+			} else {
+				fetch("https://api.microlink.io/?url=" + url + "&screenshot")
+					.then(response =>
+						response.json().then(json => {
+							window.sessionStorage.setItem(infoTitle, JSON.stringify(json));
+							this.metaData = json;
+						})
+					)
+					.catch(() => {})
+					.finally(() => {
+						this.loadingMicroLink = false;
+					});
+			}
+		},
+		doAfterLoaded() {
+			if (this.session.referrer) {
+				this.getReferrerDetails(this.session.referrer);
+			}
+			this.nPageviews = 0;
+			for (let i = 0; i < this.sessions.length; i++) {
+				if (this.sessions[i].action === "pageview") {
+					this.nPageviews++;
+				}
+			}
 		}
 	},
 	mounted() {
@@ -165,6 +224,7 @@ export default {
 			this.session = JSON.parse(window.sessionStorage["session_" + this.$route.params.sessionId]).session;
 			this.sessions = JSON.parse(window.sessionStorage["session_" + this.$route.params.sessionId]).sessions;
 			this.isLoading = false;
+			this.doAfterLoaded();
 		} else {
 			callApi("analytics/session/" + this.$route.params.sessionId)
 				.then(data => {
@@ -177,6 +237,7 @@ export default {
 				.catch(error => {})
 				.finally(() => {
 					this.isLoading = false;
+					this.doAfterLoaded();
 				});
 		}
 	},
