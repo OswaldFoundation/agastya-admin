@@ -3,9 +3,9 @@
 		<div>
 			<p class="menu-label">Overview</p>
 			<ul class="menu-list">
-				<li><router-link to="/analytics/overview">Overview</router-link></li>
-				<li><router-link to="/analytics/users">Users</router-link></li>
+				<!-- <li><router-link to="/analytics/overview">Overview</router-link></li> -->
 				<li><router-link to="/analytics/sessions">Sessions</router-link></li>
+				<li><router-link to="/analytics/users">Users</router-link></li>
 				<li><router-link to="/analytics/apps">Apps &amp; modes</router-link></li>
 				<li class="subnav">
 					<router-link to="/analytics/locations/countries">Locations</router-link>
