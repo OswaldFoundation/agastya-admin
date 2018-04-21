@@ -15,12 +15,6 @@ import codeUnviersal from "../components/pages/customize/code/Universal.vue";
 import codeNpm from "../components/pages/customize/code/Npm.vue";
 import codeWordpress from "../components/pages/customize/code/Wordpress.vue";
 
-import analyticsOverview from "../components/pages/analytics/Overview.vue";
-import analyticsLocations from "../components/pages/analytics/locations/Locations.vue";
-import analyticsLocationsColumn from "../components/pages/analytics/locations/Column.vue";
-import analyticsSessionColumn from "../components/pages/analytics/sessions/Column.vue";
-import analyticsSessionSingle from "../components/pages/analytics/Session.vue";
-
 const routes = [
 	{
 		path: "/",
@@ -31,63 +25,6 @@ const routes = [
 		component: Login,
 		meta: {
 			title: "Login"
-		}
-	},
-	{
-		path: "/analytics/overview",
-		component: analyticsOverview,
-		alias: "/analytics",
-		meta: {
-			title: "Overview / Analytics"
-		}
-	},
-	{
-		path: "/analytics/locations",
-		component: analyticsLocations,
-		meta: {
-			title: "Locations / Analytics"
-		}
-	},
-	{
-		path: "/analytics/session/:sessionId",
-		component: analyticsSessionSingle,
-		meta: {
-			title: "Session / Analytics"
-		}
-	},
-	{
-		path: "/analytics/locations/:column",
-		component: analyticsLocationsColumn,
-		meta: {
-			title: "Locations / Analytics"
-		}
-	},
-	{
-		path: "/analytics/technology/:column",
-		component: analyticsLocationsColumn,
-		meta: {
-			title: "Technology / Analytics"
-		}
-	},
-	{
-		path: "/analytics/website/:column",
-		component: analyticsLocationsColumn,
-		meta: {
-			title: "Website / Analytics"
-		}
-	},
-	{
-		path: "/analytics/sessions/:column/:title",
-		component: analyticsSessionColumn,
-		meta: {
-			title: "Sessions / Analytics"
-		}
-	},
-	{
-		path: "/analytics/:column/",
-		component: analyticsLocationsColumn,
-		meta: {
-			title: "Analytics"
 		}
 	},
 	{
