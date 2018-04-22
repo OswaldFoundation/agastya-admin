@@ -327,6 +327,9 @@ export default (name = "", addon) => {
 		case "yandex-browser":
 			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/yandex/yandex_48x48.png";
 			break;
+		case "yandex-anti-virus":
+			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/yandex/yandex_48x48.png";
+			break;
 		case "samsung-browser":
 			return "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/samsung-internet/samsung-internet_48x48.png";
 			break;

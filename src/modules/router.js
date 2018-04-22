@@ -86,6 +86,13 @@ const routes = [
 		}
 	},
 	{
+		path: "/analytics/:type/:category",
+		component: Analytics,
+		meta: {
+			title: "Analytics"
+		}
+	},
+	{
 		path: "*",
 		component: Error404,
 		meta: {
