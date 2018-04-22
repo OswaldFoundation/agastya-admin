@@ -5,6 +5,7 @@ import Home from "../components/pages/Home.vue";
 import Error404 from "../components/pages/Error404.vue";
 
 import Login from "../components/pages/auth/Login.vue";
+import Analytics from "../components/pages/Analytics.vue";
 
 import settingsAccount from "../components/pages/settings/Account.vue";
 import settingsBilling from "../components/pages/settings/Billing.vue";
@@ -75,6 +76,13 @@ const routes = [
 		component: codeWordpress,
 		meta: {
 			title: "WordPress / Code / Customize"
+		}
+	},
+	{
+		path: "/analytics/:category",
+		component: Analytics,
+		meta: {
+			title: "Analytics"
 		}
 	},
 	{

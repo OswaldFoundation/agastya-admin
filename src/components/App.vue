@@ -18,11 +18,20 @@
 
 <script>
 import Navbar from "./Navbar.vue";
-
+import { mapGetters } from "vuex";
 export default {
 	components: {
 		Navbar
 	},
-	mounted() {}
+	computed: {
+		...mapGetters({
+			user: "getUser"
+		})
+	},
+	mounted() {
+		if (!this.user) {
+			this.$router.push("/");
+		}
+	}
 };
 </script>

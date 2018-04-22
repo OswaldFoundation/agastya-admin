@@ -5,10 +5,10 @@
 				<h1 class="title">Login</h1>
 				<form @submit.prevent="login">
 					<b-field label="Email">
-						<b-input type="email" placeholder="Enter your email" v-model="email" autofocus />
+						<b-input type="email" placeholder="Enter your email" v-model="email" autofocus required />
 					</b-field>
 					<b-field label="Password">
-						<b-input type="password" placeholder="Enter your password" v-model="password" password-reveal minlength="6" />
+						<b-input type="password" placeholder="Enter your password" v-model="password" password-reveal minlength="6" required />
 					</b-field>
 					<button :class="'button is-primary is-block is-medium' + (isLoading ? ' is-loading' : '')">
 						<span><font-awesome-icon :icon="faLock" /></span>
@@ -59,7 +59,11 @@ export default {
 				})
 				.catch(error => {
 					this.password = "";
-					alert(error.message);
+					this.$toasted.show(error.message, {
+						type: "error",
+						duration: 3000,
+						position: "top-center"
+					});
 				})
 				.finally(() => {
 					this.isLoading = false;

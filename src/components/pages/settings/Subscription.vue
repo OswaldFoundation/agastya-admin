@@ -1,6 +1,6 @@
 <template>
 	<section class="section">
-		<div class="container is-small">
+		<div class="container is-medium">
 			<div class="columns">
 				<Menu />
 				<main class="column">

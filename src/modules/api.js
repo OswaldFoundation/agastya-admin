@@ -136,35 +136,16 @@ export const wikipediaIntro = q => {
 	});
 };
 
-export const analyticsList = (column, perPage = 10, currentPage = 1) => {
-	const filterFrom = new Date(store.getters.getFrom);
-	const filterTo = new Date(store.getters.getTo);
-	const from = parseInt(filterFrom.getTime() / 1000);
-	let to = parseInt(filterTo.getTime() / 1000);
-	const dataTitle = "analytics__list__" + column + perPage + currentPage + from + to + dataTitle;
-	if (new Date().getTime() / 1000 < to) {
-		to = "now";
-	}
+export const list = (columnName, page) => {
 	return new Promise((resolve, reject) => {
-		if ("sessionStorage" in window && window.sessionStorage[dataTitle]) {
-			resolve(JSON.parse(window.sessionStorage.getItem(dataTitle)));
+		const user = store.getters.getUser;
+		if (localStorage.getItem(`apiCache_${columnName}_${page}`)) {
+			resolve(JSON.parse(localStorage.getItem(`apiCache_${columnName}_${page}`)));
 		} else {
-			callApi("analytics/list", {
-				column: column,
-				perPage: perPage,
-				currentPage: currentPage,
-				from: from,
-				to: to
-			})
-				.then(data => {
-					if ("sessionStorage" in window) {
-						window.sessionStorage.setItem(dataTitle, JSON.stringify(data));
-					}
-					resolve(data);
-				})
-				.catch(error => {
-					reject(error);
-				});
+			fetch(`https://api.oswaldlabs.com/public-apis/agastya/v2/list.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&column=${columnName}&n_limit=10&page=${page}`).then(response => response.json()).then(json => {
+				localStorage.setItem(`apiCache_${columnName}_${page}`, JSON.stringify(json));
+				resolve(json);
+			});
 		}
 	});
-};
+}
