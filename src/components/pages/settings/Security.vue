@@ -29,10 +29,11 @@
 						</p>
 						<p>You can use an authenticator application that supports TOTP (like Google Authenticator or 1Password) which can be used to conveniently secure your account. A new token is generated every 30 seconds.</p>
 						<!-- <form @submit.prevent="update"> -->
-							<button @click="start2fa" :class="'button is-primary' + (isLoading ? ' is-loading' : '')">
+							<button @click="start2fa" :class="'button is-primary' + (isLoading ? ' is-loading' : '')" disabled>
 								<span>Enable 2FA</span>
 								<span><font-awesome-icon :icon="faArrowRight" /></span>
 							</button>
+							<p class="mt is-size-7 has-text-grey">Get in touch with us if you want to activate two-factor authentication with UNLOQ.</p>
 						<!-- </form> -->
 					</div>
 					<b-modal ref="2famodal" :active.sync="modal">
@@ -131,12 +132,12 @@ export default {
 			})
 				.then(response => {
 					this.fields = response;
+					alert("Your password has been updated");
 				})
 				.catch(error => {
 					alert(error.message);
 				})
 				.finally(() => {
-					alert("Your password has been updated");
 					this.isLoading = false;
 				});
 		},

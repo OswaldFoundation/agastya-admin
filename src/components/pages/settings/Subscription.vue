@@ -29,7 +29,7 @@
 								</div>
 								<div class="column">
 									<div><strong>Unit price</strong></div>
-									<div>{{fields.currency_code}} {{fields.plan_unit_price}}</div>
+									<div>{{fields.currency_code}} {{fields.plan_unit_price / 100}}</div>
 								</div>
 								<div class="column">
 									<div><strong>Billing period</strong></div>

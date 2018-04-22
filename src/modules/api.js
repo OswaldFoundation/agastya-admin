@@ -21,34 +21,8 @@ const refreshToken = (force = 0) => {
 				if (force === 0 && parseInt(decoded.expires) * 1000 > new Date().getTime()) {
 					resolve();
 				} else {
-					fetch(API_BASE + "auth/refresh", {
-						cache: "no-cache",
-						headers: {
-							"content-type": "application/json"
-						},
-						method: "POST",
-						body: JSON.stringify({
-							token: user.token.refresh
-						}),
-						mode: "cors",
-						redirect: "follow",
-						referrer: "no-referrer"
-					})
-						.then(response =>
-							response.json().then(json => {
-								if (json.error) {
-									handleError(json.error);
-									reject();
-								} else {
-									store.dispatch("updateUser", json);
-									resolve();
-								}
-							})
-						)
-						.catch(error => {
-							handleError(error);
-							reject();
-						});
+					store.dispatch("logoutUser");
+					router.push("/login");
 				}
 			} else {
 				resolve();
