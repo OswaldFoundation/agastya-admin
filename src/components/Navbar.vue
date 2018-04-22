@@ -13,17 +13,7 @@
 				</div>
 				<div id="navbarExampleTransparentExample" class="navbar-menu">
 					<div class="navbar-start">
-						<!-- <router-link class="navbar-item" to="/">Dashboard</router-link> -->
-						<div class="navbar-item has-dropdown is-hoverable">
-							<router-link class="navbar-link" to="/analytics/overview">Analytics</router-link>
-							<div class="navbar-dropdown is-boxed">
-								<router-link class="navbar-item" to="/analytics/overview">Overview</router-link>
-								<router-link class="navbar-item" to="/analytics/apps">Apps &amp; modes</router-link>
-								<router-link class="navbar-item" to="/analytics/sessions">User sessions</router-link>
-								<hr class="navbar-divider">
-								<router-link class="navbar-item" to="/analytics/export">Export data</router-link>
-							</div>
-						</div>
+						<router-link class="navbar-item" to="/analytics/sessions">Analytics</router-link>
 						<div class="navbar-item has-dropdown is-hoverable">
 							<router-link class="navbar-link" to="/customize/plugin">Customize</router-link>
 							<div class="navbar-dropdown is-boxed">

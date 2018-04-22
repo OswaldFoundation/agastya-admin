@@ -42,26 +42,29 @@
 				</aside>
 				<main class="column">
 					<div class="box">
-						<h1 class="title is-4">{{meta.title}}</h1>
 						<div v-if="isLoading" class="loader loader-2"></div>
 						<table v-else :class="'table rank-full w-100 mb-0 rank-' + column">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>{{meta.column_title}}</th>
-									<th>Events</th>
+									<th>Event</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="(item, index) in data.results" :key="'data' + index" v-if="item.value !== 0">
-									<td>{{index + ((data.currentPage - 1) * 25) + 1}}</td>
-									<td :title="item.name">
-										<router-link :to="`/sessions/${meta.singular}/${encode(item.name) || 'null'}`">
-											<img v-if="icon(item.name)" class="flag-icon is-lg" alt="" :src="icon(item.name)">
-											{{small(item.name) || "Unknown"}}
+									<td style="width: 2.5%">{{index + ((data.currentPage - 1) * 25) + 1}}</td>
+									<td class="padded">
+										<router-link :to="`/session/${item.session_id}`">
+											<div>Session {{item.session_id}}</div>
+											<div class="mt-05 " style="color: #363636">
+												<div><i class="fas fa-map-marker fa-fw mr"></i>{{item.city || "Unknown city"}}, {{item.region_name || "Unknown region"}}, {{item.country_name || "Unknown country"}}</div>
+												<div><i class="fas fa-laptop fa-fw mr"></i>{{item.browser_name || "Unknown browser"}} {{item.browser_version || "Unknown version"}} on {{item.os_name || "Unknown OS"}} {{item.os_version || "Unknown version"}}</div>
+												<div><i class="fas fa-globe fa-fw mr"></i>Referred from {{item.referrer_domain || "an unknown referrer"}}</div>
+												<div><i class="fas fa-clock fa-fw mr"></i>{{datify(item.created_at).fromNow}} ({{datify(item.created_at).text}})</div>
+												<div class="mt-05 is-size-7 has-text-grey">{{ucfirst(item.action) || "Unknown action"}} on {{item.domain || "Unknown domain"}}</div>
+											</div>
 										</router-link>
 									</td>
-									<td style="width: 20%">{{item.value.toLocaleString()}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -74,28 +77,34 @@
 </template>
 
 <script>
-import { list } from "../../modules/api";
-import iconify from "../../modules/iconify";
+import { sessions } from "../../modules/api";
 import constants from "../../modules/constants";
+import datify from "../../modules/datify";
 const analyticsList = constants.analyticsList;
 export default {
 	data: () => {
 		return {
 			isLoading: false,
-			meta: {},
 			data: {},
 			column: ""
 		}
 	},
 	mounted() {
-		const key = this.$route.params.type ? (this.$route.params.type + "/" + this.$route.params.category) : this.$route.params.category;
-		if (!analyticsList[key]) {
+		const columnValue = this.$route.params.columnValue;
+		const keys = Object.keys(analyticsList);
+		let columnName;
+		keys.forEach(key => {
+			if (analyticsList[key].singular === this.$route.params.columnName) {
+				columnName = key;
+			}
+		});
+		console.log(columnName);
+		if (!columnName) {
 			this.$router.push("/404");
 		} else {
-			this.column = key;
-			this.meta = analyticsList[key];
+			this.column = columnName;
 			this.isLoading = true;
-			list(analyticsList[key].column, 1).then(result => {
+			sessions(analyticsList[columnName].column, columnValue, 1).then(result => {
 				this.data = result;
 				this.isLoading = false;
 			});
@@ -103,60 +112,17 @@ export default {
 	},
 	methods: {
 		paginate() {},
+		ucfirst(x) {
+			return x.charAt(0).toUpperCase() + x.slice(1);
+		},
 		encode(x) {
 			return encodeURIComponent(x);
 		},
 		small(x) {
-			let result = x;
-			if (this.column === "sessions") {
-				result = x.substring(0, 10);
-			} else {
-				if (x && x.length > 50) {
-					result = x.substring(0, 50) + "...";
-				}
-			}
-			if (this.column === "devices/types") {
-				return result.charAt(0).toUpperCase() + result.slice(1);
-			} else {
-				return result;
-			}
+			return x.substring(0, 10);
 		},
-		icon(name) {
-			if (this.column !== "regions") {
-				if (["devices/manufacturers", "os"].includes(this.column)) {
-					return iconify(name, "logo");
-				} else if (["domains"].includes(this.column)) {
-					return iconify(name, "favicon");
-				} else if (["browsers/engines"].includes(this.column)) {
-					return iconify(name, " browser logo");
-				} else if (["devices/types"].includes(this.column)) {
-					return iconify(name, " flat icon");
-				} else if (["devices/models"].includes(this.column)) {
-					return iconify(name, " png");
-				} else if (["website/referrers", "website/referrer-pages", "website/domains", "website/pages"].includes(this.column)) {
-					if (["website/pages", "website/referrer-pages"].includes(this.column)) {
-						let hostname;
-						if (name.indexOf("://") > -1) {
-							hostname = name.split('/')[2];
-						} else {
-							hostname = name.split('/')[0];
-						}
-						hostname = hostname.split(':')[0];
-						hostname = hostname.split('?')[0];
-						return `https://logo.clearbit.com/${hostname}`;
-					} else {
-						return `https://logo.clearbit.com/${name}`;
-					}
-				} else {
-					return iconify(name);
-				}
-			} else {
-				if (iconify(name) === "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/us.svg") {
-					return iconify(name.split(", ")[0], "flag");
-				} else {
-					return iconify(name);
-				}
-			}
+		datify(d) {
+			return datify(d);
 		}
 	}
 }
