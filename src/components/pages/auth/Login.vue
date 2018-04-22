@@ -59,11 +59,7 @@ export default {
 				})
 				.catch(error => {
 					this.password = "";
-					this.$toasted.show(error.message, {
-						type: "error",
-						duration: 3000,
-						position: "top-center"
-					});
+					this.$toast.open(error.message);
 				})
 				.finally(() => {
 					this.isLoading = false;

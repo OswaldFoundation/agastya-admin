@@ -61,6 +61,25 @@
 					<div v-else>
 						<div class="box">
 							<h1 class="title is-4">{{meta.title}}</h1>
+							<table :class="'table rank-full w-100 mb-0 rank-' + column">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>{{meta.column_title}}</th>
+										<th>Events</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(item, index) in data.results" :key="'data' + index">
+										<td>{{index + ((data.currentPage - 1) * 25) + 1}}</td>
+										<td :title="item.name">
+											<router-link :to="'/analytics/'">{{item.name}}</router-link>
+										</td>
+										<td style="width: 20%">{{item.value.toLocaleString()}}</td>
+									</tr>
+								</tbody>
+							</table>
+							<b-pagination class="mt" v-if="data.pages > 0" @change="paginate" :total="data.records" :current.sync="data.currentPage" :simple="true" :per-page="data.perPage" />
 						</div>
 					</div>
 				</main>
@@ -71,17 +90,15 @@
 
 <script>
 import { list } from "../../modules/api";
-const analyticsList = {
-	sessions: {
-		column: "session_id",
-		title: "Sessions"
-	}
-};
+import constants from "../../modules/constants";
+const analyticsList = constants.analyticsList;
 export default {
 	data: () => {
 		return {
 			isLoading: false,
-			meta: {}
+			meta: {},
+			data: {},
+			column: ""
 		}
 	},
 	mounted() {
@@ -89,11 +106,15 @@ export default {
 		if (!analyticsList[key]) {
 			this.$router.push("/404");
 		} else {
+			this.column = key;
 			this.meta = analyticsList[key];
 			list(analyticsList[key].column, 1).then(result => {
-				console.log("GOT", result);
+				this.data = result;
 			});
 		}
+	},
+	methods: {
+		paginate() {}
 	}
 }
 </script>
