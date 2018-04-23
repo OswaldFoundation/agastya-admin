@@ -44,8 +44,12 @@ export const callApi = (endpoint, body, token, method) => {
 						token = user.token.auth;
 					}
 				}
-				if (previousCalls[endpoint + JSON.stringify(body)] && new Date() - previousCalls[endpoint + JSON.stringify(body)] < 1000) {
-					reject(); return;
+				if (
+					previousCalls[endpoint + JSON.stringify(body)] &&
+					new Date() - previousCalls[endpoint + JSON.stringify(body)] < 1000
+				) {
+					reject();
+					return;
 				} else {
 					previousCalls[endpoint + JSON.stringify(body)] = new Date();
 				}
@@ -142,13 +146,17 @@ export const list = (columnName, page) => {
 		if (localStorage.getItem(`apiCache_${columnName}_${page}`)) {
 			resolve(JSON.parse(localStorage.getItem(`apiCache_${columnName}_${page}`)));
 		} else {
-			fetch(`https://api.oswaldlabs.com/public-apis/agastya/v2/list.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&column=${columnName}&n_limit=10&page=${page}`).then(response => response.json()).then(json => {
-				localStorage.setItem(`apiCache_${columnName}_${page}`, JSON.stringify(json));
-				resolve(json);
-			});
+			fetch(
+				`https://api.oswaldlabs.com/public-apis/agastya/v2/list.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&column=${columnName}&n_limit=10&page=${page}`
+			)
+				.then(response => response.json())
+				.then(json => {
+					localStorage.setItem(`apiCache_${columnName}_${page}`, JSON.stringify(json));
+					resolve(json);
+				});
 		}
 	});
-}
+};
 
 export const sessions = (columnName, columnValue, page) => {
 	return new Promise((resolve, reject) => {
@@ -156,10 +164,32 @@ export const sessions = (columnName, columnValue, page) => {
 		if (localStorage.getItem(`apiCache_${columnName}_${columnValue}_${page}`)) {
 			resolve(JSON.parse(localStorage.getItem(`apiCache_${columnName}_${columnValue}_${page}`)));
 		} else {
-			fetch(`https://api.oswaldlabs.com/public-apis/agastya/v2/sessions.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&column=${columnName}&val=${columnValue}&n_limit=10&page=${page}`).then(response => response.json()).then(json => {
-				localStorage.setItem(`apiCache_${columnName}_${columnValue}_${page}`, JSON.stringify(json));
-				resolve(json);
-			});
+			fetch(
+				`https://api.oswaldlabs.com/public-apis/agastya/v2/sessions.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&column=${columnName}&val=${columnValue}&n_limit=10&page=${page}`
+			)
+				.then(response => response.json())
+				.then(json => {
+					localStorage.setItem(`apiCache_${columnName}_${columnValue}_${page}`, JSON.stringify(json));
+					resolve(json);
+				});
 		}
 	});
-}
+};
+
+export const events = (columnValue, page) => {
+	return new Promise((resolve, reject) => {
+		const user = store.getters.getUser;
+		if (localStorage.getItem(`apiCache_session_${columnValue}_${page}`)) {
+			resolve(JSON.parse(localStorage.getItem(`apiCache_session_${columnValue}_${page}`)));
+		} else {
+			fetch(
+				`https://api.oswaldlabs.com/public-apis/agastya/v2/events.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&val=${columnValue}&n_limit=10&page=${page}`
+			)
+				.then(response => response.json())
+				.then(json => {
+					localStorage.setItem(`apiCache_session_${columnValue}_${page}`, JSON.stringify(json));
+					resolve(json);
+				});
+		}
+	});
+};
