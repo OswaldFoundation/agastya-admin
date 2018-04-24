@@ -140,18 +140,29 @@ export const wikipediaIntro = q => {
 	});
 };
 
+const makeDate = d => {
+	let year = d.getUTCFullYear();
+	let month = d.getUTCMonth();
+	month = month < 10 ? "0" + month : month;
+	let day = d.getUTCDate();
+	day = day < 10 ? "0" + day : day;
+	return year + "-" + month + "-" + day;
+}
+
 export const list = (columnName, page) => {
 	return new Promise((resolve, reject) => {
 		const user = store.getters.getUser;
-		if (localStorage.getItem(`apiCache_${columnName}_${page}`)) {
-			resolve(JSON.parse(localStorage.getItem(`apiCache_${columnName}_${page}`)));
+		let fromBefore = new Date(store.getters.getFrom); const fromDate = makeDate(fromBefore);
+		let toBefore = new Date(store.getters.getTo); const toDate = makeDate(toBefore);
+		if (localStorage.getItem(`apiCache_${columnName}_${fromDate}_${toDate}_${page}`)) {
+			resolve(JSON.parse(localStorage.getItem(`apiCache_${columnName}_${fromDate}_${toDate}_${page}`)));
 		} else {
 			fetch(
-				`https://api.oswaldlabs.com/public-apis/agastya/v2/list.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&column=${columnName}&n_limit=10&page=${page}`
+				`https://api.oswaldlabs.com/public-apis/agastya/v2/list.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&from_date=${fromDate}&to_date=${toDate}&column=${columnName}&n_limit=10&page=${page}`
 			)
 				.then(response => response.json())
 				.then(json => {
-					localStorage.setItem(`apiCache_${columnName}_${page}`, JSON.stringify(json));
+					localStorage.setItem(`apiCache_${columnName}_${fromDate}_${toDate}_${page}`, JSON.stringify(json));
 					resolve(json);
 				});
 		}
@@ -161,15 +172,17 @@ export const list = (columnName, page) => {
 export const sessions = (columnName, columnValue, page) => {
 	return new Promise((resolve, reject) => {
 		const user = store.getters.getUser;
-		if (localStorage.getItem(`apiCache_${columnName}_${columnValue}_${page}`)) {
-			resolve(JSON.parse(localStorage.getItem(`apiCache_${columnName}_${columnValue}_${page}`)));
+		let fromBefore = new Date(store.getters.getFrom); const fromDate = makeDate(fromBefore);
+		let toBefore = new Date(store.getters.getTo); const toDate = makeDate(toBefore);
+		if (localStorage.getItem(`apiCache_${columnName}_${columnValue}_${fromDate}_${toDate}_${page}`)) {
+			resolve(JSON.parse(localStorage.getItem(`apiCache_${columnName}_${columnValue}_${fromDate}_${toDate}_${page}`)));
 		} else {
 			fetch(
-				`https://api.oswaldlabs.com/public-apis/agastya/v2/sessions.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&column=${columnName}&val=${columnValue}&n_limit=10&page=${page}`
+				`https://api.oswaldlabs.com/public-apis/agastya/v2/sessions.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&from_date=${fromDate}&to_date=${toDate}&column=${columnName}&val=${columnValue}&n_limit=10&page=${page}`
 			)
 				.then(response => response.json())
 				.then(json => {
-					localStorage.setItem(`apiCache_${columnName}_${columnValue}_${page}`, JSON.stringify(json));
+					localStorage.setItem(`apiCache_${columnName}_${columnValue}_${fromDate}_${toDate}_${page}`, JSON.stringify(json));
 					resolve(json);
 				});
 		}
@@ -179,15 +192,17 @@ export const sessions = (columnName, columnValue, page) => {
 export const events = (columnValue, page) => {
 	return new Promise((resolve, reject) => {
 		const user = store.getters.getUser;
-		if (localStorage.getItem(`apiCache_session_${columnValue}_${page}`)) {
-			resolve(JSON.parse(localStorage.getItem(`apiCache_session_${columnValue}_${page}`)));
+		let fromBefore = new Date(store.getters.getFrom); const fromDate = makeDate(fromBefore);
+		let toBefore = new Date(store.getters.getTo); const toDate = makeDate(toBefore);
+		if (localStorage.getItem(`apiCache_session_${columnValue}_${fromDate}_${toDate}_${page}`)) {
+			resolve(JSON.parse(localStorage.getItem(`apiCache_session_${columnValue}_${fromDate}_${toDate}_${page}`)));
 		} else {
 			fetch(
-				`https://api.oswaldlabs.com/public-apis/agastya/v2/events.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&val=${columnValue}&n_limit=10&page=${page}`
+				`https://api.oswaldlabs.com/public-apis/agastya/v2/events.php?access_key=0abec53b0149ca61e2e62599ad1d54ef&api_key=5rlsghx&from_date=${fromDate}&to_date=${toDate}&val=${columnValue}&n_limit=10&page=${page}`
 			)
 				.then(response => response.json())
 				.then(json => {
-					localStorage.setItem(`apiCache_session_${columnValue}_${page}`, JSON.stringify(json));
+					localStorage.setItem(`apiCache_session_${columnValue}_${fromDate}_${toDate}_${page}`, JSON.stringify(json));
 					resolve(json);
 				});
 		}

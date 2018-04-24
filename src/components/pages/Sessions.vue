@@ -97,11 +97,14 @@ export default {
 	data: () => {
 		return {
 			isLoading: false,
-			data: {},
+			data: {
+				currentPage: 1
+			},
 			metaData: {
 				data: {}
 			},
 			column: "",
+			columnName: "",
 			title: "",
 			intro: "",
 			loadingInfo: true
@@ -111,7 +114,7 @@ export default {
 		this.title = this.$route.params.columnValue;
 		const keys = Object.keys(analyticsList);
 		if (["city", "region"].includes(this.$route.params.columnName)) {
-			wikiTitle = wikiTitle.split(", ")[0];
+			this.title = this.title.split(", ")[0];
 		}
 		let columnName;
 		wikipediaIntro(this.title)
@@ -128,11 +131,8 @@ export default {
 			this.$router.push("/404");
 		} else {
 			this.column = analyticsList[columnName].singular;
-			this.isLoading = true;
-			sessions(analyticsList[columnName].column, this.title, 1).then(result => {
-				this.data = result;
-				this.isLoading = false;
-			});
+			this.columnName = analyticsList[columnName].column;
+			this.updateRecords();
 			if (columnName === "pages") {
 				if ("sessionStorage" in window && window.sessionStorage[this.title]) {
 					this.metaData = JSON.parse(window.sessionStorage.getItem(this.title));
@@ -154,7 +154,18 @@ export default {
 		}
 	},
 	methods: {
-		paginate() {},
+		updateRecords() {
+			this.isLoading = true;
+			sessions(this.columnName, this.title, this.data.currentPage).then(result => {
+				this.data = result;
+				this.isLoading = false;
+			});
+		},
+		paginate(newPage) {
+			this.data.currentPage = newPage;
+			this.updateRecords();
+			window.scrollTo(0, 0);
+		},
 		ucfirst(x) {
 			return x.charAt(0).toUpperCase() + x.slice(1);
 		},

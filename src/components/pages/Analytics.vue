@@ -4,6 +4,7 @@
 			<div class="columns">
 				<Menu />
 				<main class="column">
+					<FilterPanel @update="updateRecords" />
 					<div class="box">
 						<h1 class="title is-4">{{meta.title}}</h1>
 						<div v-if="isLoading" class="loader loader-2"></div>
@@ -38,6 +39,7 @@
 
 <script>
 import Menu from "../AnalyticsMenu.vue";
+import FilterPanel from "../FilterPanel.vue";
 import { list } from "../../modules/api";
 import iconify from "../../modules/iconify";
 import constants from "../../modules/constants";
@@ -47,7 +49,9 @@ export default {
 		return {
 			isLoading: false,
 			meta: {},
-			data: {},
+			data: {
+				currentPage: 1
+			},
 			column: ""
 		};
 	},
@@ -60,15 +64,22 @@ export default {
 		} else {
 			this.column = key;
 			this.meta = analyticsList[key];
-			this.isLoading = true;
-			list(analyticsList[key].column, 1).then(result => {
-				this.data = result;
-				this.isLoading = false;
-			});
+			this.updateRecords();
 		}
 	},
 	methods: {
-		paginate() {},
+		updateRecords() {
+			this.isLoading = true;
+			list(analyticsList[this.column].column, this.data.currentPage).then(result => {
+				this.data = result;
+				this.isLoading = false;
+			});
+		},
+		paginate(newPage) {
+			this.data.currentPage = newPage;
+			this.updateRecords();
+			window.scrollTo(0, 0);
+		},
 		encode(x) {
 			return encodeURIComponent(x);
 		},
@@ -126,7 +137,8 @@ export default {
 		}
 	},
 	components: {
-		Menu
+		Menu,
+		FilterPanel
 	}
 };
 </script>

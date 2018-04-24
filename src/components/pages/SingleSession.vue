@@ -4,7 +4,7 @@
 			<div class="columns">
 				<Menu />
 				<main class="column">
-					<div class="box" v-if="!isLoading">
+					<div class="box" v-if="!isLoading && session">
 						<div class="columns">
 							<div class="column" v-if="session.ip">
 								<div><strong>IP address</strong></div>
@@ -30,7 +30,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="box" v-if="!isLoading">
+					<div class="box" v-if="!isLoading && session">
 						<img v-if="session.country_name" style="margin: -1.25rem -1.25rem 1rem -1.25rem; max-width: calc(100% + 2.5rem); width: calc(100% + 2.5rem)" alt="" :src="'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCuiZevIb1G87KAoLRSECEdWNBQ06JCMjU&center=' + (session.zip_code ? (session.zip_code + ', ' + session.city + ', ' + session.country_name) : (session.city + ', ' + session.country_name)) + '&size=640x350&sensor=false'">
 						<div class="columns">
 							<div class="column" v-if="session.country_name">
@@ -51,7 +51,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="box" v-if="!isLoading">
+					<div class="box" v-if="!isLoading && session">
 						<h2 class="title is-5">Browser</h2>
 						<div class="columns">
 							<div class="column" v-if="session.browser_name">
@@ -121,7 +121,7 @@
 						</table>
 						<b-pagination class="mt" v-if="data.pages > 0" @change="paginate" :total="data.records" :current.sync="data.currentPage" :simple="true" :per-page="data.perPage" />
 					</div>
-					<div class="box" v-if="!isLoading">
+					<div class="box" v-if="!isLoading && session">
 						<h2 class="title is-5" style="margin-bottom: 2.5rem">Referrer</h2>
 						<div v-if="loadingMicroLink">
 							<div class="loader loader-2"></div>
@@ -139,7 +139,7 @@
 							</a>
 						</div>
 						<div v-else>
-							<p>{{ipify(session.referrer)}}</p>
+							<p>{{small(session.referrer)}}</p>
 							<a :href="session.referrer" class="button mt" target="_blank">
 								Visit webpage
 								<i class="fas fa-arrow-right"></i>
@@ -166,6 +166,7 @@ export default {
 			metaData: {},
 			loadingMicroLink: false,
 			data: {
+				currentPage: 1,
 				results: []
 			},
 			column: "",
@@ -177,7 +178,7 @@ export default {
 	mounted() {
 		this.sessionId = this.$route.params.sessionId;
 		this.isLoading = true;
-		events(this.sessionId, 1).then(result => {
+		events(this.sessionId, this.data.currentPage).then(result => {
 			this.data = result;
 			this.session = result.meta;
 			this.isLoading = false;
@@ -206,7 +207,7 @@ export default {
 			}
 		},
 		doAfterLoaded() {
-			if (this.session.referrer) {
+			if (this.session && this.session.referrer) {
 				this.getReferrerDetails(this.session.referrer);
 			}
 			this.nPageviews = 0;

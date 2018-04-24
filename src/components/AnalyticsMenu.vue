@@ -35,14 +35,20 @@
 		<p class="menu-label">Developer</p>
 		<ul class="menu-list">
 			<li><router-link to="/analytics/export">Export</router-link></li>
+			<li><a @click="clearCache">Refresh data</a></li>
 		</ul>
 	</aside>
 </template>
 
 <script>
 export default {
-	data: () => {
-		return {};
+	methods: {
+		clearCache() {
+			if ("localStorage" in window) {
+				window.localStorage.clear();
+				this.$toast.open("Your cache has been cleared");
+			}
+		}
 	}
 };
 </script>

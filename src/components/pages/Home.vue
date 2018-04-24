@@ -9,7 +9,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import router from "../../modules/router";
 export default {
 	computed: {
 		...mapGetters({
@@ -17,10 +16,22 @@ export default {
 		})
 	},
 	mounted() {
-		if (!this.user) {
-			router.push("/login");
-		} else {
-			router.push("/analytics/sessions");
+		setTimeout(() => {
+			if (!this.user) {
+				this.$router.push("/login");
+			} else {
+				this.$router.push("/analytics/sessions");
+			}
+			
+		}, 100);
+	},
+	watch: {
+		user() {
+			if (!this.user) {
+				this.$router.push("/login");
+			} else {
+				this.$router.push("/analytics/sessions");
+			}
 		}
 	}
 };
