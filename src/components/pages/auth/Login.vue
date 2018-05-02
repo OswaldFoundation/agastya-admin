@@ -24,7 +24,6 @@
 import { mapGetters } from "vuex";
 import store from "../../../modules/store";
 import router from "../../../modules/router";
-import { callApi } from "../../../modules/api";
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 import faLock from "@fortawesome/fontawesome-free-solid/faLock";
 export default {
@@ -49,21 +48,6 @@ export default {
 	methods: {
 		login() {
 			this.isLoading = true;
-			callApi("auth/login", {
-				email: this.email,
-				password: this.password
-			})
-				.then(user => {
-					store.dispatch("updateUser", user);
-					router.push("/");
-				})
-				.catch(error => {
-					this.password = "";
-					this.$toast.open(error.message);
-				})
-				.finally(() => {
-					this.isLoading = false;
-				});
 		}
 	},
 	components: {
