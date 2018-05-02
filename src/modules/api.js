@@ -142,7 +142,7 @@ export const wikipediaIntro = q => {
 
 const makeDate = d => {
 	let year = d.getUTCFullYear();
-	let month = d.getUTCMonth();
+	let month = d.getUTCMonth() + 1;
 	month = month < 10 ? "0" + month : month;
 	let day = d.getUTCDate();
 	day = day < 10 ? "0" + day : day;
@@ -154,6 +154,8 @@ export const list = (columnName, page) => {
 		const user = store.getters.getUser;
 		let fromBefore = new Date(store.getters.getFrom); const fromDate = makeDate(fromBefore);
 		let toBefore = new Date(store.getters.getTo); const toDate = makeDate(toBefore);
+		console.log(fromBefore, fromDate);
+		console.log(toBefore, toDate);
 		if (localStorage.getItem(`apiCache_${columnName}_${fromDate}_${toDate}_${page}`)) {
 			resolve(JSON.parse(localStorage.getItem(`apiCache_${columnName}_${fromDate}_${toDate}_${page}`)));
 		} else {

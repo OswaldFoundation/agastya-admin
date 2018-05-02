@@ -77,8 +77,10 @@ export default {
 	},
 	methods: {
 		updateRecords() {
-			if ("sessionStorage" in window) {
-				window.sessionStorage.clear();
+			if ("localStorage" in window) {
+				const vuexStore = window.localStorage.getItem("vuex");
+				window.localStorage.clear();
+				window.localStorage.setItem("vuex", vuexStore);
 			}
 			if (typeof this.update === "function") {
 				this.update();
