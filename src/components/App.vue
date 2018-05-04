@@ -29,7 +29,7 @@ export default {
 		})
 	},
 	mounted() {
-		if (!this.user) {
+		if (!this.user && this.$route.path !== "/callback") {
 			this.$router.push("/login");
 		}
 	}

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 
 import Error404 from "../components/pages/Error404.vue";
 import Login from "../components/pages/auth/Login.vue";
+import Callback from "../components/pages/auth/Callback.vue";
 
 const routes = [
 	{
@@ -10,6 +11,13 @@ const routes = [
 		component: Login,
 		meta: {
 			title: "Login"
+		}
+	},
+	{
+		path: "/callback",
+		component: Callback,
+		meta: {
+			title: "Callback"
 		}
 	},
 	{

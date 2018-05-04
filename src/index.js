@@ -5,9 +5,6 @@ Vue.use(Buefy, {
 	defaultIconPack: "fas"
 });
 
-import Toasted from "vue-toasted";
-Vue.use(Toasted);
-
 import "buefy/lib/buefy.css";
 import css from "./styles.scss";
 

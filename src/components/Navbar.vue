@@ -27,8 +27,8 @@
 					<div class="navbar-end">
 						<div class="navbar-item has-dropdown is-hoverable">
 							<router-link class="navbar-link" to="/settings">
-								<img :src="user.profile_picture" alt="" class="avatar">
-								{{user.name}}
+								<img :src="user.user.picture" alt="" class="avatar">
+								{{user.user.name}}
 							</router-link>
 							<div class="navbar-dropdown is-boxed">
 								<router-link class="navbar-item" to="/settings/account">Account</router-link>
@@ -38,7 +38,7 @@
 								<router-link class="navbar-item" to="/settings/invoices">Invoices</router-link>
 								<hr class="navbar-divider">
 								<router-link class="navbar-item" to="/settings/api-keys">Developer API</router-link>
-								<a class="navbar-item ito-active">{{isLoading ? "Logging you out..." : "Logout"}}</a>
+								<a @click="logout" class="navbar-item ito-active">{{isLoading ? "Logging you out..." : "Logout"}}</a>
 							</div>
 						</div>
 						<div class="navbar-item">
@@ -79,6 +79,14 @@ export default {
 		};
 	},
 	methods: {
+		logout() {
+			if ("localStorage" in window) {
+				window.localStorage.clear();
+				setTimeout(() => {
+					location.reload();
+				}, 100);
+			}
+		}
 	},
 	components: {
 		FontAwesomeIcon
