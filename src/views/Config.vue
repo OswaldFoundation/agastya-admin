@@ -29,6 +29,13 @@
             <v-card flat>
               <v-form class="form" @submit.prevent="save">
                 <v-text-field
+                  v-model="key.apiKey"
+                  type="text"
+                  label="API key"
+                  messages="Your Agastya API key; you cannot change this"
+                  disabled
+                />
+                <v-text-field
                   v-model="key.title"
                   type="text"
                   label="Name"
@@ -39,7 +46,6 @@
                   label="Domains"
                   messages="List of domains to allow running Agastya on, press tab to add new one"
                   :items="[]"
-                  class="domains-list"
                   multiple
                   chips
                 >
@@ -64,6 +70,54 @@
                     </v-chip>
                   </template>
                 </v-combobox>
+                <h2>Branding</h2>
+                <v-layout row>
+                  <v-flex>
+                    <v-text-field
+                      v-model="key.backgroundColor"
+                      type="text"
+                      label="Brand color"
+                      messages="Background color for the plugin icon and headers"
+                    />
+                    <v-text-field
+                      v-model="key.foregroundColor"
+                      type="text"
+                      label="Text color"
+                      messages="Text color for the plugin icon and headers"
+                    />
+                    <v-text-field
+                      v-model="key.pages['/'].heading"
+                      type="text"
+                      label="Heading"
+                      messages="This will be the title when a user opens the Agastya widget"
+                    />
+                    <v-text-field
+                      v-model="key.pages['/'].subheading"
+                      type="text"
+                      label="Subheading"
+                      messages="Add a subheading, e.g., your website name"
+                    />
+                  </v-flex>
+                  <v-flex md6>
+                    <div class="color-preview">
+                      <div
+                        class="heading-preview"
+                        :style="
+                          `background-color: ${key.backgroundColor}; color: ${
+                            key.foregroundColor
+                          }`
+                        "
+                      >
+                        <div class="heading-1">
+                          {{ key.pages["/"].heading }}
+                        </div>
+                        <div class="heading-2">
+                          {{ key.pages["/"].subheading }}
+                        </div>
+                      </div>
+                    </div>
+                  </v-flex>
+                </v-layout>
               </v-form>
             </v-card>
           </v-tab-item>
@@ -85,12 +139,17 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      key: {},
+      key: {
+        pages: {
+          "/": {}
+        }
+      },
       json: "{}",
       activeTab: 0,
       loading: false,
       hasMessage: false,
-      message: ""
+      message: "",
+      color: "#1ca085"
     };
   },
   computed: {
@@ -116,6 +175,14 @@ export default {
         this.keys.filter(key => key.apiKey === this.$route.params.apiKey)[0] ||
         {};
       delete this.key.owner;
+      this.key.backgroundColor = this.key.backgroundColor || "#007bff";
+      this.key.foregroundColor = this.key.foregroundColor || "#ffffff";
+      this.key.pages = this.key.pages || {};
+      this.key.pages["/"] = this.key.pages["/"] || {};
+      this.key.pages["/"].heading =
+        this.key.pages["/"].heading || "Help & Accessibility";
+      this.key.pages["/"].subheading =
+        this.key.pages["/"].subheading || this.key.title;
     },
     update() {
       this.loading = true;
@@ -180,5 +247,30 @@ export default {
 }
 .hljs-string {
   color: #16a085;
+}
+* + h2 {
+  margin-top: 2rem;
+}
+h2 {
+  font-weight: normal;
+  margin-bottom: 1rem;
+}
+.color-preview {
+  padding-left: 2rem;
+}
+.heading-preview {
+  background-color: #aaa;
+  padding: 1.5rem;
+  border-radius: 0.2rem;
+}
+.heading-1 {
+  font-size: 150%;
+}
+.heading-2 {
+  font-size: 125%;
+  opacity: 0.75;
+}
+.v-input + .v-input {
+  margin-top: 1.5rem;
 }
 </style>

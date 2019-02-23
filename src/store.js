@@ -17,11 +17,7 @@ export default new Vuex.Store({
       store.keys = keys;
     },
     updateKey(store, key, value) {
-      store.keys[key] = {
-        ...value,
-        apiKey: key,
-        owner: this.store.auth.user.id
-      };
+      store.keys[key] = value;
     },
     logout(store) {
       store.auth = null;
