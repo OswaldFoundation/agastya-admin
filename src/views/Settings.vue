@@ -81,6 +81,11 @@
             <v-radio label="90% consumption" value="0.9" />
             <v-radio label="100% consumption" value="1" />
           </v-radio-group>
+          <h2>Security</h2>
+          <p>
+            If you want to change your password, you can request a password
+            reset: <a @click.prevent="passwordReset">Request</a>
+          </p>
           <v-layout align-center justify-center>
             <v-btn
               class="save-button"
@@ -131,6 +136,27 @@ export default {
       this.$http
         .patch("/auth/details", this.user)
         .then(() => (this.message = "Your settings have been updated."))
+        .catch(error => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.error
+          ) {
+            this.message = error.response.data.error;
+          }
+        })
+        .then(() => {
+          this.loading = false;
+        });
+    },
+    passwordReset() {
+      if (this.loading) return;
+      this.loading = true;
+      this.$http
+        .post("/auth/forgot", {
+          email: this.user.email
+        })
+        .then(() => (this.message = "A link has been sent to your email."))
         .catch(error => {
           if (
             error.response &&

@@ -1,17 +1,13 @@
 <template>
   <v-card flat>
-    <v-toolbar color="primary" dark extended flat>
-      <v-toolbar-side-icon></v-toolbar-side-icon>
-    </v-toolbar>
+    <v-toolbar color="primary" dark extended flat />
     <v-layout row pb-2>
       <v-flex xs4 offset-xs4>
         <v-card class="card--flex-toolbar">
           <v-toolbar card prominent>
-            <v-toolbar-title class="body-2 grey--text">Login</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>more_vert</v-icon>
-            </v-btn>
+            <v-toolbar-title class="body-2 grey--text"
+              >Forgot password</v-toolbar-title
+            >
           </v-toolbar>
           <v-divider></v-divider>
           <v-card-text>
@@ -34,12 +30,6 @@
                 label="Email"
                 required
               />
-              <v-text-field
-                v-model="password"
-                type="password"
-                label="Password"
-                required
-              />
               <v-btn
                 :loading="loading"
                 :disabled="loading"
@@ -48,16 +38,13 @@
                 type="submit"
                 block
               >
-                Log in with Oswald Labs
+                Request a password reset link
               </v-btn>
-              <v-btn class="button-2" block to="/register"
-                >Sign up for a new account</v-btn
-              >
             </v-form>
           </v-card-text>
         </v-card>
         <div style="padding: 2rem; text-align: center">
-          <router-link to="/forgot">Forgot your password?</router-link>
+          <router-link to="/">Log in to your account</router-link>
         </div>
       </v-flex>
     </v-layout>
@@ -71,8 +58,7 @@ export default {
       hasError: false,
       error: "",
       loading: false,
-      email: "",
-      password: ""
+      email: ""
     };
   },
   watch: {
@@ -88,13 +74,11 @@ export default {
     login() {
       this.loading = true;
       this.$http
-        .post("/auth/login", {
-          email: this.email,
-          password: this.password
+        .post("/auth/forgot", {
+          email: this.email
         })
-        .then(response => {
-          this.$store.commit("updateAuth", response.data);
-          this.$router.push("/my-apis");
+        .then(() => {
+          this.error = "A link has been sent";
         })
         .catch(error => {
           if (

@@ -1,17 +1,13 @@
 <template>
   <v-card flat>
-    <v-toolbar color="primary" dark extended flat>
-      <v-toolbar-side-icon></v-toolbar-side-icon>
-    </v-toolbar>
+    <v-toolbar color="primary" dark extended flat />
     <v-layout row pb-2>
       <v-flex xs4 offset-xs4>
         <v-card class="card--flex-toolbar">
           <v-toolbar card prominent>
-            <v-toolbar-title class="body-2 grey--text">Login</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>more_vert</v-icon>
-            </v-btn>
+            <v-toolbar-title class="body-2 grey--text"
+              >Reset password</v-toolbar-title
+            >
           </v-toolbar>
           <v-divider></v-divider>
           <v-card-text>
@@ -29,15 +25,9 @@
             </v-snackbar>
             <v-form class="form" @submit.prevent="login">
               <v-text-field
-                v-model="email"
-                type="email"
-                label="Email"
-                required
-              />
-              <v-text-field
                 v-model="password"
                 type="password"
-                label="Password"
+                label="New password"
                 required
               />
               <v-btn
@@ -48,16 +38,13 @@
                 type="submit"
                 block
               >
-                Log in with Oswald Labs
+                Change your password
               </v-btn>
-              <v-btn class="button-2" block to="/register"
-                >Sign up for a new account</v-btn
-              >
             </v-form>
           </v-card-text>
         </v-card>
         <div style="padding: 2rem; text-align: center">
-          <router-link to="/forgot">Forgot your password?</router-link>
+          <router-link to="/">Log in to your account</router-link>
         </div>
       </v-flex>
     </v-layout>
@@ -71,8 +58,8 @@ export default {
       hasError: false,
       error: "",
       loading: false,
-      email: "",
-      password: ""
+      password: "",
+      resetCode: ""
     };
   },
   watch: {
@@ -83,13 +70,14 @@ export default {
   mounted() {
     if (this.$store.state.auth && this.$store.state.auth.token)
       this.$router.push("/my-apis");
+    this.resetCode = this.$route.params.code;
   },
   methods: {
     login() {
       this.loading = true;
       this.$http
-        .post("/auth/login", {
-          email: this.email,
+        .post("/auth/reset", {
+          resetCode: this.resetCode,
           password: this.password
         })
         .then(response => {
@@ -107,8 +95,8 @@ export default {
         })
         .then(() => {
           this.loading = false;
-          this.email = "";
           this.password = "";
+          this.resetCode = "";
         });
     }
   }

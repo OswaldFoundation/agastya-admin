@@ -14,6 +14,16 @@ export default new Router({
       component: Home
     },
     {
+      path: "/forgot",
+      name: "forgot",
+      component: () => import("./views/Forgot.vue")
+    },
+    {
+      path: "/reset/:code",
+      name: "reset",
+      component: () => import("./views/Reset.vue")
+    },
+    {
       path: "/my-apis",
       name: "my-apis",
       component: () => import("./views/MyAPIs.vue")
