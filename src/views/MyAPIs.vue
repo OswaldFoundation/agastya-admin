@@ -74,7 +74,8 @@ export default {
             }
           });
           this.$store.commit("updateKeys", this.apiKeys);
-          if (this.apiKeys.length === 1) this.select(this.apiKeys[0]);
+          if (this.apiKeys.length === 1 && !this.$route.query.relax)
+            this.select(this.apiKeys[0]);
         })
         .catch(() => {})
         .then(() => {

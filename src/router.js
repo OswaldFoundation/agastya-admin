@@ -22,6 +22,11 @@ export default new Router({
       path: "/:apiKey/config",
       name: "config",
       component: () => import("./views/Config.vue")
+    },
+    {
+      path: "/settings",
+      name: "settings",
+      component: () => import("./views/Settings.vue")
     }
   ]
 });

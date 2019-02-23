@@ -7,7 +7,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     auth: null,
-    keys: []
+    keys: [],
+    lastKey: null
   },
   mutations: {
     updateAuth(store, auth) {
@@ -16,18 +17,25 @@ export default new Vuex.Store({
     updateKeys(store, keys) {
       store.keys = keys;
     },
+    updateLastKey(store, key) {
+      store.lastKey = key;
+    },
     updateKey(store, key, value) {
       store.keys[key] = value;
     },
     logout(store) {
       store.auth = null;
       store.keys = [];
+      store.lastKey = null;
     }
   },
   actions: {},
   getters: {
     auth(store) {
       return store.auth;
+    },
+    lastKey(store) {
+      return store.lastKey;
     },
     keys(store) {
       return store.keys;

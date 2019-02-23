@@ -1,0 +1,176 @@
+<template>
+  <v-layout class="margin">
+    <v-snackbar v-model="hasMessage" :timeout="5000" bottom right>
+      {{ message }}
+      <v-btn
+        flat
+        @click="
+          hasMessage = false;
+          message = '';
+        "
+        >Close</v-btn
+      >
+    </v-snackbar>
+    <v-flex xs12 sm6 offset-sm3>
+      <v-card>
+        <v-layout align-center justify-center>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline">Settings</h3>
+            </div>
+          </v-card-title>
+        </v-layout>
+        <v-form class="form" @submit.prevent="save">
+          <v-text-field v-model="user.name" type="text" label="Name" required />
+          <v-text-field
+            v-model="user.email"
+            type="text"
+            label="Email"
+            disabled
+            required
+          />
+          <h2>Plan</h2>
+          <p>
+            Your subscription plan is <strong>{{ user.plan }}</strong
+            >, which gives you up to
+            <strong>{{ parseInt(user.max_pageviews).toLocaleString() }}</strong>
+            pageviews + custom events per month. This month, you have used
+            {{ user.pageviews_consumed }} pageviews, i.e.
+            <strong
+              >{{
+                (
+                  (100 * parseInt(user.pageviews_consumed)) /
+                  parseInt(user.max_pageviews)
+                ).toFixed(2)
+              }}%</strong
+            >
+            of your quota.
+          </p>
+          <v-progress-linear
+            height="5"
+            :value="
+              (100 * parseInt(user.pageviews_consumed)) /
+                parseInt(user.max_pageviews)
+            "
+          />
+          <p>
+            If you've recently changed your subscription, it may take up to 24
+            hours to update here. Your usage was last updated
+            {{ timeago(new Date(parseInt(user.pageviews_updated) * 1000)) }}.
+          </p>
+          <h2>Service-level Agreement</h2>
+          <p>
+            We have a 100% uptime service-level agreement (SLA) available for
+            entireprise customers. You can read the detailed SLA on our
+            <a href="https://oswaldlabs.com/policies/sla/" target="_blank"
+              >Policies page</a
+            >. The current uptime is shown below:
+          </p>
+          <img
+            alt="Uptime"
+            src="https://img.shields.io/uptimerobot/ratio/m780781211-f53db30a0838a6d55f3560f6.svg"
+          />
+          <h2>Email notifications</h2>
+          <p>
+            You can receive emails to let you know when your quote is about to
+            end.
+          </p>
+          <v-radio-group v-model="user.notifications">
+            <v-radio label="Never" value="never" />
+            <v-radio label="50% consumption" value="0.5" />
+            <v-radio label="90% consumption" value="0.9" />
+            <v-radio label="100% consumption" value="1" />
+          </v-radio-group>
+          <v-layout align-center justify-center>
+            <v-btn
+              class="save-button"
+              type="submit"
+              color="info"
+              large
+              :loading="loading"
+              >Save your settings</v-btn
+            ></v-layout
+          >
+        </v-form>
+      </v-card>
+    </v-flex>
+  </v-layout>
+</template>
+
+<script>
+import timeago from "time-ago";
+import { mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters(["auth"])
+  },
+  data() {
+    return {
+      loading: false,
+      hasMessage: false,
+      message: "",
+      user: {}
+    };
+  },
+  watch: {
+    message() {
+      this.hasMessage = !!this.message;
+    },
+    auth() {
+      this.user = this.auth.user;
+    }
+  },
+  mounted() {
+    this.user = this.auth.user;
+  },
+  methods: {
+    timeago(time) {
+      return timeago.ago(time);
+    },
+    save() {
+      this.$http
+        .patch("/auth/details", this.user)
+        .then(() => (this.message = "Your settings have been updated."))
+        .catch(error => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.error
+          ) {
+            this.message = error.response.data.error;
+          }
+        })
+        .then(() => {
+          this.loading = false;
+        });
+    }
+  }
+};
+</script>
+
+<style>
+.form {
+  padding: 4rem;
+  padding-top: 2rem;
+}
+.headline {
+  margin-top: 2rem;
+}
+.margin {
+  margin: 4rem 0;
+}
+* + h2 {
+  margin-top: 2rem;
+}
+h2 {
+  font-weight: normal;
+  margin-bottom: 1rem;
+}
+.v-input + .v-input {
+  margin-top: 1.5rem;
+}
+.save-button {
+  margin-top: 2.5rem;
+  font-size: 125%;
+}
+</style>

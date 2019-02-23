@@ -13,22 +13,23 @@
     </v-snackbar>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
-        <v-card-title primary-title>
-          <div>
-            <h3 class="headline mb-0">Editing {{ key.title || key.apiKey }}</h3>
-          </div>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click.prevent="save" :loading="loading" dark
-            >Save</v-btn
-          >
-        </v-card-title>
-        <v-tabs fixed-tabs v-model="activeTab">
+        <v-tabs fixed-tabs color="grey lighten-3" v-model="activeTab">
           <v-tab :key="0">Configuration</v-tab>
           <v-tab :key="2">JSON</v-tab>
           <v-tab-item :key="0">
+            <v-layout align-center justify-center>
+              <v-card-title primary-title>
+                <div>
+                  <h3 class="headline">
+                    Editing {{ key.title || key.apiKey }}
+                  </h3>
+                </div>
+              </v-card-title>
+            </v-layout>
             <v-card flat>
               <v-form class="form" @submit.prevent="save">
                 <v-text-field
+                  @input="fupdate"
                   v-model="key.apiKey"
                   type="text"
                   label="API key"
@@ -36,6 +37,7 @@
                   disabled
                 />
                 <v-text-field
+                  @input="fupdate"
                   v-model="key.title"
                   type="text"
                   label="Name"
@@ -74,25 +76,57 @@
                 <v-layout row>
                   <v-flex>
                     <v-text-field
+                      @input="fupdate"
                       v-model="key.backgroundColor"
                       type="text"
                       label="Brand color"
                       messages="Background color for the plugin icon and headers"
                     />
+                    <div class="colors">
+                      <button
+                        type="button"
+                        v-for="color in [
+                          { name: 'blue', hex: '#007bff' },
+                          { name: 'green', hex: '#1abc9c' },
+                          { name: 'yellow', hex: '#f1c40f' },
+                          { name: 'orange', hex: '#e67e22' },
+                          { name: 'red', hex: '#e74c3c' },
+                          { name: 'purple', hex: '#9b59b6' },
+                          { name: 'gray', hex: '#34495e' }
+                        ]"
+                        @click.prevent="
+                          key.backgroundColor = color.hex;
+                          fupdate();
+                        "
+                        :aria-label="color.name"
+                        :style="`background-color: ${color.hex}`"
+                        :key="color.hex"
+                      >
+                        <v-icon
+                          class="inner-icon"
+                          v-if="color.hex === key.backgroundColor"
+                          color="white"
+                          >done</v-icon
+                        >
+                      </button>
+                    </div>
                     <v-text-field
+                      @input="fupdate"
                       v-model="key.foregroundColor"
                       type="text"
                       label="Text color"
                       messages="Text color for the plugin icon and headers"
                     />
                     <v-text-field
-                      v-model="key.pages['/'].heading"
+                      @input="fupdate"
+                      v-model="key.home.heading"
                       type="text"
                       label="Heading"
                       messages="This will be the title when a user opens the Agastya widget"
                     />
                     <v-text-field
-                      v-model="key.pages['/'].subheading"
+                      @input="fupdate"
+                      v-model="key.home.subheading"
                       type="text"
                       label="Subheading"
                       messages="Add a subheading, e.g., your website name"
@@ -108,16 +142,57 @@
                           }`
                         "
                       >
-                        <div class="heading-1">
-                          {{ key.pages["/"].heading }}
-                        </div>
-                        <div class="heading-2">
-                          {{ key.pages["/"].subheading }}
-                        </div>
+                        <div class="heading-1">Example Heading</div>
+                        <div class="heading-2">Website name</div>
+                      </div>
+                      <div
+                        class="circle-preview"
+                        :style="
+                          `background-color: ${key.backgroundColor}; color: ${
+                            key.foregroundColor
+                          }`
+                        "
+                      >
+                        <v-icon :color="key.foregroundColor" size="40"
+                          >accessibility</v-icon
+                        >
+                      </div>
+                      <div
+                        class="circle-preview"
+                        :style="
+                          `background-color: ${key.backgroundColor}; color: ${
+                            key.foregroundColor
+                          }`
+                        "
+                      >
+                        <v-icon :color="key.foregroundColor" size="40"
+                          >help</v-icon
+                        >
+                      </div>
+                      <div
+                        class="circle-preview"
+                        :style="
+                          `background-color: ${key.backgroundColor}; color: ${
+                            key.foregroundColor
+                          }`
+                        "
+                      >
+                        <v-icon :color="key.foregroundColor" size="40"
+                          >build</v-icon
+                        >
                       </div>
                     </div>
-                  </v-flex>
-                </v-layout>
+                  </v-flex> </v-layout
+                ><v-layout align-center justify-center>
+                  <v-btn
+                    class="save-button"
+                    type="submit"
+                    color="info"
+                    large
+                    :loading="loading"
+                    >Save your configuration</v-btn
+                  ></v-layout
+                >
               </v-form>
             </v-card>
           </v-tab-item>
@@ -140,9 +215,7 @@ export default {
   data() {
     return {
       key: {
-        pages: {
-          "/": {}
-        }
+        home: {}
       },
       json: "{}",
       activeTab: 0,
@@ -170,6 +243,9 @@ export default {
     }
   },
   methods: {
+    fupdate() {
+      this.$forceUpdate();
+    },
     updateKeys() {
       this.key =
         this.keys.filter(key => key.apiKey === this.$route.params.apiKey)[0] ||
@@ -177,12 +253,9 @@ export default {
       delete this.key.owner;
       this.key.backgroundColor = this.key.backgroundColor || "#007bff";
       this.key.foregroundColor = this.key.foregroundColor || "#ffffff";
-      this.key.pages = this.key.pages || {};
-      this.key.pages["/"] = this.key.pages["/"] || {};
-      this.key.pages["/"].heading =
-        this.key.pages["/"].heading || "Help & Accessibility";
-      this.key.pages["/"].subheading =
-        this.key.pages["/"].subheading || this.key.title;
+      this.key.home = this.key.home || {};
+      this.key.home.heading = this.key.home.heading || "Help & Accessibility";
+      this.key.home.subheading = this.key.home.subheading || this.key.title;
     },
     update() {
       this.loading = true;
@@ -224,6 +297,10 @@ export default {
 </script>
 
 <style>
+.form {
+  padding: 4rem;
+  padding-top: 2rem;
+}
 .margin {
   margin: 4rem 0;
 }
@@ -270,7 +347,43 @@ h2 {
   font-size: 125%;
   opacity: 0.75;
 }
+.headline {
+  margin-top: 2rem;
+}
 .v-input + .v-input {
   margin-top: 1.5rem;
+}
+.circle-preview {
+  background-color: gray;
+  display: inline-block;
+  width: 4rem;
+  height: 4rem;
+  text-align: center;
+  line-height: 5.72rem;
+  border-radius: 4rem;
+  margin-top: 2rem;
+  margin-right: 2rem;
+}
+.colors {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.colors button {
+  background-color: gray;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 2rem;
+  margin-right: 1rem;
+  position: relative;
+}
+.colors .inner-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.save-button {
+  margin-top: 2.5rem;
+  font-size: 125%;
 }
 </style>
