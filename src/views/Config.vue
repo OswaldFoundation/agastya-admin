@@ -127,14 +127,14 @@
                     />
                     <v-text-field
                       @input="forceUpdate"
-                      v-model="key.home.heading"
+                      v-model="key.layout.heading"
                       type="text"
                       label="Heading"
                       messages="This will be the title when a user opens the Agastya widget"
                     />
                     <v-text-field
                       @input="forceUpdate"
-                      v-model="key.home.subheading"
+                      v-model="key.layout.subheading"
                       type="text"
                       label="Subheading"
                       messages="Add a subheading, e.g., your website name"
@@ -324,6 +324,27 @@
                     </td>
                   </template>
                 </v-data-table>
+                <v-text-field
+                  @input="forceUpdate"
+                  v-model="key.variables.readAloudSelector"
+                  type="text"
+                  label="Read aloud selector"
+                  messages="A CSS selector for the main content of your page for read aloud (e.g., main#content)"
+                />
+                <v-text-field
+                  @input="forceUpdate"
+                  v-model="key.links.privacyPolicy"
+                  type="text"
+                  label="Privacy Policy link"
+                  messages="Link to your privacy policy for EU cookie law compliance"
+                />
+                <v-text-field
+                  @input="forceUpdate"
+                  v-model="key.links.cookiePolicy"
+                  type="text"
+                  label="Cookie Policy link"
+                  messages="Link to your cookie policy for EU cookie law compliance"
+                />
                 <v-btn
                   type="submit"
                   class="small-submit"
@@ -331,6 +352,30 @@
                   :loading="loading"
                 >
                   Save advanced
+                </v-btn>
+                <h2>Danger Zone</h2>
+                <p>
+                  <strong>Warning:</strong> Deleting an API key is not
+                  reversable. Agastya will immediately stop working on your
+                  website and all your configuration will be deleted. Enter this
+                  API key to confirm.
+                </p>
+                <v-text-field
+                  v-model="deleteApiKey"
+                  type="text"
+                  label="API key"
+                  messages="Enter this API key to delete"
+                />
+                <v-btn
+                  type="button"
+                  class="small-submit"
+                  color="red darken-3"
+                  @click.prevent="deleteKey"
+                  dark
+                  :disabled="deleteApiKey !== $route.params.apiKey"
+                  :loading="loading"
+                >
+                  Delete this API key
                 </v-btn>
               </v-form>
             </v-card>
@@ -355,11 +400,14 @@ export default {
   data() {
     return {
       key: {
-        home: {},
+        layout: {},
         integrations: {},
-        customCss: []
+        customCss: [],
+        variables: {},
+        links: {}
       },
       integrations,
+      deleteApiKey: "",
       json: "{}",
       activeTab: 0,
       loading: false,
@@ -392,6 +440,16 @@ export default {
     }
   },
   methods: {
+    deleteKey() {
+      this.loading = true;
+      this.$http
+        .delete(`/agastya/api-keys/${this.$route.params.apiKey}`)
+        .then(response => {
+          this.$router.push("/my-apis/?relax=true");
+        })
+        .catch(() => {})
+        .then(() => (this.loading = false));
+    },
     deleteCss(toDelete) {
       this.key.customCss.forEach((item, index) => {
         if (item.css === toDelete.css && item.mode === toDelete.mode)
@@ -455,10 +513,13 @@ export default {
       this.key.backgroundColor = this.key.backgroundColor || "#007bff";
       this.key.foregroundColor = this.key.foregroundColor || "#ffffff";
       this.key.customCss = this.key.customCss || [];
-      this.key.home = this.key.home || {};
+      this.key.variables = this.key.variables || {};
+      this.key.links = this.key.links || {};
+      this.key.layout = this.key.layout || {};
       this.key.integrations = this.key.integrations || {};
-      this.key.home.heading = this.key.home.heading || "Help & Accessibility";
-      this.key.home.subheading = this.key.home.subheading || this.key.title;
+      this.key.layout.heading =
+        this.key.layout.heading || "Help & Accessibility";
+      this.key.layout.subheading = this.key.layout.subheading || this.key.title;
     },
     update() {
       this.loading = true;
@@ -553,7 +614,8 @@ h2 {
 .headline {
   margin-top: 2rem;
 }
-.v-input + .v-input {
+.v-input + .v-input,
+.elevation-1 + .v-input {
   margin-top: 1.5rem;
 }
 .circle-preview {
