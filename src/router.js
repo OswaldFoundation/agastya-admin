@@ -19,6 +19,11 @@ export default new Router({
       component: () => import("./views/Forgot.vue")
     },
     {
+      path: "/register",
+      name: "register",
+      component: () => import("./views/Register.vue")
+    },
+    {
       path: "/reset/:code",
       name: "reset",
       component: () => import("./views/Reset.vue")
