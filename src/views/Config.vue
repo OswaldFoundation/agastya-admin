@@ -201,7 +201,6 @@
                   Save branding
                 </v-btn>
                 <h2>Integrations</h2>
-                {{ key }}
                 <v-container class="unpadded integrations" grid-list-xl>
                   <v-layout row wrap>
                     <v-flex
@@ -263,16 +262,76 @@
                 >
                   Save integrations
                 </v-btn>
-                <v-layout align-center justify-center>
-                  <v-btn
-                    class="save-button"
-                    type="submit"
-                    color="info"
-                    large
-                    :loading="loading"
-                    >Save your configuration</v-btn
-                  >
+                <h2>Advanced</h2>
+                <v-layout row>
+                  <v-flex md6>
+                    <h3>Custom CSS</h3>
+                  </v-flex>
+                  <v-flex md6 style="text-align: right">
+                    <v-dialog v-model="addCss" persistent max-width="600px">
+                      <v-btn
+                        slot="activator"
+                        style="margin-bottom: 1rem; margin-top: -1rem"
+                        >Add another rule</v-btn
+                      >
+                      <v-card>
+                        <v-card-text>
+                          <v-form @submit.prevent="addNewCss">
+                            <v-select
+                              :items="modes"
+                              v-model="newCss.mode"
+                              label="Mode"
+                            />
+                            <v-textarea
+                              v-model="newCss.css"
+                              label="Custom CSS"
+                            />
+                          </v-form>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn flat @click="addCss = false">Delete</v-btn>
+                            <v-btn color="blue" flat @click="addNewCss"
+                              >Save</v-btn
+                            >
+                          </v-card-actions>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
+                  </v-flex>
                 </v-layout>
+                <v-data-table
+                  :headers="[
+                    { text: 'Accessibility mode', value: 'mode' },
+                    { text: 'CSS', value: 'css' },
+                    { text: 'Edit', value: 'edit' },
+                    { text: 'Delete', value: 'delete' }
+                  ]"
+                  :items="key.customCss"
+                  class="elevation-1"
+                >
+                  <template slot="items" slot-scope="props">
+                    <td>{{ props.item.mode }}</td>
+                    <td>{{ props.item.css }}</td>
+                    <td>
+                      <v-icon small @click="editCss(props.item)">
+                        edit
+                      </v-icon>
+                    </td>
+                    <td>
+                      <v-icon small @click="deleteCss(props.item)">
+                        delete
+                      </v-icon>
+                    </td>
+                  </template>
+                </v-data-table>
+                <v-btn
+                  type="submit"
+                  class="small-submit"
+                  color="info"
+                  :loading="loading"
+                >
+                  Save advanced
+                </v-btn>
               </v-form>
             </v-card>
           </v-tab-item>
@@ -297,7 +356,8 @@ export default {
     return {
       key: {
         home: {},
-        integrations: {}
+        integrations: {},
+        customCss: []
       },
       integrations,
       json: "{}",
@@ -305,7 +365,13 @@ export default {
       loading: false,
       hasMessage: false,
       message: "",
-      color: "#1ca085"
+      color: "#1ca085",
+      addCss: false,
+      newCss: {
+        mode: "",
+        css: ""
+      },
+      modes: ["dyslexia", "night", "blue-light-filter"]
     };
   },
   computed: {
@@ -326,6 +392,27 @@ export default {
     }
   },
   methods: {
+    deleteCss(toDelete) {
+      this.key.customCss.forEach((item, index) => {
+        if (item.css === toDelete.css && item.mode === toDelete.mode)
+          return this.key.customCss.splice(index, 1);
+      });
+    },
+    editCss(toEdit) {
+      this.deleteCss(toEdit);
+      this.newCss.mode = toEdit.mode;
+      this.newCss.css = toEdit.css;
+      this.addCss = true;
+    },
+    addNewCss() {
+      this.key.customCss.push({
+        mode: this.newCss.mode,
+        css: this.newCss.css
+      });
+      this.newCss.mode = "";
+      this.newCss.css = "";
+      this.addCss = false;
+    },
     show(slug) {
       if (!this.integrations[slug].visible) {
         this.integrations[slug].visible = true;
@@ -367,6 +454,7 @@ export default {
       delete this.key.owner;
       this.key.backgroundColor = this.key.backgroundColor || "#007bff";
       this.key.foregroundColor = this.key.foregroundColor || "#ffffff";
+      this.key.customCss = this.key.customCss || [];
       this.key.home = this.key.home || {};
       this.key.integrations = this.key.integrations || {};
       this.key.home.heading = this.key.home.heading || "Help & Accessibility";
