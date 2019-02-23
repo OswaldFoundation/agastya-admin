@@ -9,6 +9,9 @@
         <v-list-tile v-for="item in keys" :key="item.apikey" @click="changeKey">
           <v-list-tile-title v-text="item.apiKey"></v-list-tile-title>
         </v-list-tile>
+        <v-list-tile @click="changeKey">
+          <v-list-tile-title>Create another API key</v-list-tile-title>
+        </v-list-tile>
       </v-list>
     </v-menu>
     <v-toolbar-items class="hidden-sm-and-down">
@@ -45,7 +48,7 @@ export default {
     },
     $route() {
       if (this.$route.params.apiKey) {
-        this.title = this.$route.params.apiKey;
+        this.title = this.$route.params.title || this.$route.params.apiKey;
       } else {
         this.title = "Agastya by Oswald Labs";
       }

@@ -67,7 +67,7 @@ export default {
       error: "",
       loading: false,
       email: "anandchowdhary+4@gmail.com",
-      password: "1Anand01*"
+      password: "password"
     };
   },
   watch: {
