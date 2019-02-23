@@ -33,14 +33,16 @@
           <p>
             Your subscription plan is <strong>{{ user.plan }}</strong
             >, which gives you up to
-            <strong>{{ parseInt(user.max_pageviews).toLocaleString() }}</strong>
+            <strong>{{
+              parseInt(user.max_pageviews || 1).toLocaleString()
+            }}</strong>
             pageviews + custom events per month. This month, you have used
             {{ user.pageviews_consumed }} pageviews, i.e.
             <strong
               >{{
                 (
-                  (100 * parseInt(user.pageviews_consumed)) /
-                  parseInt(user.max_pageviews)
+                  (100 * parseInt(user.pageviews_consumed || 0)) /
+                  parseInt(user.max_pageviews || 1)
                 ).toFixed(2)
               }}%</strong
             >
@@ -49,14 +51,16 @@
           <v-progress-linear
             height="5"
             :value="
-              (100 * parseInt(user.pageviews_consumed)) /
-                parseInt(user.max_pageviews)
+              (100 * parseInt(user.pageviews_consumed || 0)) /
+                parseInt(user.max_pageviews || 1)
             "
           />
           <p>
             If you've recently changed your subscription, it may take up to 24
             hours to update here. Your usage was last updated
-            {{ timeago(new Date(parseInt(user.pageviews_updated) * 1000)) }}.
+            {{
+              timeago(new Date(parseInt(user.pageviews_updated || 0) * 1000))
+            }}.
           </p>
           <h2>Service-level Agreement</h2>
           <p>

@@ -29,7 +29,7 @@
             <v-card flat>
               <v-form class="form" @submit.prevent="save">
                 <v-text-field
-                  @input="fupdate"
+                  @input="forceUpdate"
                   v-model="key.apiKey"
                   type="text"
                   label="API key"
@@ -37,7 +37,7 @@
                   disabled
                 />
                 <v-text-field
-                  @input="fupdate"
+                  @input="forceUpdate"
                   v-model="key.title"
                   type="text"
                   label="Name"
@@ -72,11 +72,19 @@
                     </v-chip>
                   </template>
                 </v-combobox>
+                <v-btn
+                  type="submit"
+                  class="small-submit"
+                  color="info"
+                  :loading="loading"
+                >
+                  Save settings
+                </v-btn>
                 <h2>Branding</h2>
                 <v-layout row>
                   <v-flex>
                     <v-text-field
-                      @input="fupdate"
+                      @input="forceUpdate"
                       v-model="key.backgroundColor"
                       type="text"
                       label="Brand color"
@@ -96,7 +104,7 @@
                         ]"
                         @click.prevent="
                           key.backgroundColor = color.hex;
-                          fupdate();
+                          forceUpdate();
                         "
                         :aria-label="color.name"
                         :style="`background-color: ${color.hex}`"
@@ -111,21 +119,21 @@
                       </button>
                     </div>
                     <v-text-field
-                      @input="fupdate"
+                      @input="forceUpdate"
                       v-model="key.foregroundColor"
                       type="text"
                       label="Text color"
                       messages="Text color for the plugin icon and headers"
                     />
                     <v-text-field
-                      @input="fupdate"
+                      @input="forceUpdate"
                       v-model="key.home.heading"
                       type="text"
                       label="Heading"
                       messages="This will be the title when a user opens the Agastya widget"
                     />
                     <v-text-field
-                      @input="fupdate"
+                      @input="forceUpdate"
                       v-model="key.home.subheading"
                       type="text"
                       label="Subheading"
@@ -182,8 +190,80 @@
                         >
                       </div>
                     </div>
-                  </v-flex> </v-layout
-                ><v-layout align-center justify-center>
+                  </v-flex>
+                </v-layout>
+                <v-btn
+                  type="submit"
+                  class="small-submit"
+                  color="info"
+                  :loading="loading"
+                >
+                  Save branding
+                </v-btn>
+                <h2>Integrations</h2>
+                {{ key }}
+                <v-container class="unpadded integrations" grid-list-xl>
+                  <v-layout row wrap>
+                    <v-flex
+                      v-for="(service, slug) in integrations"
+                      :key="`service_${slug}`"
+                      xs6
+                    >
+                      <v-card>
+                        <v-card-title>
+                          <div class="emoji-icon">{{ service.emoji }}</div>
+                          <h3>{{ service.title }}</h3>
+                          <p>{{ service.description }}</p>
+                          <div
+                            v-if="service.enabled && service.visible"
+                            class="additional-settings"
+                          >
+                            <h4>Configure</h4>
+                            <v-text-field
+                              v-for="(control, index) in service.enabled"
+                              :key="`input_${slug}_${index}`"
+                              @input="forceUpdate"
+                              type="text"
+                              :label="control.label"
+                              v-model="integrations[slug].enabled[index].value"
+                              :messages="control.message"
+                              :required="control.required"
+                            />
+                          </div>
+                        </v-card-title>
+                        <v-card-actions>
+                          <v-btn
+                            type="button"
+                            @click.prevent="
+                              service.enabled ? show(slug) : enable(slug)
+                            "
+                            v-if="!key.integrations[slug]"
+                            flat
+                            color="blue"
+                            >Enable</v-btn
+                          >
+                          <v-btn
+                            type="button"
+                            @click.prevent="disable(slug)"
+                            v-else
+                            flat
+                            color="blue-grey"
+                            >Disable</v-btn
+                          >
+                        </v-card-actions>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+                <v-btn
+                  type="submit"
+                  class="small-submit"
+                  color="info"
+                  :loading="loading"
+                >
+                  Save integrations
+                </v-btn>
+                <v-layout align-center justify-center>
                   <v-btn
                     class="save-button"
                     type="submit"
@@ -191,8 +271,8 @@
                     large
                     :loading="loading"
                     >Save your configuration</v-btn
-                  ></v-layout
-                >
+                  >
+                </v-layout>
               </v-form>
             </v-card>
           </v-tab-item>
@@ -210,13 +290,16 @@
 </template>
 
 <script>
+import integrations from "../integrations";
 import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       key: {
-        home: {}
+        home: {},
+        integrations: {}
       },
+      integrations,
       json: "{}",
       activeTab: 0,
       loading: false,
@@ -243,7 +326,38 @@ export default {
     }
   },
   methods: {
-    fupdate() {
+    show(slug) {
+      if (!this.integrations[slug].visible) {
+        this.integrations[slug].visible = true;
+      } else {
+        this.integrations[slug].visible = false;
+        this.enable(slug);
+      }
+      this.forceUpdate();
+    },
+    enable(slug) {
+      let updateObject = {};
+      if (
+        this.integrations[slug] &&
+        this.integrations[slug].enabled &&
+        typeof this.integrations[slug].enabled === "object"
+      ) {
+        for (let i = 0; i < this.integrations[slug].enabled.length; i++) {
+          updateObject[
+            this.integrations[slug].enabled[i].model
+          ] = this.integrations[slug].enabled[i].value;
+        }
+      }
+      this.key.integrations[slug] = Object.keys(updateObject).length
+        ? updateObject
+        : true;
+      this.forceUpdate();
+    },
+    disable(slug) {
+      delete this.key.integrations[slug];
+      this.forceUpdate();
+    },
+    forceUpdate() {
       this.$forceUpdate();
     },
     updateKeys() {
@@ -254,6 +368,7 @@ export default {
       this.key.backgroundColor = this.key.backgroundColor || "#007bff";
       this.key.foregroundColor = this.key.foregroundColor || "#ffffff";
       this.key.home = this.key.home || {};
+      this.key.integrations = this.key.integrations || {};
       this.key.home.heading = this.key.home.heading || "Help & Accessibility";
       this.key.home.subheading = this.key.home.subheading || this.key.title;
     },
@@ -385,5 +500,25 @@ h2 {
 .save-button {
   margin-top: 2.5rem;
   font-size: 125%;
+}
+.small-submit {
+  margin-top: 2rem;
+  margin-left: 0;
+  margin-bottom: 2rem;
+}
+.unpadded {
+  padding: 0 !important;
+}
+.integrations .v-card__title {
+  padding: 1.9rem;
+  padding-bottom: 0;
+}
+.integrations p {
+  margin-bottom: 0.5rem;
+}
+.emoji-icon {
+  margin-right: 1rem;
+  font-size: 200%;
+  vertical-align: middle;
 }
 </style>
