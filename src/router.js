@@ -34,6 +34,16 @@ export default new Router({
       component: () => import("./views/MyAPIs.vue")
     },
     {
+      path: "/:apiKey/analytics",
+      name: "analytics",
+      component: () => import("./views/Analytics.vue")
+    },
+    {
+      path: "/:apiKey/explore/:fingerprint",
+      name: "explore",
+      component: () => import("./views/Explore.vue")
+    },
+    {
       path: "/:apiKey/config",
       name: "config",
       component: () => import("./views/Config.vue")

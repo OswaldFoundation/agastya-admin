@@ -24,7 +24,7 @@
       <v-btn flat :to="`/${key}/config`">Configuration</v-btn>
       <v-btn flat :to="`/settings`">Settings</v-btn>
     </v-toolbar-items>
-    <v-spacer></v-spacer>
+    <v-spacer />
     <v-btn flat to="/settings">{{ auth.user.name }}</v-btn>
     <v-btn flat @click.prevent="logout">Logout</v-btn>
   </v-toolbar>
