@@ -26,7 +26,7 @@
                 data[data.length - 1]._source.latitude
               },${
                 data[data.length - 1]._source.longitude
-              }&zoom=13&size=600x300&maptype=roadmap&key=AIzaSyDBZBxSdx_wsRAsqVLHPfUP-X-oa-_Cej0'); background-size: cover; background-position: center center; background-repeat: no-repeat;`
+              }&zoom=13&size=600x400&maptype=roadmap&key=AIzaSyDBZBxSdx_wsRAsqVLHPfUP-X-oa-_Cej0'); background-size: cover; background-position: center center; background-repeat: no-repeat;`
             "
           />
           <v-flex>
@@ -157,8 +157,7 @@
             <v-card class="elevation-2">
               <v-card-text>
                 <div>
-                  {{ event._source.action }}
-                  {{ event._source.event }}
+                  {{ text(event._source.action, event._source.event) }}
                   {{ event._source.description }}
                 </div>
                 <div>
@@ -179,7 +178,7 @@
               </v-card-text>
             </v-card>
           </v-timeline-item>
-          <v-timeline-item color="white">
+          <v-timeline-item color="white" style="text-align: right">
             <v-avatar slot="icon">
               <img
                 v-if="
@@ -196,10 +195,12 @@
                 "
               />
             </v-avatar>
-            Referred to your site by
-            {{
-              data.length ? data[data.length - 1]._source.referrer_domain : ""
-            }}
+            <span>
+              Referred by
+              {{
+                data.length ? data[data.length - 1]._source.referrer_domain : ""
+              }}
+            </span>
           </v-timeline-item>
         </v-timeline>
       </v-card>
@@ -234,6 +235,26 @@ export default {
       .then(() => (this.loading = false));
   },
   methods: {
+    text(action, event) {
+      if (action === "pageview") return "Pageview";
+      if (action === "open") return "Open Agastya";
+      if (action === "close") return "Close Agastya";
+      if (action === "service") {
+        let say = "Agastya service: ";
+        if (event === "/") {
+          say += "Home";
+        } else {
+          say += event;
+        }
+        return say;
+      }
+      if (action === "cssClass") action = "Agastya mode: ";
+      event =
+        typeof event === "string" && event
+          ? event.charAt(0).toUpperCase() + event.slice(1)
+          : "";
+      return action + " " + event;
+    },
     download() {
       download(
         JSON.stringify(this.data, null, 2),
