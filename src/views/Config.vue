@@ -444,7 +444,7 @@ export default {
       this.loading = true;
       this.$http
         .delete(`/agastya/api-keys/${this.$route.params.apiKey}`)
-        .then(response => {
+        .then(() => {
           this.$router.push("/my-apis/?relax=true");
         })
         .catch(() => {})

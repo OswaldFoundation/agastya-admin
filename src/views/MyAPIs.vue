@@ -31,18 +31,47 @@
           >
             <template slot="items" slot-scope="props">
               <td>{{ props.item.apiKey }}</td>
-              <td class="text-xs-right">
-                <v-btn color="primary" @click.prevent="select(props.item)" dark
-                  >Select</v-btn
+              <td class="text-xs-center">
+                <v-btn
+                  @click.stop="
+                    addKey = props.item.apiKey;
+                    showAdd = true;
+                  "
+                  >Add to your site</v-btn
                 >
               </td>
-              <!-- <td class="text-xs-right">{{ props.item.calories }}</td>
-                <td class="text-xs-right">{{ props.item.fat }}</td>
-                <td class="text-xs-right">{{ props.item.carbs }}</td>
-                <td class="text-xs-right">{{ props.item.protein }}</td>
-                <td class="text-xs-right">{{ props.item.iron }}</td> -->
+              <td class="text-xs-right">
+                <v-btn @click.prevent="select(props.item)"
+                  >Configure settings</v-btn
+                >
+              </td>
             </template>
           </v-data-table>
+          <v-dialog v-model="showAdd" max-width="600">
+            <v-card>
+              <v-card-text>
+                <p>
+                  Copy and paste the following line just before
+                  <code>&lt;/body&gt;</code>:
+                </p>
+                <pre
+                  v-highlightjs="
+                    `<script src=&quot;https://agastya-loader.oswaldlabs.com/${addKey}.js&quot; async defer></script>`
+                  "
+                ><code class="js"></code></pre>
+                <p style="margin-top: 2rem">
+                  If you're bundling a webapp, you can also include Agastya from
+                  NPM. You can learn more on the
+                  <a
+                    target="_blank"
+                    href="https://help.oswaldlabs.com/developers/installation.html"
+                    >Installation</a
+                  >
+                  page on our Developers' Help website.
+                </p>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </div>
       </v-card>
     </v-flex>
@@ -57,8 +86,11 @@ export default {
       apiKeys: [],
       headers: [
         { text: "API key", value: "api-key" },
-        { text: "", value: "select" }
-      ]
+        { text: "", value: "implement" },
+        { text: "", value: "configure" }
+      ],
+      addKey: "",
+      showAdd: false
     };
   },
   methods: {
@@ -111,5 +143,15 @@ export default {
 }
 .empty-state h1 {
   margin: 1rem 0;
+}
+.hljs {
+  font-size: 100%;
+  color: #c0392b;
+}
+.hljs-attr {
+  color: #2980b9;
+}
+.hljs-string {
+  color: #16a085;
 }
 </style>
