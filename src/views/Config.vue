@@ -72,6 +72,11 @@
                     </v-chip>
                   </template>
                 </v-combobox>
+                <v-checkbox
+                  v-model="key.variables.displayNone"
+                  label="Hide the Agastya button from my website"
+                  messages="Your users will not be able to open Agastya, you can still use the API"
+                />
                 <v-btn
                   type="submit"
                   class="small-submit"
@@ -536,7 +541,7 @@ export default {
     },
     save() {
       this.loading = true;
-      const updateData = this.key;
+      const updateData = JSON.parse(JSON.stringify(this.key));
       delete updateData.owner;
       delete updateData.apiKey;
       this.$http

@@ -40,7 +40,10 @@
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title>
-                    {{ data[data.length - 1]._source.browser_name }}
+                    {{
+                      data[data.length - 1]._source.browser_name ||
+                        "Unknown browser"
+                    }}
                     {{ data[data.length - 1]._source.browser_version }}
                   </v-list-tile-title>
                   <v-list-tile-sub-title>
@@ -109,7 +112,13 @@
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title>
-                    {{ data[data.length - 1]._source.city || "Unknown city" }},
+                    {{ data[data.length - 1]._source.city || "Unknown city"
+                    }}{{
+                      data[data.length - 1]._source.region_code ||
+                      data[data.length - 1]._source.region_name
+                        ? ","
+                        : ""
+                    }}
                     {{
                       data[data.length - 1]._source.region_code ||
                         data[data.length - 1]._source.region_name

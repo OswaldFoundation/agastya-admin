@@ -68,8 +68,6 @@ export default {
     }
   },
   mounted() {
-    if (this.$store.state.auth && this.$store.state.auth.token)
-      this.$router.push("/my-apis");
     this.resetCode = this.$route.params.code;
   },
   methods: {

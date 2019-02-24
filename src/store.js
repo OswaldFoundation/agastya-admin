@@ -14,6 +14,9 @@ export default new Vuex.Store({
     updateAuth(store, auth) {
       store.auth = auth;
     },
+    updateUser(store, user) {
+      Vue.set(store.auth, "user", user);
+    },
     updateKeys(store, keys) {
       store.keys = keys;
     },
@@ -21,7 +24,7 @@ export default new Vuex.Store({
       store.lastKey = key;
     },
     updateKey(store, key, value) {
-      store.keys[key] = value;
+      Vue.set(store.keys, key, value);
     },
     logout(store) {
       store.auth = null;

@@ -31,13 +31,15 @@
           />
           <h2>Plan</h2>
           <p>
-            Your subscription plan is <strong>{{ user.plan }}</strong
+            Your subscription plan is
+            <strong style="text-transform: capitalize">{{ user.plan }}</strong
             >, which gives you up to
             <strong>{{
               parseInt(user.max_pageviews || 1).toLocaleString()
             }}</strong>
             pageviews + custom events per month. This month, you have used
-            {{ user.pageviews_consumed }} pageviews, i.e.
+            {{ parseInt(user.pageviews_consumed || 0).toLocaleString() }}
+            pageviews, i.e.
             <strong
               >{{
                 (
@@ -62,6 +64,12 @@
               timeago(new Date(parseInt(user.pageviews_updated || 0) * 1000))
             }}.
           </p>
+          <v-btn
+            type="button"
+            :loading="loading"
+            @click.prevent="updatePageviews"
+            >Update data</v-btn
+          >
           <h2>Service-level Agreement</h2>
           <p>
             We have a 100% uptime service-level agreement (SLA) available for
@@ -135,6 +143,32 @@ export default {
   methods: {
     timeago(time) {
       return timeago.ago(time);
+    },
+    loadProfile() {
+      this.loading = true;
+      this.$http
+        .get("/auth/details")
+        .then(response => this.$store.commit("updateUser", response.data))
+        .catch(() => {})
+        .then(() => (this.loading = false))
+        .then(() => location.reload());
+    },
+    updatePageviews() {
+      this.loading = true;
+      this.$http
+        .get("/agastya/analytics/quota", this.user)
+        .then(() => (this.message = "Your quota has been updated."))
+        .catch(error => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.error
+          ) {
+            this.message = error.response.data.error;
+          }
+        })
+        .then(() => (this.loading = false))
+        .then(() => this.loadProfile());
     },
     save() {
       this.$http
