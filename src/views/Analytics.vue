@@ -41,11 +41,7 @@
               <img
                 class="tiny-flag"
                 alt=""
-                :src="
-                  `https://tse2.mm.bing.net/th?q=${
-                    props.item._source.browser_name
-                  }+icon&w=100&h=100&p=0&dpr=2&adlt=moderate&c=1`
-                "
+                :src="iconify(props.item._source.browser_name)"
               />
               {{ props.item._source.browser_name }}
               {{ props.item._source.os_name }}

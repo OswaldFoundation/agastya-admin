@@ -16,7 +16,7 @@
         <v-layout align-center justify-center>
           <v-card-title primary-title>
             <div>
-              <h3 class="headline">Settings</h3>
+              <h3 style="margin-top: 2rem" class="headline">Settings</h3>
             </div>
           </v-card-title>
         </v-layout>
@@ -182,9 +182,6 @@ export default {
 .form {
   padding: 4rem;
   padding-top: 2rem;
-}
-.headline {
-  margin-top: 2rem;
 }
 .margin {
   margin: 4rem 0;

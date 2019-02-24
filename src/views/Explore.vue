@@ -35,11 +35,7 @@
               <v-list-tile avatar>
                 <v-list-tile-avatar>
                   <img
-                    :src="
-                      `https://tse2.mm.bing.net/th?q=${
-                        data[data.length - 1]._source.browser_name
-                      }+icon&w=100&h=100&p=0&dpr=2&adlt=moderate&c=1`
-                    "
+                    :src="iconify(data[data.length - 1]._source.browser_name)"
                   />
                 </v-list-tile-avatar>
                 <v-list-tile-content>
@@ -56,11 +52,7 @@
               <v-list-tile avatar>
                 <v-list-tile-avatar>
                   <img
-                    :src="
-                      `https://tse2.mm.bing.net/th?q=${
-                        data[data.length - 1]._source.os_name
-                      }+icon&w=100&h=100&p=0&dpr=2&adlt=moderate&c=1`
-                    "
+                    :src="iconify(data[data.length - 1]._source.os_name || '')"
                   />
                 </v-list-tile-avatar>
                 <v-list-tile-content>
@@ -80,7 +72,7 @@
                     :src="
                       `https://tse2.mm.bing.net/th?q=${data[data.length - 1]
                         ._source.device_manufacturer ||
-                        'computer'}+icon&w=100&h=100&p=0&dpr=2&adlt=moderate&c=1`
+                        'computer'}+logo&w=100&h=100&p=0&dpr=2&adlt=moderate&c=1`
                     "
                   />
                 </v-list-tile-avatar>
@@ -157,11 +149,13 @@
             <v-card class="elevation-2">
               <v-card-text>
                 <div>
-                  {{ text(event._source.action, event._source.event) }}
+                  <v-icon class="tiny-icon">extension</v-icon>
+                  {{ text(event._source) }}
                   {{ event._source.description }}
                 </div>
                 <div>
                   <div class="wrapped">
+                    <v-icon class="tiny-icon">link</v-icon>
                     {{
                       event._source.url &&
                       event._source.url.includes(event._source.url_domain)
@@ -171,14 +165,16 @@
                   </div>
                 </div>
                 <div>
-                  {{ timeago(new Date(event._source.date)) }} ({{
-                    new Date(event._source.date).toLocaleString()
-                  }})
+                  <v-icon class="tiny-icon">access_time</v-icon>
+                  {{ new Date(event._source.date).toLocaleString() }}
                 </div>
               </v-card-text>
             </v-card>
           </v-timeline-item>
-          <v-timeline-item color="white" style="text-align: right">
+          <v-timeline-item
+            color="white"
+            :style="`text-align: ${data.length % 2 === 0 ? 'right' : 'left'}`"
+          >
             <v-avatar slot="icon">
               <img
                 v-if="
@@ -197,9 +193,7 @@
             </v-avatar>
             <span>
               Referred by
-              {{
-                data.length ? data[data.length - 1]._source.referrer_domain : ""
-              }}
+              {{ referrer() }}
             </span>
           </v-timeline-item>
         </v-timeline>
@@ -211,7 +205,6 @@
 <script>
 import download from "downloadjs";
 import duration from "humanize-duration";
-import timeago from "time-ago";
 export default {
   data() {
     return {
@@ -235,34 +228,51 @@ export default {
       .then(() => (this.loading = false));
   },
   methods: {
-    text(action, event) {
-      if (action === "pageview") return "Pageview";
-      if (action === "open") return "Open Agastya";
-      if (action === "close") return "Close Agastya";
-      if (action === "service") {
+    referrer() {
+      if (!this.data.length) return;
+      let ref = this.data[this.data.length - 1]._source;
+      if (
+        ref.referrer === "android-app://com.google.android.googlequicksearchbox"
+      ) {
+        this.data[this.data.length - 1]._source.referrer_domain = "google.com";
+        return "Google Quick Search for Android";
+      }
+      return ref.referrer_domain;
+    },
+    text(d) {
+      if (d.action === "pageview") return "Pageview";
+      if (d.action === "open") return "Open Agastya";
+      if (d.action === "close") return "Close Agastya";
+      if (d.action === "service") {
         let say = "Agastya service: ";
-        if (event === "/") {
+        if (d === "/") {
           say += "Home";
         } else {
-          say += event;
+          say += d;
         }
         return say;
       }
-      if (action === "cssClass") action = "Agastya mode: ";
-      event =
-        typeof event === "string" && event
-          ? event.charAt(0).toUpperCase() + event.slice(1)
+      if (d.action === "custom") {
+        let say = "Custom event: ";
+        Object.keys(d).forEach(key => {
+          if (d.hasOwnProperty(key) && key.startsWith("custom_")) {
+            say += key.substring(7) + " (" + d[key] + ") ";
+          }
+        });
+        return say;
+      }
+      if (d.action === "cssClass") d.action = "Agastya mode: ";
+      d =
+        typeof d === "string" && d
+          ? d.charAt(0).toUpperCase() + d.slice(1)
           : "";
-      return action + " " + event;
+      return d.action + " " + d;
     },
     download() {
       download(
         JSON.stringify(this.data, null, 2),
         `${this.apiKey}_${this.fingerprint}.json`
       );
-    },
-    timeago(time) {
-      return timeago.ago(time);
     },
     duration(time) {
       return duration(time);
@@ -296,5 +306,8 @@ h2 {
 .wrapped {
   white-space: nowrap;
   overflow-x: auto;
+}
+.tiny-icon {
+  font-size: 120%;
 }
 </style>

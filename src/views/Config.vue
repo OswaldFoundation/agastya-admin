@@ -20,7 +20,7 @@
             <v-layout align-center justify-center>
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline">
+                  <h3 class="headline" style="margin-top: 2rem">
                     Editing {{ key.title || key.apiKey }}
                   </h3>
                 </div>
@@ -519,7 +519,6 @@ export default {
       this.key.integrations = this.key.integrations || {};
       this.key.layout.heading =
         this.key.layout.heading || "Help & Accessibility";
-      this.key.layout.subheading = this.key.layout.subheading || this.key.title;
     },
     update() {
       this.loading = true;
@@ -537,8 +536,11 @@ export default {
     },
     save() {
       this.loading = true;
+      const updateData = this.key;
+      delete updateData.owner;
+      delete updateData.apiKey;
       this.$http
-        .patch(`/agastya/api-keys/${this.$route.params.apiKey}`, this.key)
+        .patch(`/agastya/api-keys/${this.$route.params.apiKey}`, updateData)
         .then(() => {
           this.message = "Your API has been updated!";
         })
@@ -610,9 +612,6 @@ h2 {
 .heading-2 {
   font-size: 125%;
   opacity: 0.75;
-}
-.headline {
-  margin-top: 2rem;
 }
 .v-input + .v-input,
 .elevation-1 + .v-input {

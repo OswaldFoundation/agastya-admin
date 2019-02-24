@@ -4,6 +4,7 @@ import "./plugins/vuetify";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import iconify from "./iconify";
 import VueHighlightJS from "vue-highlightjs";
 import "./registerServiceWorker";
 
@@ -12,6 +13,7 @@ const instance = axios.create({
   baseURL: "https://developer.oswaldlabs.com/"
 });
 Vue.prototype.$http = instance;
+Vue.prototype.iconify = iconify;
 Vue.use(VueHighlightJS);
 
 new Vue({
