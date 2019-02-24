@@ -148,7 +148,7 @@
             </span>
             <v-card class="elevation-2">
               <v-card-text>
-                <div>
+                <div class="wrapped">
                   <v-icon class="tiny-icon">extension</v-icon>
                   {{ text(event._source) }}
                   {{ event._source.description }}
@@ -164,7 +164,7 @@
                     }}
                   </div>
                 </div>
-                <div>
+                <div class="wrapped">
                   <v-icon class="tiny-icon">access_time</v-icon>
                   {{ new Date(event._source.date).toLocaleString() }}
                 </div>
