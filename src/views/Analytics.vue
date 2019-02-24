@@ -128,11 +128,11 @@
               <v-layout align-center justify-center>
                 <v-card-title primary-title>
                   <div>
-                    <h3>Countries</h3>
+                    <h3>Pages</h3>
                   </div>
                 </v-card-title>
               </v-layout>
-              <TopList :apiKey="apiKey" item="country_name" />
+              <TopList :apiKey="apiKey" item="url" />
             </v-card>
           </v-flex>
         </v-layout>

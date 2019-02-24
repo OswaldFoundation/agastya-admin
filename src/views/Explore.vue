@@ -26,7 +26,7 @@
                 data[data.length - 1]._source.latitude
               },${
                 data[data.length - 1]._source.longitude
-              }&zoom=13&size=600x400&maptype=roadmap&key=AIzaSyDBZBxSdx_wsRAsqVLHPfUP-X-oa-_Cej0'); background-size: cover; background-position: center center; background-repeat: no-repeat;`
+              }&zoom=13&size=600x600&maptype=roadmap&key=AIzaSyDBZBxSdx_wsRAsqVLHPfUP-X-oa-_Cej0'); background-size: cover; background-position: center center; background-repeat: no-repeat;`
             "
           />
           <v-flex>
@@ -130,6 +130,22 @@
                       data[data.length - 1]._source.country_name ||
                         "Unknown country"
                     }}
+                  </v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-divider />
+              <v-list-tile avatar>
+                <v-list-tile-avatar>
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Agastya.svg"
+                  />
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>
+                    Agastya v{{ data[data.length - 1]._source.version || "3.x" }}
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title>
+                    Platform v{{ (data[data.length - 1]._source.client || "1.0").replace("platform-", "") }}
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
