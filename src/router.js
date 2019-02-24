@@ -39,6 +39,11 @@ export default new Router({
       component: () => import("./views/Analytics.vue")
     },
     {
+      path: "/:apiKey/filter/:key/:value",
+      name: "filtered",
+      component: () => import("./views/Filtered.vue")
+    },
+    {
       path: "/:apiKey/explore/:fingerprint",
       name: "explore",
       component: () => import("./views/Explore.vue")

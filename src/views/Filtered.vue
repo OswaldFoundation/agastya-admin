@@ -121,10 +121,12 @@ export default {
     this.apiKey = this.$route.params.apiKey;
     this.loading = true;
     this.$http
-      .post("/agastya/analytics/recents", {
+      .post("/agastya/analytics/sorted", {
         apiKey: this.apiKey,
         ago: "1d",
-        size: 30
+        size: 30,
+        key: this.$route.params.key,
+        value: this.$route.params.value
       })
       .then(response => (this.data = response.data.hits.hits))
       .catch(() => {})
