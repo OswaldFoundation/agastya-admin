@@ -20,6 +20,8 @@
             ]"
             :loading="loading"
             :items="data"
+            :pagination.sync="pagination"
+            :total-items="pagination.totalItems"
             class="elevation-1 recent-events"
           >
             <template slot="items" slot-scope="props">
@@ -153,24 +155,43 @@ export default {
     return {
       loading: false,
       data: [],
-      apiKey: ""
+      apiKey: "",
+      pagination: {
+        descending: false,
+        page: 1,
+        rowsPerPage: 5,
+        sortBy: "date",
+        totalItems: 0
+      },
+      page: 1,
+      total: 0,
     };
   },
   mounted() {
     this.apiKey = this.$route.params.apiKey;
-    this.loading = true;
-    this.$http
-      .post("/agastya/analytics/recents", {
-        apiKey: this.apiKey,
-        ago: "1d",
-        size: 30
-      })
-      .then(response => (this.data = response.data.hits.hits))
-      .catch(error => errors(error))
-      .catch(() => {})
-      .then(() => (this.loading = false));
+  },
+  watch: {
+    pagination() {
+      this.fetch();
+    }
   },
   methods: {
+    fetch() {
+      this.loading = true;
+      this.$http
+      .post("/agastya/analytics/recents", {
+        apiKey: this.apiKey,
+        size: this.pagination.rowsPerPage,
+        page: this.pagination.page
+      })
+      .then(response => {
+        this.pagination.totalItems = response.data.hits.total;
+        this.data = response.data.hits.hits;
+      })
+        .catch(error => errors(error))
+        .catch(() => {})
+        .then(() => (this.loading = false));
+    },
     timeago(time) {
       return timeago.ago(time);
     }
