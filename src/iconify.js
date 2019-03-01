@@ -8,6 +8,18 @@ export default q => {
     case "xiaomi":
       answer = "/img/logos/xiaomi.png";
       break;
+    case "motorola":
+      answer = "/img/logos/motorola.png";
+      break;
+    case "lyf":
+      answer = "/img/logos/lyf.png";
+      break;
+    case "obigo q":
+      answer = "/img/logos/obigo q.png";
+      break;
+    case "lg":
+      answer = "/img/logos/lg.png";
+      break;
     case "oneplus":
       answer = "/img/logos/oneplus.png";
       break;
@@ -18,6 +30,9 @@ export default q => {
       answer = "/img/logos/cloudflare-always-online.png";
       break;
     case "nokia":
+      answer = "/img/logos/nokia.png";
+      break;
+    case "nokia x platform":
       answer = "/img/logos/nokia.png";
       break;
     case "oppo":
@@ -166,36 +181,35 @@ export default q => {
   if (
     [
       "adblock",
-      "android-webview-beta",
+      "android webview beta",
       "archive",
       "avant",
       "beaker",
       "blisk",
       "brave",
-      "browser.html",
       "cent",
-      "chrome-beta",
-      "chrome-canary",
-      "chrome-dev",
+      "chrome beta",
+      "chrome canary",
+      "chrome dev",
       "chrome",
       "chromium",
       "cliqz",
       "cm",
       "crusta",
       "cốc-cốc",
-      "dolphin-zero",
+      "dolphin zero",
       "dolphin",
       "dooble",
-      "edge-tile",
+      "edge tile",
       "edge",
       "electron",
       "epic",
-      "firefox-beta",
-      "firefox-developer-edition",
-      "firefox-nightly",
+      "firefox beta",
+      "firefox developer edition",
+      "firefox nightly",
       "firefox",
       "focus",
-      "icab-mobile",
+      "icab mobile",
       "icecat",
       "iridium",
       "lightning",
@@ -205,50 +219,50 @@ export default q => {
       "netsurf",
       "nw.js",
       "onion",
-      "opera-beta",
-      "opera-developer",
-      "opera-mini-beta",
-      "opera-mini",
-      "opera-neon",
+      "opera beta",
+      "opera developer",
+      "opera mini beta",
+      "opera mini",
+      "opera neon",
       "opera",
       "orbitum",
       "otter",
-      "pale-moon",
+      "pale moon",
       "polarity",
       "puffin",
       "qupzilla",
       "qutebrowser",
-      "safari-ios",
-      "safari-technology-preview",
+      "safari ios",
+      "safari technology preview",
       "safari",
-      "samsung-internet-beta",
-      "samsung-internet",
+      "samsung internet beta",
+      "samsung internet",
       "seamonkey",
       "silk",
-      "sogou-mobile",
+      "sogou mobile",
       "tob",
       "tor",
-      "uc-mini",
+      "uc mini",
       "uc",
-      "v8-ignition",
-      "v8-turbofan",
+      "v8 ignition",
+      "v8 turbofan",
       "v8",
-      "vivaldi-snapshot",
+      "vivaldi snapshot",
       "vivaldi",
       "waterfox",
       "web",
-      "yandex-alpha",
-      "yandex-beta",
-      "yandex-lite",
+      "yandex alpha",
+      "yandex beta",
+      "yandex lite",
       "yandex"
     ].includes(q)
   )
     answer =
       answer ||
       "https://raw.githubusercontent.com/alrra/browser-logos/0adf3706/src/" +
-        q +
+        q.replace(/ /g, "-") +
         "/" +
-        q +
+        q.replace(/ /g, "-") +
         "_48x48.png";
   answer =
     answer ||
