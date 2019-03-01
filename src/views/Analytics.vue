@@ -70,12 +70,8 @@
                 </router-link>
               </td>
               <td>
-                <img
-                  class="tiny-flag"
-                  alt=""
-                  :src="iconify(props.item._source.browser_name)"
-                />
                 <router-link
+                  v-if="props.item._source.browser_name"
                   :data-balloon="
                     `Filter ${props.item._source.browser_name} users`
                   "
@@ -86,17 +82,46 @@
                     }`
                   "
                 >
-                  {{ props.item._source.browser_name }}
+                  <img
+                    class="tiny-flag"
+                    :alt="props.item._source.browser_name"
+                    style="border-radius: 100%"
+                    :src="iconify(props.item._source.browser_name)"
+                  />
                 </router-link>
-                /
                 <router-link
+                  v-if="props.item._source.os_name"
                   :data-balloon="`Filter ${props.item._source.os_name} users`"
                   data-balloon-pos="up"
                   :to="
                     `/${apiKey}/filter/os_name/${props.item._source.os_name}`
                   "
                 >
-                  {{ props.item._source.os_name }}
+                  <img
+                    class="tiny-flag"
+                    style="border-radius: 100%"
+                    :alt="props.item._source.os_name"
+                    :src="iconify(props.item._source.os_name)"
+                  />
+                </router-link>
+                <router-link
+                  v-if="props.item._source.device_manufacturer"
+                  :data-balloon="
+                    `Filter ${props.item._source.device_manufacturer} users`
+                  "
+                  data-balloon-pos="up"
+                  :to="
+                    `/${apiKey}/filter/device_manufacturer/${
+                      props.item._source.device_manufacturer
+                    }`
+                  "
+                >
+                  <img
+                    class="tiny-flag"
+                    style="border-radius: 100%"
+                    :alt="props.item._source.device_manufacturer"
+                    :src="iconify(props.item._source.device_manufacturer)"
+                  />
                 </router-link>
               </td>
               <td>
@@ -167,7 +192,7 @@ export default {
         totalItems: 0
       },
       page: 1,
-      total: 0,
+      total: 0
     };
   },
   mounted() {
@@ -182,15 +207,15 @@ export default {
     fetch() {
       this.loading = true;
       this.$http
-      .post("/agastya/analytics/recents", {
-        apiKey: this.apiKey,
-        size: this.pagination.rowsPerPage,
-        page: this.pagination.page
-      })
-      .then(response => {
-        this.pagination.totalItems = response.data.hits.total;
-        this.data = response.data.hits.hits;
-      })
+        .post("/agastya/analytics/recents", {
+          apiKey: this.apiKey,
+          size: this.pagination.rowsPerPage,
+          page: this.pagination.page
+        })
+        .then(response => {
+          this.pagination.totalItems = response.data.hits.total;
+          this.data = response.data.hits.hits;
+        })
         .catch(error => errors(error))
         .catch(() => {})
         .then(() => (this.loading = false));
@@ -214,7 +239,7 @@ h2 {
   margin-bottom: 1rem;
 }
 .tiny-flag {
-  height: 2rem;
+  height: 2.5rem;
   vertical-align: middle;
   margin-right: 1rem;
 }

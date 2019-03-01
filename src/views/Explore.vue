@@ -142,10 +142,17 @@
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title>
-                    Agastya v{{ data[data.length - 1]._source.version || "3.x" }}
+                    Agastya v{{
+                      data[data.length - 1]._source.version || "3.x"
+                    }}
                   </v-list-tile-title>
                   <v-list-tile-sub-title>
-                    Platform v{{ (data[data.length - 1]._source.client || "1.0").replace("platform-", "") }}
+                    Platform v{{
+                      (data[data.length - 1]._source.client || "1.0").replace(
+                        "platform-",
+                        ""
+                      )
+                    }}
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>

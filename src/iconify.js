@@ -5,13 +5,68 @@ export default q => {
     return "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Oswald_Labs_New_Logo.svg/200px-Oswald_Labs_New_Logo.svg.png";
   let answer = false;
   switch (q) {
-    case "internet-explorer":
-      answer =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Internet_Explorer_10%2B11_logo.svg/200px-Internet_Explorer_10%2B11_logo.svg.png";
+    case "xiaomi":
+      answer = "/img/logos/xiaomi.png";
       break;
-    case "mobile-internet-explorer":
-      answer =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Internet_Explorer_10%2B11_logo.svg/200px-Internet_Explorer_10%2B11_logo.svg.png";
+    case "oneplus":
+      answer = "/img/logos/oneplus.png";
+      break;
+    case "windows phone":
+      answer = "/img/logos/windows-phone.png";
+      break;
+    case "cloudflare always online":
+      answer = "/img/logos/cloudflare-always-online.png";
+      break;
+    case "nokia":
+      answer = "/img/logos/nokia.png";
+      break;
+    case "oppo":
+      answer = "/img/logos/oppo.png";
+      break;
+    case "samsung":
+      answer = "/img/logos/samsung.png";
+      break;
+    case "android":
+      answer = "/img/logos/android.png";
+      break;
+    case "facebook messenger":
+      answer = "/img/logos/facebook-messenger.png";
+      break;
+    case "instagram":
+      answer = "/img/logos/instagram.png";
+      break;
+    case "apple":
+      answer = "/img/logos/apple.png";
+      break;
+    case "internet explorer":
+      answer = "/img/logos/internet-explorer.png";
+      break;
+    case "ios":
+      answer = "/img/logos/ios.png";
+      break;
+    case "linux":
+      answer = "/img/logos/linux.png";
+      break;
+    case "macos":
+      answer = "/img/logos/macos.png";
+      break;
+    case "miui browser":
+      answer = "/img/logos/miui-browser.png";
+      break;
+    case "mobile internet explorer":
+      answer = "/img/logos/mobile-internet-explorer.png";
+      break;
+    case "os x":
+      answer = "/img/logos/os-x.png";
+      break;
+    case "uc browser":
+      answer = "/img/logos/uc-browser.png";
+      break;
+    case "wechat":
+      answer = "/img/logos/wechat.png";
+      break;
+    case "windows":
+      answer = "/img/logos/windows.png";
       break;
     case "googlebot":
       answer =
@@ -29,37 +84,13 @@ export default q => {
       answer =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/200px-Google_%22G%22_Logo.svg.png";
       break;
-    case "ios":
-      answer =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/IOS_logo.svg/200px-IOS_logo.svg.png";
-      break;
-    case "windows":
-      answer =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Windows_logo_-_2012.svg/200px-Windows_logo_-_2012.svg.png";
-      break;
     case "windows-phone":
       answer =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Windows_logo_-_2012_%28red%29.svg/200px-Windows_logo_-_2012_%28red%29.svg.png";
       break;
-    case "android":
-      answer =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/200px-Android_robot.svg.png";
-      break;
     case "android-browser":
       answer =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/200px-Android_robot.svg.png";
-      break;
-    case "macos":
-      answer =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/MacOS_logo.svg/200px-MacOS_logo.svg.png";
-      break;
-    case "linux":
-      answer =
-        "https://upload.wikimedia.org/wikipedia/commons/d/dd/Linux_logo.jpg";
-      break;
-    case "instagram":
-      answer =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/200px-Instagram_logo_2016.svg.png";
       break;
     case "facebook":
       answer =

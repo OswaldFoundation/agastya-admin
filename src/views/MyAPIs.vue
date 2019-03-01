@@ -48,9 +48,7 @@
                 >
               </td>
               <td class="text-xs-right p-0">
-                <v-btn @click.prevent="select(props.item)"
-                  >Configuration</v-btn
-                >
+                <v-btn @click.prevent="select(props.item)">Configuration</v-btn>
               </td>
             </template>
           </v-data-table>
