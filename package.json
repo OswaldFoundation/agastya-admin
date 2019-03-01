@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build && mv dist/index.html dist/200.html",
     "lint": "vue-cli-service lint",
     "deploy": "yarn build && cd dist && mv index.html 200.html && surge --domain agastya.oswaldlabs.com"
   },
