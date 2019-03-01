@@ -20,8 +20,8 @@
       </v-list>
     </v-menu>
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat :to="`/${key}/analytics`">Analytics</v-btn>
-      <v-btn flat :to="`/${key}/config`">Configuration</v-btn>
+      <v-btn v-if="key && key !== 'null'" flat :to="`/${key}/analytics`">Analytics</v-btn>
+      <v-btn v-if="key && key !== 'null'" flat :to="`/${key}/config`">Configuration</v-btn>
       <v-btn flat :to="`/settings`">Settings</v-btn>
     </v-toolbar-items>
     <v-spacer />

@@ -30,8 +30,15 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ props.item.apiKey }}</td>
-              <td class="text-xs-center">
+              <td>{{ props.item.title || props.item.apiKey }}</td>
+              <td class="text-xs-center p-0">
+                <router-link
+                  class="v-btn theme--light"
+                  :to="`/${props.item.apiKey}/analytics`"
+                  >Analytics</router-link
+                >
+              </td>
+              <td class="text-xs-center p-0">
                 <v-btn
                   @click.stop="
                     addKey = props.item.apiKey;
@@ -40,9 +47,9 @@
                   >Add to your site</v-btn
                 >
               </td>
-              <td class="text-xs-right">
+              <td class="text-xs-right p-0">
                 <v-btn @click.prevent="select(props.item)"
-                  >Configure settings</v-btn
+                  >Configuration</v-btn
                 >
               </td>
             </template>
@@ -88,6 +95,7 @@ export default {
       headers: [
         { text: "API key", value: "api-key" },
         { text: "", value: "implement" },
+        { text: "", value: "analytics" },
         { text: "", value: "configure" }
       ],
       addKey: "",
@@ -156,5 +164,8 @@ export default {
 }
 .hljs-string {
   color: #16a085;
+}
+.p-0 {
+  padding: 0 !important;
 }
 </style>
