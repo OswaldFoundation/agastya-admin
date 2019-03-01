@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import errors from "../errors";
 export default {
   props: ["item", "apiKey"],
   data() {
@@ -58,6 +59,7 @@ export default {
         .then(
           response => (this.data = response.data.aggregations.keywords.buckets)
         )
+        .catch(error => errors(error))
         .catch(() => {})
         .then(() => (this.loading = false));
     }

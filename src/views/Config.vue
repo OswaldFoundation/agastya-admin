@@ -401,6 +401,7 @@
 <script>
 import integrations from "../integrations";
 import { mapGetters } from "vuex";
+import errors from "../errors";
 export default {
   data() {
     return {
@@ -452,6 +453,7 @@ export default {
         .then(() => {
           this.$router.push("/my-apis/?relax=true");
         })
+        .catch(error => errors(error))
         .catch(() => {})
         .then(() => (this.loading = false));
     },
@@ -536,6 +538,7 @@ export default {
             response.data
           );
         })
+        .catch(error => errors(error))
         .catch(() => {})
         .then(() => (this.loading = false));
     },
@@ -549,6 +552,7 @@ export default {
         .then(() => {
           this.message = "Your API has been updated!";
         })
+        .catch(error => errors(error))
         .catch(error => {
           if (
             error.response &&

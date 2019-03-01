@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import errors from "../errors";
 export default {
   data() {
     return {
@@ -109,6 +110,7 @@ export default {
           if (this.apiKeys.length === 1 && !this.$route.query.relax)
             this.select(this.apiKeys[0]);
         })
+        .catch(error => errors(error))
         .catch(() => {})
         .then(() => {
           this.loading = false;
@@ -119,6 +121,7 @@ export default {
       this.$http
         .put("/agastya/api-keys")
         .then(() => this.update())
+        .catch(error => errors(error))
         .catch(() => {})
         .then(() => {
           this.loading = false;

@@ -230,6 +230,7 @@
 <script>
 import download from "downloadjs";
 import duration from "humanize-duration";
+import errors from "../errors";
 export default {
   data() {
     return {
@@ -249,6 +250,7 @@ export default {
         fingerprint: this.fingerprint
       })
       .then(response => (this.data = response.data.hits.hits))
+      .catch(error => errors(error))
       .catch(() => {})
       .then(() => (this.loading = false));
   },

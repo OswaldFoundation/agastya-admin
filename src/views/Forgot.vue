@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import errors from "../errors";
 export default {
   data() {
     return {
@@ -80,6 +81,7 @@ export default {
         .then(() => {
           this.error = "A link has been sent";
         })
+        .catch(error => errors(error))
         .catch(error => {
           if (
             error.response &&

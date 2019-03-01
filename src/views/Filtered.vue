@@ -109,6 +109,7 @@
 
 <script>
 import timeago from "time-ago";
+import errors from "../errors";
 export default {
   data() {
     return {
@@ -129,6 +130,7 @@ export default {
         value: this.$route.params.value
       })
       .then(response => (this.data = response.data.hits.hits))
+      .catch(error => errors(error))
       .catch(() => {})
       .then(() => (this.loading = false));
   },

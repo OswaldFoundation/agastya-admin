@@ -144,6 +144,7 @@
 <script>
 import TopList from "@/components/TopList.vue";
 import timeago from "time-ago";
+import errors from "../errors";
 export default {
   components: {
     TopList
@@ -165,6 +166,7 @@ export default {
         size: 30
       })
       .then(response => (this.data = response.data.hits.hits))
+      .catch(error => errors(error))
       .catch(() => {})
       .then(() => (this.loading = false));
   },

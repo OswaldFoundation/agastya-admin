@@ -117,6 +117,7 @@
 <script>
 import timeago from "time-ago";
 import { mapGetters } from "vuex";
+import errors from "../errors";
 export default {
   computed: {
     ...mapGetters(["auth"])
@@ -149,6 +150,7 @@ export default {
       this.$http
         .get("/auth/details")
         .then(response => this.$store.commit("updateUser", response.data))
+        .catch(error => errors(error))
         .catch(() => {})
         .then(() => (this.loading = false))
         .then(() => location.reload());
@@ -158,6 +160,7 @@ export default {
       this.$http
         .get("/agastya/analytics/quota", this.user)
         .then(() => (this.message = "Your quota has been updated."))
+        .catch(error => errors(error))
         .catch(error => {
           if (
             error.response &&
@@ -174,6 +177,7 @@ export default {
       this.$http
         .patch("/auth/details", this.user)
         .then(() => (this.message = "Your settings have been updated."))
+        .catch(error => errors(error))
         .catch(error => {
           if (
             error.response &&
@@ -195,6 +199,7 @@ export default {
           email: this.user.email
         })
         .then(() => (this.message = "A link has been sent to your email."))
+        .catch(error => errors(error))
         .catch(error => {
           if (
             error.response &&
