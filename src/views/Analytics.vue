@@ -3,13 +3,16 @@
     <v-layout class="margin">
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
-          <v-layout align-center justify-center>
-            <v-card-title primary-title>
-              <div>
-                <h3 class="headline">Most recent</h3>
-              </div>
-            </v-card-title>
-          </v-layout>
+          <v-card-title primary-title>
+            <v-layout row>
+              <v-flex style="padding-left: 1rem">
+                <h3 class="headline">Events</h3>
+              </v-flex>
+              <v-flex style="text-align: right" md4>
+                <v-btn @click.prevent="fetch">Refresh</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-card-title>
           <v-data-table
             :headers="[
               { text: 'Date', value: 'date' },
