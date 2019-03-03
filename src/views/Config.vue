@@ -77,6 +77,11 @@
                   label="Hide the Agastya button from my website"
                   messages="Your users will not be able to open Agastya, you can still use the API"
                 />
+                <v-checkbox
+                  v-model="key.variables.captioned"
+                  label="Always show the Agastya button label"
+                  messages="If you don't check this option, the label will appear on mouse over"
+                />
                 <v-btn
                   type="submit"
                   class="small-submit"
@@ -204,6 +209,95 @@
                   :loading="loading"
                 >
                   Save branding
+                </v-btn>
+                <h2>Layout</h2>
+                <v-layout row>
+                  <v-flex xs6>
+                    <v-card>
+                      <v-card-title class="sample-agastya">
+                        <div>
+                          <div>{{ key.layout.heading }}</div>
+                          <div>{{ key.layout.subheading }}</div>
+                        </div>
+                        <div
+                          v-for="(card, index) in key.layout.cards"
+                          :key="`card_${index}`"
+                          :class="`fake-card fake-card-${card.type}`"
+                        >
+                          <div v-if="card.type === 'mode-card'">
+                            <div>Mode</div>
+                            <div>{{ card.slug }}</div>
+                          </div>
+                          <div v-else-if="card.type === 'intro-card'">
+                            <div>Call-to-action card</div>
+                            <v-text-field v-model="card.title" label="Title" />
+                            <v-text-field
+                              v-model="card.subtitle"
+                              label="Subtitle"
+                            />
+                            <v-text-field
+                              v-model="card.cta"
+                              label="Button text"
+                            />
+                            <v-text-field v-model="card.url" label="URL" />
+                          </div>
+                          <div v-else-if="card.type === 'link-card'">
+                            <div>Link</div>
+                            <v-text-field v-model="card.title" label="Title" />
+                            <v-text-field v-model="card.url" label="URL" />
+                          </div>
+                          <div v-else-if="card.type === 'app-card'">
+                            <div>App: {{ card.slug }}</div>
+                            <v-text-field v-model="card.title" label="Title" />
+                          </div>
+                          <div v-else>
+                            {{ card }}
+                          </div>
+                          <div class="button-group">
+                            <button
+                              v-if="index !== 0"
+                              type="button"
+                              @click.prevent="layoutUp(index)"
+                            >
+                              <v-icon>arrow_upward</v-icon>
+                            </button>
+                            <button
+                              v-if="index !== key.layout.cards.length - 1"
+                              type="button"
+                              @click.prevent="layoutDown(index)"
+                            >
+                              <v-icon>arrow_downward</v-icon>
+                            </button>
+                            <button
+                              type="button"
+                              @click.prevent="layoutDelete(index)"
+                            >
+                              <v-icon>delete</v-icon>
+                            </button>
+                          </div>
+                        </div>
+                        <div>User options</div>
+                      </v-card-title>
+                    </v-card>
+                  </v-flex>
+                  <v-flex style="padding-left: 1.5rem">
+                    <h3>Add a layout element:</h3>
+                    <v-btn
+                      v-for="(option, index) in layoutOptions"
+                      :key="`option_${index}`"
+                      @click.prevent="layoutAdd(option)"
+                      block
+                      >{{ option.name }}</v-btn
+                    >
+                  </v-flex>
+                </v-layout>
+                <v-btn
+                  type="submit"
+                  class="small-submit"
+                  color="info"
+                  :loading="loading"
+                >
+                  Save layout
                 </v-btn>
                 <h2>Integrations</h2>
                 <v-container class="unpadded integrations" grid-list-xl>
@@ -402,11 +496,59 @@
 import integrations from "../integrations";
 import { mapGetters } from "vuex";
 import errors from "../errors";
+const defaultCards = [
+  {
+    type: "mode-card",
+    slug: "dyslexia"
+  },
+  {
+    type: "mode-card",
+    slug: "blue-light-filter"
+  },
+  {
+    type: "mode-card",
+    slug: "large-font"
+  },
+  {
+    type: "mode-card",
+    slug: "night"
+  },
+  {
+    type: "mode-card",
+    slug: "read-aloud"
+  },
+  {
+    type: "mode-card",
+    slug: "translate"
+  },
+  {
+    type: "link-card",
+    title: "More accessibility features",
+    url: "agastya-app:modes/all"
+  },
+  {
+    type: "app-card",
+    title: "Share this page",
+    slug: "share"
+  }
+];
+function arrayMove(arr, old_index, new_index) {
+  if (new_index >= arr.length) {
+    var k = new_index - arr.length + 1;
+    while (k--) {
+      arr.push(undefined);
+    }
+  }
+  arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+  return arr;
+}
 export default {
   data() {
     return {
       key: {
-        layout: {},
+        layout: {
+          cards: {}
+        },
         integrations: {},
         customCss: [],
         variables: {},
@@ -425,7 +567,51 @@ export default {
         mode: "",
         css: ""
       },
-      modes: ["dyslexia", "night", "blue-light-filter"]
+      modes: ["dyslexia", "night", "blue-light-filter"],
+      layoutOptions: [
+        {
+          name: "Intro call-to-action card",
+          type: "intro-card",
+          title: "Title",
+          subtitle: "This is an example",
+          cta: "Click here",
+          url: "#"
+        },
+        {
+          name: "Link card",
+          type: "link-card",
+          title: "More accessibility features",
+          url: "agastya-app:modes/all"
+        },
+        {
+          name: "Social share card",
+          type: "app-card",
+          title: "Share this page",
+          slug: "share"
+        },
+        { name: "dyslexia", type: "mode-card", slug: "dyslexia" },
+        {
+          name: "Blue light filter",
+          type: "mode-card",
+          slug: "blue-light-filter"
+        },
+        { name: "Color blind", type: "mode-card", slug: "color-blind" },
+        { name: "Night", type: "mode-card", slug: "night" },
+        { name: "Large font", type: "mode-card", slug: "large-font" },
+        { name: "Read aloud", type: "mode-card", slug: "read-aloud" },
+        { name: "Translate", type: "mode-card", slug: "translate" },
+        { name: "Reading mode", type: "mode-card", slug: "reading-mode" },
+        { name: "Contrast", type: "mode-card", slug: "contrast" },
+        {
+          name: "Keyboard navigation",
+          type: "mode-card",
+          slug: "keyboard-navigation"
+        },
+        { name: "Desaturate", type: "mode-card", slug: "desaturate" },
+        { name: "Big cursor", type: "mode-card", slug: "big-cursor" },
+        { name: "Legible fonts", type: "mode-card", slug: "legible-fonts" },
+        { name: "Highlight links", type: "mode-card", slug: "highlight-links" }
+      ]
     };
   },
   computed: {
@@ -433,6 +619,8 @@ export default {
   },
   mounted() {
     this.updateKeys();
+    if (!this.key.layout.cards || !this.key.layout.cards.length)
+      this.key.layout.cards = defaultCards;
   },
   watch: {
     keys() {
@@ -446,6 +634,27 @@ export default {
     }
   },
   methods: {
+    layoutAdd(element) {
+      this.key.layout.cards.push(element);
+    },
+    layoutUp(index) {
+      this.key.layout.cards = arrayMove(
+        this.key.layout.cards,
+        index,
+        index - 1
+      );
+    },
+    layoutDown(index) {
+      this.key.layout.cards = arrayMove(
+        this.key.layout.cards,
+        index,
+        index + 1
+      );
+    },
+    layoutDelete(index) {
+      this.key.layout.cards.splice(index, 1);
+      this.forceUpdate();
+    },
     deleteKey() {
       this.loading = true;
       this.$http
@@ -678,5 +887,22 @@ h2 {
   margin-right: 1rem;
   font-size: 200%;
   vertical-align: middle;
+}
+.sample-agastya > div {
+  border: 1px solid #aaa;
+  width: 100%;
+  padding: 0.5rem;
+  text-align: center;
+}
+.sample-agastya > div:first-child {
+  margin-top: 0;
+}
+.sample-agastya .v-input + .v-input {
+  margin-top: 0;
+}
+.fake-card-mode-card {
+  width: 50% !important;
+}
+.button-group button {
 }
 </style>
