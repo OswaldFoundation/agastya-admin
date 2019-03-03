@@ -2,20 +2,17 @@ export default {
   "eu-cookie-law": {
     emoji: "🍪",
     title: "EU Cookie Law",
-    description:
-      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    description: "Add compliance with the European Union's cookie law"
   },
   "conditional-markup": {
     emoji: "⚡",
     title: "Conditional Markup",
-    description:
-      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    description: "Conditionally render HTML on your webpage"
   },
   drift: {
     emoji: "💬",
     title: "Live Chat by Drift",
-    description:
-      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+    description: "Engage and chat with potential customers using Drift",
     enabled: [
       {
         model: "apiKey",
