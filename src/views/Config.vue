@@ -611,7 +611,6 @@ export default {
         { name: "Big cursor", type: "mode-card", slug: "big-cursor" },
         { name: "Legible fonts", type: "mode-card", slug: "legible-fonts" },
         { name: "Highlight links", type: "mode-card", slug: "highlight-links" },
-        { name: "Color scheme", type: "mode-card", slug: "color-scheme" },
         { name: "Reading font", type: "mode-card", slug: "font-family" },
         { name: "Font size", type: "mode-card", slug: "font-size" },
         { name: "Letter spacing", type: "mode-card", slug: "letter-spacing" },
