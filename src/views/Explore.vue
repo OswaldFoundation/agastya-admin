@@ -31,8 +31,10 @@
           />
           <v-flex>
             <v-list two-line class="unpadded">
-              <v-divider />
-              <v-list-tile avatar>
+              <v-list-tile
+                v-if="data[data.length - 1]._source.browser_name"
+                avatar
+              >
                 <v-list-tile-avatar>
                   <img
                     :src="iconify(data[data.length - 1]._source.browser_name)"
@@ -51,8 +53,7 @@
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-divider />
-              <v-list-tile avatar>
+              <v-list-tile v-if="data[data.length - 1]._source.os_name" avatar>
                 <v-list-tile-avatar>
                   <img
                     :src="iconify(data[data.length - 1]._source.os_name || '')"
@@ -68,8 +69,16 @@
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-divider />
-              <v-list-tile avatar>
+              <v-list-tile
+                v-if="
+                  data[data.length - 1]._source.device_manufacturer ||
+                    data[data.length - 1]._source.device_model ||
+                    data[data.length - 1]._source.device_identifier ||
+                    data[data.length - 1]._source.device_subtype ||
+                    data[data.length - 1]._source.device_type
+                "
+                avatar
+              >
                 <v-list-tile-avatar>
                   <img
                     :src="
@@ -99,16 +108,15 @@
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-divider />
               <v-list-tile avatar v-if="data[data.length - 1]._source.city">
                 <v-list-tile-avatar>
-                  <img
-                    :src="
-                      `https://tse2.mm.bing.net/th?q=${
-                        data[data.length - 1]._source.country_name
-                      }+flag+circle&w=100&h=100&p=0&dpr=2&adlt=moderate&c=1`
+                  <div
+                    :style="
+                      `background-color: #aaa; background-image: url('https://lipis.github.io/flag-icon-css/flags/4x3/${(
+                        data[data.length - 1]._source.country_code || ''
+                      ).toLowerCase()}.svg'); background-size: cover; background-position: center center; background-repeat: no-repeat; width: 40px; height: 40px; border-radius: 100%; box-sizing: border-box; border: 1px solid #eee`
                     "
-                  />
+                  ></div>
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title>
@@ -133,7 +141,6 @@
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-divider />
               <v-list-tile avatar>
                 <v-list-tile-avatar>
                   <img
@@ -156,7 +163,6 @@
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-divider />
             </v-list>
           </v-flex>
         </v-layout>
@@ -188,12 +194,16 @@
                 <div>
                   <div class="wrapped">
                     <v-icon class="tiny-icon">link</v-icon>
-                    {{
+                    <span v-if="event._source.title"
+                      >{{ event._source.title }} (</span
+                    >
+                    <span>{{
                       event._source.url &&
                       event._source.url.includes(event._source.url_domain)
                         ? event._source.url.split(event._source.url_domain)[1]
                         : event._source.url
-                    }}
+                    }}</span>
+                    <span v-if="event._source.title">)</span>
                   </div>
                 </div>
                 <div class="wrapped">
@@ -206,6 +216,7 @@
           <v-timeline-item
             color="white"
             :style="`text-align: ${data.length % 2 === 0 ? 'right' : 'left'}`"
+            v-if="!this.singleDomain"
           >
             <v-avatar slot="icon">
               <img
@@ -244,7 +255,8 @@ export default {
       loading: false,
       data: [{ _source: {} }],
       apiKey: "",
-      fingerprint: ""
+      fingerprint: "",
+      singleDomain: true
     };
   },
   mounted() {
@@ -256,7 +268,21 @@ export default {
         apiKey: this.apiKey,
         fingerprint: this.fingerprint
       })
-      .then(response => (this.data = response.data.hits.hits))
+      .then(response => {
+        this.data = response.data.hits.hits;
+        this.singleDomain = true;
+        if (this.data.length) {
+          let refDomain;
+          for (let i = 0; i < this.data.length; i++) {
+            if (refDomain) {
+              if (this.data[i].referrer_domain !== refDomain)
+                this.singleDomain = false;
+            } else {
+              refDomain = this.data[i].referrer_domain;
+            }
+          }
+        }
+      })
       .catch(error => errors(error))
       .catch(() => {})
       .then(() => (this.loading = false));
@@ -273,34 +299,12 @@ export default {
       }
       return ref.referrer_domain;
     },
-    text(d) {
-      if (d.action === "pageview") return "Pageview";
-      if (d.action === "open") return "Open Agastya";
-      if (d.action === "close") return "Close Agastya";
-      if (d.action === "service") {
-        let say = "Agastya service: ";
-        if (d === "/") {
-          say += "Home";
-        } else {
-          say += d;
-        }
-        return say;
-      }
-      if (d.action === "custom") {
-        let say = "Custom event: ";
-        Object.keys(d).forEach(key => {
-          if (d.hasOwnProperty(key) && key.startsWith("custom_")) {
-            say += key.substring(7) + " (" + d[key] + ") ";
-          }
-        });
-        return say;
-      }
-      if (d.action === "cssClass") d.action = "Agastya mode: ";
-      d =
-        typeof d === "string" && d
-          ? d.charAt(0).toUpperCase() + d.slice(1)
-          : "";
-      return d.action + " " + d;
+    text(data) {
+      let text = "";
+      if (data.action) text += `${data.action} `;
+      if (data.event) text += `${data.event} `;
+      if (data.description) text += `${data.description} `;
+      return text.trim();
     },
     download() {
       download(
@@ -343,5 +347,11 @@ h2 {
 }
 .tiny-icon {
   font-size: 120%;
+}
+[role="listitem"] {
+  border-bottom: 1px solid #ddd;
+}
+[role="listitem"]:first-of-type {
+  border-top: 1px solid #ddd;
 }
 </style>
