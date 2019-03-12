@@ -8,6 +8,9 @@ export default q => {
     case "xiaomi":
       answer = "/img/logos/xiaomi.png";
       break;
+    case "twitter":
+      answer = "/img/logos/twitter.png";
+      break;
     case "motorola":
       answer = "/img/logos/motorola.png";
       break;
@@ -114,10 +117,6 @@ export default q => {
     case "facebook-messenger":
       answer =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Facebook_Messenger_logo.svg/200px-Facebook_Messenger_logo.svg.png";
-      break;
-    case "twitter":
-      answer =
-        "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/300px-Twitter_bird_logo_2012.svg.png";
       break;
     case "ubuntu":
       answer =
