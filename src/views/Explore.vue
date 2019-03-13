@@ -82,9 +82,7 @@
                 <v-list-tile-avatar>
                   <img
                     :src="
-                      `https://tse2.mm.bing.net/th?q=${data[data.length - 1]
-                        ._source.device_manufacturer ||
-                        'computer'}+logo&w=100&h=100&p=0&dpr=2&adlt=moderate&c=1`
+                      iconify(data[data.length - 1]._source.device_manufacturer)
                     "
                   />
                 </v-list-tile-avatar>
@@ -275,12 +273,13 @@ export default {
           let refDomain;
           for (let i = 0; i < this.data.length; i++) {
             if (refDomain) {
-              if (this.data[i].referrer_domain !== refDomain)
+              if (this.data[i]._source.referrer_domain !== refDomain)
                 this.singleDomain = false;
             } else {
-              refDomain = this.data[i].referrer_domain;
+              refDomain = this.data[i]._source.referrer_domain;
             }
           }
+          if (refDomain !== this.data[this.data.length - 1]._source.url_domain) this.singleDomain = false;
         }
       })
       .catch(error => errors(error))
@@ -297,6 +296,10 @@ export default {
         this.data[this.data.length - 1]._source.referrer_domain = "google.com";
         return "Google Quick Search for Android";
       }
+      if (ref.referrer_domain === "t.co") return "Twitter";
+      if (ref.referrer_domain.includes("google")) return "Google";
+      if (ref.referrer_domain === "instagram.com") return "Instagram";
+      if (ref.referrer_domain === "facebook.com") return "Facebook";
       return ref.referrer_domain;
     },
     text(data) {

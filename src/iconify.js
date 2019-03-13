@@ -8,6 +8,9 @@ export default q => {
     case "xiaomi":
       answer = "/img/logos/xiaomi.png";
       break;
+    case "huawei":
+      answer = "/img/logos/huawei.png";
+      break;
     case "twitter":
       answer = "/img/logos/twitter.png";
       break;
