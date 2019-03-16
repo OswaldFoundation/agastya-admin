@@ -241,6 +241,14 @@
                             />
                             <v-text-field v-model="card.url" label="URL" />
                           </div>
+                          <div v-else-if="card.type === 'uptime-robot'">
+                            <div>Uptime Robot monitor</div>
+                            <v-text-field v-model="card.title" label="Title" />
+                            <v-text-field
+                              v-model="card.key"
+                              label="API key"
+                            />
+                          </div>
                           <div v-else-if="card.type === 'link-card'">
                             <div>Link</div>
                             <v-text-field v-model="card.title" label="Title" />
@@ -615,7 +623,13 @@ export default {
         { name: "Font size", type: "mode-card", slug: "font-size" },
         { name: "Letter spacing", type: "mode-card", slug: "letter-spacing" },
         { name: "Word spacing", type: "mode-card", slug: "word-spacing" },
-        { name: "Line height", type: "mode-card", slug: "line-height" }
+        { name: "Line height", type: "mode-card", slug: "line-height" },
+        {
+          name: "Uptime Robot monitor",
+          type: "uptime-robot",
+          title: "Status",
+          key: "m782086414-962c034e80dbd49655ca3a07"
+        },
       ]
     };
   },
