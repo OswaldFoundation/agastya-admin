@@ -279,7 +279,8 @@ export default {
               refDomain = this.data[i]._source.referrer_domain;
             }
           }
-          if (refDomain !== this.data[this.data.length - 1]._source.url_domain) this.singleDomain = false;
+          if (refDomain !== this.data[this.data.length - 1]._source.url_domain)
+            this.singleDomain = false;
         }
       })
       .catch(error => errors(error))

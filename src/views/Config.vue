@@ -244,10 +244,7 @@
                           <div v-else-if="card.type === 'uptime-robot'">
                             <div>Uptime Robot monitor</div>
                             <v-text-field v-model="card.title" label="Title" />
-                            <v-text-field
-                              v-model="card.key"
-                              label="API key"
-                            />
+                            <v-text-field v-model="card.key" label="API key" />
                           </div>
                           <div v-else-if="card.type === 'link-card'">
                             <div>Link</div>
@@ -629,7 +626,7 @@ export default {
           type: "uptime-robot",
           title: "Status",
           key: "m782086414-962c034e80dbd49655ca3a07"
-        },
+        }
       ]
     };
   },
