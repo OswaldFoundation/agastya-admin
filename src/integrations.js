@@ -9,17 +9,26 @@ export default {
     title: "Conditional Markup",
     description: "Conditionally render HTML on your webpage"
   },
-  drift: {
-    emoji: "💬",
-    title: "Live Chat by Drift",
-    description: "Engage and chat with potential customers using Drift",
+  "google-analytics": {
+    emoji: "📈",
+    title: "Google Analytics",
+    description: "Add Google Analytics to your site",
     enabled: [
       {
-        model: "apiKey",
-        value: "",
-        label: "Drift API key",
-        message: "Add your API key from your Drift account settings",
+        model: "trackingId",
+        value: "UA-XXXXXXXX-XX",
+        label: "Tracking ID",
+        message:
+          "Copy and paste the tracking ID from your Google Analytics property",
         type: "text",
+        required: true
+      },
+      {
+        model: "trackPageviews",
+        value: "",
+        label: "Also track pageviews",
+        message: "Don't check this if you already have GA on your website",
+        type: "boolean",
         required: true
       }
     ]

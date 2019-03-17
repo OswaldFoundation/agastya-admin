@@ -322,16 +322,31 @@
                             class="additional-settings"
                           >
                             <h4>Configure</h4>
-                            <v-text-field
+                            <div
                               v-for="(control, index) in service.enabled"
                               :key="`input_${slug}_${index}`"
-                              @input="forceUpdate"
-                              type="text"
-                              :label="control.label"
-                              v-model="integrations[slug].enabled[index].value"
-                              :messages="control.message"
-                              :required="control.required"
-                            />
+                            >
+                              <v-checkbox
+                                v-if="control.type === 'boolean'"
+                                :label="control.label"
+                                v-model="
+                                  integrations[slug].enabled[index].value
+                                "
+                                :messages="control.message"
+                                :required="control.required"
+                              />
+                              <v-text-field
+                                v-else
+                                @input="forceUpdate"
+                                type="text"
+                                :label="control.label"
+                                v-model="
+                                  integrations[slug].enabled[index].value
+                                "
+                                :messages="control.message"
+                                :required="control.required"
+                              />
+                            </div>
                           </div>
                         </v-card-title>
                         <v-card-actions>
