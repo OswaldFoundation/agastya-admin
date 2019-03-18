@@ -57,6 +57,11 @@ export default new Router({
       path: "/settings",
       name: "settings",
       component: () => import("./views/Settings.vue")
+    },
+    {
+      path: "/changelog",
+      name: "changelog",
+      component: () => import("./views/Changelog.vue")
     }
   ]
 });
