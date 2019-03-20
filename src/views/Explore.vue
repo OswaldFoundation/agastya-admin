@@ -297,6 +297,7 @@ export default {
         this.data[this.data.length - 1]._source.referrer_domain = "google.com";
         return "Google Quick Search for Android";
       }
+      if (typeof ref.referrer_domain !== "string") return;
       if (ref.referrer_domain === "t.co") return "Twitter";
       if (ref.referrer_domain.includes("google")) return "Google";
       if (ref.referrer_domain === "instagram.com") return "Instagram";
