@@ -114,7 +114,7 @@ export default {
           });
           this.$store.commit("updateKeys", this.apiKeys);
           if (this.apiKeys.length === 1 && !this.$route.query.relax)
-            this.$router.replace(`/${this.apiKeys[0]}/analytics`);
+            this.$router.replace(`/${this.apiKeys[0].apiKey}/analytics`);
         })
         .catch(error => errors(error))
         .catch(() => {})
