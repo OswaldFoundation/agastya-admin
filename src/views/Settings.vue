@@ -82,9 +82,13 @@
             alt="Uptime"
             src="https://img.shields.io/uptimerobot/ratio/m780781211-f53db30a0838a6d55f3560f6.svg"
           />
+					<p>
+            Based on the above uptime, you may be eligible for credits. This will
+            automatically be deducted when your next billion period starts.
+          </p>
           <h2>Email notifications</h2>
           <p>
-            You can receive emails to let you know when your quote is about to
+            You can receive emails to let you know when your quota is about to
             end.
           </p>
           <v-radio-group v-model="user.notifications">
