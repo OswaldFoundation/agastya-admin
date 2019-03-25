@@ -31,6 +31,13 @@
                 label="Email"
                 required
               />
+              <v-text-field
+                v-model="invitation_code"
+                type="text"
+                label="Invitation code"
+                placeholder="You need an invitation code to register"
+                required
+              />
               <v-btn
                 :loading="loading"
                 :disabled="loading"
@@ -60,7 +67,8 @@ export default {
       error: "",
       loading: false,
       email: "",
-      name: ""
+      name: "",
+	    invitation_code: ""
     };
   },
   watch: {
@@ -78,7 +86,8 @@ export default {
       this.$http
         .post("/auth/register", {
           name: this.name,
-          email: this.email
+          email: this.email,
+          invitation_code: this.invitation_code
         })
         .then(() => {
           this.error = "Your account has been created, check your email!";
