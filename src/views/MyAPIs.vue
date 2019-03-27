@@ -61,7 +61,7 @@
                 </p>
                 <pre
                   v-highlightjs="
-                    `<script src=&quot;https://agastya-loader.oswaldlabs.com/${addKey}.js&quot; async defer></script>`
+                    `<script src=&quot;https://loader.oswaldlabs.com/${addKey}.js&quot; async defer></script>`
                   "
                 ><code class="js"></code></pre>
                 <p style="margin-top: 2rem">
