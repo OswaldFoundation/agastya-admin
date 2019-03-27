@@ -1,64 +1,43 @@
 {
   "name": "agastya-admin",
-  "version": "0.1.0",
-  "private": true,
+  "version": "3.0.0",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "downloadjs": "^1.4.7",
-    "humanize-duration": "^3.18.0",
-    "register-service-worker": "^1.5.2",
-    "time-ago": "^0.2.1",
-    "vue": "^2.6.10",
-    "vue-highlightjs": "^1.3.3",
+    "register-service-worker": "^1.6.2",
+    "vue": "^2.6.6",
+    "vue-class-component": "^6.0.0",
+    "vue-property-decorator": "^8.0.0",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.5.7",
-    "vuex": "^3.0.1",
-    "vuex-persistedstate": "^2.5.4"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.5.3",
-    "@vue/cli-plugin-eslint": "^3.5.1",
-    "@vue/cli-plugin-pwa": "^3.5.1",
-    "@vue/cli-service": "^3.5.3",
+    "@vue/cli-plugin-babel": "^3.5.0",
+    "@vue/cli-plugin-eslint": "^3.5.0",
+    "@vue/cli-plugin-pwa": "^3.5.0",
+    "@vue/cli-plugin-typescript": "^3.5.0",
+    "@vue/cli-service": "^3.5.0",
     "@vue/eslint-config-prettier": "^4.0.1",
+    "@vue/eslint-config-typescript": "^4.0.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.15.3",
+    "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "lint-staged": "^8.1.4",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.1",
-    "vue-cli-plugin-vuetify": "^0.5.0",
-    "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.0.5"
+    "typescript": "^3.2.1",
+    "vue-template-compiler": "^2.5.21"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/prettier"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
+  "gitHooks": {
+    "pre-commit": "lint-staged"
   },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+  "lint-staged": {
+    "*.{js,vue}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  }
 }
