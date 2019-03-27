@@ -95,7 +95,7 @@ export default {
           this.loading = false;
           this.email = "";
           this.password = "";
-	        this.$router.push("/");
+          this.$router.push("/");
         });
     }
   }

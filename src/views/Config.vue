@@ -650,6 +650,7 @@ export default {
   },
   mounted() {
     this.updateKeys();
+    this.update();
     if (!this.key.layout.cards || !this.key.layout.cards.length)
       this.key.layout.cards = defaultCards;
   },

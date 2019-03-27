@@ -82,9 +82,9 @@
             alt="Uptime"
             src="https://img.shields.io/uptimerobot/ratio/m780781211-f53db30a0838a6d55f3560f6.svg"
           />
-					<p>
-            Based on the above uptime, you may be eligible for credits. This will
-            automatically be deducted when your next billion period starts.
+          <p>
+            Based on the above uptime, you may be eligible for credits. This
+            will automatically be deducted when your next billion period starts.
           </p>
           <h2>Email notifications</h2>
           <p>
@@ -144,8 +144,18 @@ export default {
   },
   mounted() {
     this.user = this.auth.user;
+    this.updateUser();
   },
   methods: {
+    updateUser() {
+      this.loading = true;
+      this.$http
+        .get("/auth/details")
+        .then(response => this.$store.commit("updateUser", response.data))
+        .catch(error => errors(error))
+        .catch(() => {})
+        .then(() => (this.loading = false));
+    },
     timeago(time) {
       return timeago.ago(time);
     },

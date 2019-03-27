@@ -68,7 +68,7 @@ export default {
       loading: false,
       email: "",
       name: "",
-	    invitation_code: ""
+      invitation_code: ""
     };
   },
   watch: {
