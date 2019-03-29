@@ -95,6 +95,7 @@ export default {
           this.loading = false;
           this.password = "";
           this.resetCode = "";
+          this.$router.push("/");
         });
     }
   }
