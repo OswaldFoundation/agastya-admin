@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@sentry/browser": "^4.6.6",
     "axios": "^0.18.0",
     "downloadjs": "^1.4.7",
     "humanize-duration": "^3.18.0",
