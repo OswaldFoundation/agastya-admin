@@ -106,16 +106,31 @@
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile v-if="data[data.length - 1]._source.country_code === 'do-not-track'" avatar>
+              <v-list-tile
+                v-if="
+                  data[data.length - 1]._source.country_code === 'do-not-track'
+                "
+                avatar
+              >
                 <v-list-tile-avatar>
-                  <img alt="" src="/img/logos/privacy.png">
+                  <img alt="" src="/img/logos/privacy.png" />
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title>Do not track</v-list-tile-title>
-                  <v-list-tile-sub-title>Geolocation not tracked <a href="https://help.oswaldlabs.com/usage-guidelines/do-not-track.html" target="_blank">[?]</a></v-list-tile-sub-title>
+                  <v-list-tile-sub-title
+                    >Geolocation not tracked
+                    <a
+                      href="https://help.oswaldlabs.com/usage-guidelines/do-not-track.html"
+                      target="_blank"
+                      >[?]</a
+                    ></v-list-tile-sub-title
+                  >
                 </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile avatar v-else-if="data[data.length - 1]._source.city">
+              <v-list-tile
+                avatar
+                v-else-if="data[data.length - 1]._source.city"
+              >
                 <v-list-tile-avatar>
                   <div
                     :style="
@@ -196,23 +211,29 @@
                 <div class="wrapped">
                   <v-icon class="tiny-icon">extension</v-icon>
                   {{ text(event._source) }}
-                  {{ event._source.description }}
                 </div>
-                <div>
+                <div :data-balloon="event._source.title" data-balloon-pos="up">
+                  <div v-if="event._source.title" class="wrapped">
+                    <v-icon class="tiny-icon">info</v-icon>
+                    {{ event._source.title }}
+                  </div>
+                </div>
+                <a
+                  target="_blank"
+                  :href="event._source.url"
+                  :data-balloon="event._source.url"
+                  data-balloon-pos="up"
+                >
                   <div class="wrapped">
                     <v-icon class="tiny-icon">link</v-icon>
-                    <span v-if="event._source.title"
-                      >{{ event._source.title }} (</span
-                    >
-                    <span>{{
+                    {{
                       event._source.url &&
                       event._source.url.includes(event._source.url_domain)
                         ? event._source.url.split(event._source.url_domain)[1]
                         : event._source.url
-                    }}</span>
-                    <span v-if="event._source.title">)</span>
+                    }}
                   </div>
-                </div>
+                </a>
                 <div class="wrapped">
                   <v-icon class="tiny-icon">access_time</v-icon>
                   {{ new Date(event._source.date).toLocaleString() }}
@@ -256,6 +277,7 @@
 import download from "downloadjs";
 import duration from "humanize-duration";
 import errors from "../errors";
+import textify from "../textify";
 export default {
   data() {
     return {
@@ -314,11 +336,7 @@ export default {
       return ref.referrer_domain;
     },
     text(data) {
-      let text = "";
-      if (data.action) text += `${data.action} `;
-      if (data.event) text += `${data.event} `;
-      if (data.description) text += `${data.description} `;
-      return text.trim();
+      return textify(data);
     },
     download() {
       download(

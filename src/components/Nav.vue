@@ -7,7 +7,7 @@
       </v-toolbar-title>
       <v-list>
         <v-list-tile
-          :to="`/${item.apiKey}/config`"
+          :to="`/${item.apiKey}/${currentType}`"
           v-for="item in keys"
           :key="item.apikey"
           @click="changeKey"
@@ -45,6 +45,7 @@ export default {
     return {
       title: "Agastya by Oswald Labs",
       visible: false,
+      currentType: "analytics",
       key: ""
     };
   },
@@ -69,6 +70,11 @@ export default {
         this.title = this.$route.params.title || this.key;
       } else {
         this.title = "Agastya by Oswald Labs";
+      }
+      if (this.$route.fullPath.includes("config")) {
+        this.currentType = "config";
+      } else {
+        this.currentType = "analytics";
       }
     }
   },

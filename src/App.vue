@@ -77,7 +77,6 @@ h2 {
   font-size: 125%;
 }
 
-
 .card--flex-toolbar {
   margin-top: -64px;
 }
@@ -111,15 +110,24 @@ h2 {
 .timeline-inner {
   margin: 0 2rem;
 }
+.timeline-inner a {
+  display: block;
+  text-decoration: none;
+  margin: 0;
+  color: inherit;
+}
 .unpadded {
   padding: 0;
 }
 .wrapped {
   white-space: nowrap;
-  overflow-x: auto;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 .tiny-icon {
   font-size: 120%;
+  display: inline-block;
+  margin-right: 0.25rem;
 }
 [role="listitem"] {
   border-bottom: 1px solid #ddd;
@@ -132,7 +140,6 @@ h2 {
   color: inherit;
   text-decoration: none;
 }
-
 
 .domains-list {
   margin-top: 1.5rem;

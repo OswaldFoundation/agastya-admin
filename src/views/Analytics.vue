@@ -35,7 +35,7 @@
                   :data-balloon="`Filter ${props.item._source.action}s`"
                   data-balloon-pos="up"
                 >
-                  {{ props.item._source.action }}
+                  {{ text(props.item._source) }}
                 </router-link>
               </td>
               <td style="padding: 0 10px">
@@ -58,22 +58,26 @@
                       src="/img/logos/privacy.png"
                     />
                     <div
-                    v-else
-                    class="tiny-flag"
-                    :style="
-                      `background-color: #aaa; background-image: url('https://lipis.github.io/flag-icon-css/flags/4x3/${(
-                        props.item._source.country_code || ''
-                      ).toLowerCase()}.svg'); display: inline-block; vertical-align: middle; background-size: cover; background-position: center center; background-repeat: no-repeat; width: 2.5rem; height: 2.5rem; border-radius: 100%; box-sizing: border-box; border: 1px solid #eee`
-                    "
-                  ></div>
+                      v-else
+                      class="tiny-flag"
+                      :style="
+                        `background-color: #aaa; background-image: url('https://lipis.github.io/flag-icon-css/flags/4x3/${(
+                          props.item._source.country_code || ''
+                        ).toLowerCase()}.svg'); display: inline-block; vertical-align: middle; background-size: cover; background-position: center center; background-repeat: no-repeat; width: 2.5rem; height: 2.5rem; border-radius: 100%; box-sizing: border-box; border: 1px solid #eee`
+                      "
+                    ></div>
                   </span>
                 </router-link>
                 <router-link
+                  v-if="props.item._source.city"
                   :data-balloon="`Filter users from ${props.item._source.city}`"
                   data-balloon-pos="up"
                   :to="`/${apiKey}/filter/city/${props.item._source.city}`"
                 >
-                  {{ props.item._source.city }}
+                  <span v-if="props.item._source.city === 'do-not-track'"
+                    >Do not track</span
+                  >
+                  <span v-else>{{ props.item._source.city }}</span>
                 </router-link>
               </td>
               <td>
@@ -182,6 +186,7 @@
 import TopList from "@/components/TopList.vue";
 import timeago from "time-ago";
 import errors from "../errors";
+import textify from "../textify";
 export default {
   components: {
     TopList
@@ -198,19 +203,37 @@ export default {
         sortBy: "date",
         totalItems: 0
       },
-      page: 1,
       total: 0
     };
   },
   mounted() {
+    if ("URLSearchParams" in window) {
+      try {
+        const searchParams = new URLSearchParams(
+          this.$route.hash.replace("#", "")
+        );
+        this.pagination.page = parseInt(searchParams.get("page")) || 1;
+        this.pagination.rowsPerPage =
+          parseInt(searchParams.get("rowsPerPage")) || 10;
+        this.pagination.sortBy = searchParams.get("sortBy") || "date";
+      } catch (e) {
+        this.pagination.page = 1;
+      }
+    }
     this.apiKey = this.$route.params.apiKey;
   },
   watch: {
     pagination() {
+      window.location.hash = `page=${this.pagination.page}&rowsPerPage=${
+        this.pagination.rowsPerPage
+      }&sortBy=${this.pagination.sortBy}`;
       this.fetch();
     }
   },
   methods: {
+    text(data) {
+      return textify(data);
+    },
     fetch() {
       this.loading = true;
       this.$http
