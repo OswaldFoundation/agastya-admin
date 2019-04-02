@@ -32,5 +32,21 @@ export default {
         required: true
       }
     ]
+  },
+  sentry: {
+    emoji: "🐛",
+    title: "Sentry",
+    description: "Track errors and bugs in your code",
+    enabled: [
+      {
+        model: "dsn",
+        value: "https://example@sentry.io/example",
+        label: "DSN",
+        message:
+          "Copy and paste the DNS from your Sentry project client keys",
+        type: "text",
+        required: true
+      }
+    ]
   }
 };
