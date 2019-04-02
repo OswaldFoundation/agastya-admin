@@ -27,7 +27,7 @@
                 >Close</v-btn
               >
             </v-snackbar>
-            <v-form class="form" @submit.prevent="login">
+            <v-form class="form-reset" @submit.prevent="login">
               <v-text-field
                 v-model="email"
                 type="email"
@@ -114,15 +114,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.card--flex-toolbar {
-  margin-top: -64px;
-}
-.form {
-  padding: 2rem;
-}
-.button-2 {
-  margin-top: 1.5rem;
-}
-</style>

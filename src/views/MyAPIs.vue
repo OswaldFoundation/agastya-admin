@@ -1,6 +1,6 @@
 <template>
   <v-layout class="margin">
-    <v-flex xs12 sm6 offset-sm3>
+    <v-flex xs12 sm8 offset-sm2>
       <v-card>
         <v-card-title primary-title>
           <div>
@@ -142,28 +142,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.margin {
-  margin: 5rem 0;
-}
-.empty-state {
-  padding: 2rem 0;
-}
-.empty-state h1 {
-  margin: 1rem 0;
-}
-.hljs {
-  font-size: 100%;
-  color: #c0392b;
-}
-.hljs-attr {
-  color: #2980b9;
-}
-.hljs-string {
-  color: #16a085;
-}
-.p-0 {
-  padding: 0 !important;
-}
-</style>

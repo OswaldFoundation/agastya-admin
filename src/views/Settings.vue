@@ -11,7 +11,7 @@
         >Close</v-btn
       >
     </v-snackbar>
-    <v-flex xs12 sm6 offset-sm3>
+    <v-flex xs12 sm8 offset-sm2>
       <v-card>
         <v-layout align-center justify-center>
           <v-card-title primary-title>
@@ -230,27 +230,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.form {
-  padding: 4rem;
-  padding-top: 2rem;
-}
-.margin {
-  margin: 4rem 0;
-}
-* + h2 {
-  margin-top: 2rem;
-}
-h2 {
-  font-weight: normal;
-  margin-bottom: 1rem;
-}
-.v-input + .v-input {
-  margin-top: 1.5rem;
-}
-.save-button {
-  margin-top: 2.5rem;
-  font-size: 125%;
-}
-</style>

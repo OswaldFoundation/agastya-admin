@@ -112,7 +112,7 @@
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title>Do not track</v-list-tile-title>
-                  <v-list-tile-sub-title>Geolocation not tracked <a href="https://help.oswaldlabs.com/usage-guidelines/do-not-track.html" target="_blank">?</a></v-list-tile-sub-title>
+                  <v-list-tile-sub-title>Geolocation not tracked <a href="https://help.oswaldlabs.com/usage-guidelines/do-not-track.html" target="_blank">[?]</a></v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
               <v-list-tile avatar v-else-if="data[data.length - 1]._source.city">
@@ -332,40 +332,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.margin {
-  margin: 4rem 0;
-}
-* + h2 {
-  margin-top: 2rem;
-}
-h2 {
-  font-weight: normal;
-  margin-bottom: 1rem;
-}
-.tiny-flag {
-  height: 2rem;
-  vertical-align: middle;
-  margin-right: 1rem;
-}
-.timeline-inner {
-  margin: 0 2rem;
-}
-.unpadded {
-  padding: 0;
-}
-.wrapped {
-  white-space: nowrap;
-  overflow-x: auto;
-}
-.tiny-icon {
-  font-size: 120%;
-}
-[role="listitem"] {
-  border-bottom: 1px solid #ddd;
-}
-[role="listitem"]:first-of-type {
-  border-top: 1px solid #ddd;
-}
-</style>

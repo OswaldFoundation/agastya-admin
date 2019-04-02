@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout class="margin">
-      <v-flex xs12 sm6 offset-sm3>
+      <v-flex xs12 sm8 offset-sm2>
         <v-card>
           <v-layout align-center justify-center>
             <v-card-title primary-title>
@@ -191,25 +191,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.margin {
-  margin: 4rem 0;
-}
-* + h2 {
-  margin-top: 2rem;
-}
-h2 {
-  font-weight: normal;
-  margin-bottom: 1rem;
-}
-.tiny-flag {
-  height: 2.5rem;
-  vertical-align: middle;
-  margin-right: 1rem;
-}
-.recent-events a {
-  color: inherit;
-  text-decoration: none;
-}
-</style>

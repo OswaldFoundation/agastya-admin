@@ -66,11 +66,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.tiny-flag {
-  height: 2rem;
-  vertical-align: middle;
-  margin-right: 1rem;
-}
-</style>

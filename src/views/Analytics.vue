@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout class="margin">
-      <v-flex xs12 sm6 offset-sm3>
+      <v-flex xs12 sm8 offset-sm2>
         <v-card>
           <v-card-title primary-title>
             <v-layout row>
@@ -17,7 +17,7 @@
             :headers="[
               { text: 'Date', value: 'date' },
               { text: 'Event', value: 'event' },
-              { text: 'City', value: 'city' },
+              { text: 'Location', value: 'city' },
               { text: 'Browser', value: 'browser' },
               { text: 'Timeline', value: 'explore' }
             ]"
@@ -50,16 +50,23 @@
                     }`
                   "
                 >
-                  <img
-                    v-if="props.item._source.country_code"
+                  <span v-if="props.item._source.country_code">
+                    <img
+                      v-if="props.item._source.country_code === 'do-not-track'"
+                      class="tiny-flag"
+                      alt=""
+                      src="/img/logos/privacy.png"
+                    />
+                    <div
+                    v-else
                     class="tiny-flag"
-                    alt=""
-                    :src="
-                      `https://lipis.github.io/flag-icon-css/flags/4x3/${(
+                    :style="
+                      `background-color: #aaa; background-image: url('https://lipis.github.io/flag-icon-css/flags/4x3/${(
                         props.item._source.country_code || ''
-                      ).toLowerCase()}.svg`
+                      ).toLowerCase()}.svg'); display: inline-block; vertical-align: middle; background-size: cover; background-position: center center; background-repeat: no-repeat; width: 2.5rem; height: 2.5rem; border-radius: 100%; box-sizing: border-box; border: 1px solid #eee`
                     "
-                  />
+                  ></div>
+                  </span>
                 </router-link>
                 <router-link
                   :data-balloon="`Filter users from ${props.item._source.city}`"
@@ -139,7 +146,7 @@
       </v-flex>
     </v-layout>
     <v-layout class="margin">
-      <v-flex xs12 sm6 offset-sm3>
+      <v-flex xs12 sm8 offset-sm2>
         <v-layout>
           <v-flex md6 style="padding-right: 1rem">
             <v-card>
@@ -158,7 +165,7 @@
               <v-layout align-center justify-center>
                 <v-card-title primary-title>
                   <div>
-                    <h3>Pages</h3>
+                    <h3>Categories</h3>
                   </div>
                 </v-card-title>
               </v-layout>
@@ -187,7 +194,7 @@ export default {
       pagination: {
         descending: false,
         page: 1,
-        rowsPerPage: 5,
+        rowsPerPage: 10,
         sortBy: "date",
         totalItems: 0
       },
@@ -226,25 +233,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.margin {
-  margin: 4rem 0;
-}
-* + h2 {
-  margin-top: 2rem;
-}
-h2 {
-  font-weight: normal;
-  margin-bottom: 1rem;
-}
-.tiny-flag {
-  height: 2.5rem;
-  vertical-align: middle;
-  margin-right: 1rem;
-}
-.recent-events a {
-  color: inherit;
-  text-decoration: none;
-}
-</style>
