@@ -44,10 +44,14 @@ export default {
 </script>
 
 <style>
+body {
+  font-family: "Roboto", sans-serif;
+}
 .margin {
   margin: 4rem 0;
 }
-* + h2 {
+* + h2,
+.mt {
   margin-top: 2rem;
 }
 h2 {
@@ -242,5 +246,15 @@ h2 {
 .emoji-heading {
   display: flex;
   align-items: center;
+}
+.v-chip .long-avatar {
+  width: auto !important;
+  border-radius: 100px !important;
+  overflow: hidden;
+  padding: 0 !important;
+}
+.v-chip .long-avatar span {
+  padding: 1rem !important;
+  color: #fff;
 }
 </style>

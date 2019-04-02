@@ -244,7 +244,7 @@
           <v-timeline-item
             color="white"
             :style="`text-align: ${data.length % 2 === 0 ? 'right' : 'left'}`"
-            v-if="!this.singleDomain"
+            v-if="!this.singleDomain && referrer()"
           >
             <v-avatar slot="icon">
               <img
@@ -267,7 +267,69 @@
               {{ referrer() }}
             </span>
           </v-timeline-item>
+          <span
+            v-for="(param, index) in [
+              'ref',
+              'utm_source',
+              'utm_medium',
+              'utm_campaign',
+              'utm_term',
+              'utm_content'
+            ]"
+            :key="`params_${index}`"
+          >
+            <v-timeline-item
+              color="grey"
+              :style="`text-align: right`"
+              v-if="data[data.length - 1]._source[`param_${param}`]"
+            >
+              <!-- <v-avatar slot="icon">ABC</v-avatar> -->
+              <span>
+                <strong>{{ param.replace(/_/g, " ") }}: </strong>
+                {{ data[data.length - 1]._source[`param_${param}`] }}
+              </span>
+            </v-timeline-item>
+          </span>
         </v-timeline>
+      </v-card>
+      <v-card class="mt">
+        <v-card-text>
+          <span
+            v-for="(term, index) in [
+              'availableResolution',
+              'nativeResolution',
+              'absoluteResolution',
+              'adBlock',
+              'cookies',
+              'accuracy_radius',
+              'latitude',
+              'longitude',
+              'session_id',
+              'ua_fp',
+              'combined_fp',
+              'date'
+            ]"
+            :key="`chips_${index}`"
+          >
+            <v-chip
+              @click.prevent="
+                $router.push(
+                  `/${apiKey}/filter/${term}/${
+                    data[data.length - 1]._source[term]
+                  }`
+                )
+              "
+              v-if="data[data.length - 1]._source[term]"
+            >
+              <v-avatar class="long-avatar">
+                <span :style="`background-color: ${randomColor()}`">{{
+                  term
+                }}</span>
+              </v-avatar>
+              {{ data[data.length - 1]._source[term] }}
+            </v-chip>
+          </span>
+        </v-card-text>
       </v-card>
     </v-flex>
   </v-layout>
@@ -275,6 +337,7 @@
 
 <script>
 import download from "downloadjs";
+import randomColor from "randomcolor";
 import duration from "humanize-duration";
 import errors from "../errors";
 import textify from "../textify";
@@ -319,9 +382,13 @@ export default {
       .then(() => (this.loading = false));
   },
   methods: {
+    randomColor() {
+      return randomColor({ luminosity: "dark" });
+    },
     referrer() {
       if (!this.data.length) return;
       let ref = this.data[this.data.length - 1]._source;
+      if (!ref.referrer) return false;
       if (
         ref.referrer === "android-app://com.google.android.googlequicksearchbox"
       ) {
