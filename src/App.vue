@@ -239,4 +239,8 @@ h2 {
 .fake-card-mode-card {
   width: 50% !important;
 }
+.emoji-heading {
+  display: flex;
+  align-items: center;
+}
 </style>

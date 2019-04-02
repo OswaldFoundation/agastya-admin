@@ -310,42 +310,46 @@
                     <v-flex
                       v-for="(service, slug) in integrations"
                       :key="`service_${slug}`"
-                      xs6
+                      xs4
                     >
                       <v-card>
                         <v-card-title>
-                          <div class="emoji-icon">{{ service.emoji }}</div>
-                          <h3>{{ service.title }}</h3>
-                          <p>{{ service.description }}</p>
-                          <div
-                            v-if="service.enabled && service.visible"
-                            class="additional-settings"
-                          >
-                            <h4>Configure</h4>
+                          <div>
+                            <div class="emoji-heading">
+                              <div class="emoji-icon">{{ service.emoji }}</div>
+                              <h3>{{ service.title }}</h3>
+                            </div>
+                            <p>{{ service.description }}</p>
                             <div
-                              v-for="(control, index) in service.enabled"
-                              :key="`input_${slug}_${index}`"
+                              v-if="service.enabled && service.visible"
+                              class="additional-settings"
                             >
-                              <v-checkbox
-                                v-if="control.type === 'boolean'"
-                                :label="control.label"
-                                v-model="
-                                  integrations[slug].enabled[index].value
-                                "
-                                :messages="control.message"
-                                :required="control.required"
-                              />
-                              <v-text-field
-                                v-else
-                                @input="forceUpdate"
-                                type="text"
-                                :label="control.label"
-                                v-model="
-                                  integrations[slug].enabled[index].value
-                                "
-                                :messages="control.message"
-                                :required="control.required"
-                              />
+                              <h4>Configure</h4>
+                              <div
+                                v-for="(control, index) in service.enabled"
+                                :key="`input_${slug}_${index}`"
+                              >
+                                <v-checkbox
+                                  v-if="control.type === 'boolean'"
+                                  :label="control.label"
+                                  v-model="
+                                    integrations[slug].enabled[index].value
+                                  "
+                                  :messages="control.message"
+                                  :required="control.required"
+                                />
+                                <v-text-field
+                                  v-else
+                                  @input="forceUpdate"
+                                  type="text"
+                                  :label="control.label"
+                                  v-model="
+                                    integrations[slug].enabled[index].value
+                                  "
+                                  :messages="control.message"
+                                  :required="control.required"
+                                />
+                              </div>
                             </div>
                           </div>
                         </v-card-title>
@@ -360,14 +364,23 @@
                             color="blue"
                             >Enable</v-btn
                           >
-                          <v-btn
-                            type="button"
-                            @click.prevent="disable(slug)"
-                            v-else
-                            flat
-                            color="blue-grey"
-                            >Disable</v-btn
-                          >
+                          <span v-else>
+                            <v-btn
+                              type="button"
+                              @click.prevent="disable(slug)"
+                              flat
+                              color="blue-grey"
+                              >Disable</v-btn
+                            >
+                            <!-- <v-btn
+                              type="button"
+                              v-if="!!service.enabled"
+                              @click.prevent="show(slug)"
+                              flat
+                              color="blue-grey"
+                              >Edit</v-btn
+                            > -->
+                          </span>
                         </v-card-actions>
                       </v-card>
                     </v-flex>
