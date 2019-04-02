@@ -8,6 +8,7 @@ export default error =>
         store.commit("logout");
         setTimeout(() => {
           router.replace("/");
+          location.reload();
         }, 10);
       }
     }

@@ -42,8 +42,7 @@ export default {
         model: "dsn",
         value: "https://example@sentry.io/example",
         label: "DSN",
-        message:
-          "Copy and paste the DNS from your Sentry project client keys",
+        message: "Copy and paste the DNS from your Sentry project client keys",
         type: "text",
         required: true
       }

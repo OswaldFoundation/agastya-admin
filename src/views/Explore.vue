@@ -106,7 +106,16 @@
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile avatar v-if="data[data.length - 1]._source.city">
+              <v-list-tile v-if="data[data.length - 1]._source.country_code === 'do-not-track'" avatar>
+                <v-list-tile-avatar>
+                  <img alt="" src="/img/logos/privacy.png">
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>Do not track</v-list-tile-title>
+                  <v-list-tile-sub-title>Geolocation not tracked <a href="https://help.oswaldlabs.com/usage-guidelines/do-not-track.html" target="_blank">?</a></v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile avatar v-else-if="data[data.length - 1]._source.city">
                 <v-list-tile-avatar>
                   <div
                     :style="
