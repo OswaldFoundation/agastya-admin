@@ -247,13 +247,13 @@ h2 {
   display: flex;
   align-items: center;
 }
-.v-chip .long-avatar {
+.v-chip .v-avatar.long-avatar {
   width: auto !important;
   border-radius: 100px !important;
   overflow: hidden;
   padding: 0 !important;
 }
-.v-chip .long-avatar span {
+.v-chip .v-avatar.long-avatar span {
   padding: 1rem !important;
   color: #fff;
 }

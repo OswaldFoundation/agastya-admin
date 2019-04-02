@@ -42,6 +42,15 @@ export default data => {
       )}`;
     } else if (text.startsWith("api")) {
       return `API: ${ucfirst(modeName(text.split("api")[1].trim()))}`;
+    } else if (text.startsWith("extra-tracking")) {
+      return `Extra Tracking: ${ucfirst(
+        modeName(
+          text
+            .split("extra-tracking")[1]
+            .split(" ")[0]
+            .trim()
+        )
+      )}`;
     }
     if (text.indexOf("agastya-app:reset") > -1)
       return "Reset all customizations";
