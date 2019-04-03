@@ -16,7 +16,6 @@ export default data => {
   if (data.action === "close") return "Close Agastya widget";
   if (data.action) text += `${data.action} `;
   if (data.event) text += `${data.event} `;
-  if (data.description) text += `${data.description} `;
   try {
     text = text.trim();
     if (text.startsWith("pageview")) return "Pageview";
@@ -46,7 +45,7 @@ export default data => {
       return `Extra Tracking: ${ucfirst(
         modeName(
           text
-            .split("extra-tracking")[1]
+            .split("extra-tracking")[2]
             .split(" ")[0]
             .trim()
         )
