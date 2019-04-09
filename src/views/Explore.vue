@@ -157,7 +157,7 @@
                   <v-list-tile-sub-title>
                     {{ data[data.length - 1]._source.zip_code }}
                     {{
-                      data[data.length - 1]._source.country_name ||
+                      country(data[data.length - 1]._source.country_code) ||
                         "Unknown country"
                     }}
                   </v-list-tile-sub-title>
@@ -353,6 +353,7 @@
 import download from "downloadjs";
 import randomColor from "randomcolor";
 import duration from "humanize-duration";
+import { getName } from "country-list";
 import errors from "../errors";
 import textify from "../textify";
 export default {
@@ -398,6 +399,9 @@ export default {
   methods: {
     randomColor() {
       return randomColor({ luminosity: "dark" });
+    },
+    country(country_code) {
+      return getName(country_code);
     },
     referrer() {
       if (!this.data.length) return;

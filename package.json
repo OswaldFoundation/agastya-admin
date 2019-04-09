@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "country-list": "^2.1.0",
     "downloadjs": "^1.4.7",
     "humanize-duration": "^3.18.0",
     "randomcolor": "^0.5.4",
