@@ -209,14 +209,20 @@
             <v-card v-if="event._source.action === 'extra-tracking'">
               <v-card-text>
                 <div v-if="event._source.event === 'clicks'">
-                  Click on <code>{{JSON.parse(event._source.description).target.selector}}</code>
+                  Click on
+                  <code>{{
+                    JSON.parse(event._source.description).target.selector
+                  }}</code>
                 </div>
                 <div v-else-if="event._source.event === 'externalLinks'">
-                  <div>External link clicked on {{JSON.parse(event._source.description).target.innerHTML}}</div>
-                  <pre>{{JSON.parse(event._source.description).href}}</pre>
+                  <div>
+                    External link clicked on
+                    {{ JSON.parse(event._source.description).target.innerHTML }}
+                  </div>
+                  <pre>{{ JSON.parse(event._source.description).href }}</pre>
                 </div>
                 <div v-else>
-                  {{event._source.event}}
+                  {{ event._source.event }}
                 </div>
               </v-card-text>
             </v-card>
