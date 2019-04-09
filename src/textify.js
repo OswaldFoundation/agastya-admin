@@ -18,7 +18,16 @@ export default data => {
   if (data.event) text += `${data.event} `;
   try {
     text = text.trim();
+    if (text.startsWith("fontSize")) return "Custom font size";
+    if (text.startsWith("fontFamily")) return "Custom font family";
+    if (text.startsWith("wordSpacing")) return "Custom word spacing";
+    if (text.startsWith("letterSpacing")) return "Custom letter spacing";
+    if (text.startsWith("lineHeight")) return "Custom line height";
+    if (text.startsWith("customCss")) return "Custom CSS";
+    if (text.startsWith("read-aloud")) return "Read Aloud";
     if (text.startsWith("pageview")) return "Pageview";
+    if (text === "extra-tracking clicks") return "Click";
+    if (text === "extra-tracking externalLinks") return "External link";
     if (text === "page /") return "Agastya widget home";
     if (text === "page /pages/form") return "Agastya form page";
     if (text.startsWith("mode")) {

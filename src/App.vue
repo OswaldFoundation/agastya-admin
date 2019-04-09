@@ -257,4 +257,12 @@ h2 {
   padding: 1rem !important;
   color: #fff;
 }
+pre {
+  background-color: whitesmoke;
+  margin-top: 0.5rem;
+  width: 100%;
+  overflow-x: auto;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.2rem;
+}
 </style>

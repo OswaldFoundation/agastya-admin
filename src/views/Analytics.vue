@@ -41,7 +41,7 @@
               <td style="padding: 0 10px">
                 <router-link
                   :data-balloon="
-                    `Filter users from ${props.item._source.country_name}`
+                    `Filter users from ${props.item._source.country_code}`
                   "
                   data-balloon-pos="up"
                   :to="

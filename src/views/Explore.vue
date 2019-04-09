@@ -206,7 +206,21 @@
                 )
               }}
             </span>
-            <v-card class="elevation-2">
+            <v-card v-if="event._source.action === 'extra-tracking'">
+              <v-card-text>
+                <div v-if="event._source.event === 'clicks'">
+                  Click on <code>{{JSON.parse(event._source.description).target.selector}}</code>
+                </div>
+                <div v-else-if="event._source.event === 'externalLinks'">
+                  <div>External link clicked on {{JSON.parse(event._source.description).target.innerHTML}}</div>
+                  <pre>{{JSON.parse(event._source.description).href}}</pre>
+                </div>
+                <div v-else>
+                  {{event._source.event}}
+                </div>
+              </v-card-text>
+            </v-card>
+            <v-card v-else class="elevation-2">
               <v-card-text>
                 <div class="wrapped">
                   <v-icon class="tiny-icon">extension</v-icon>
