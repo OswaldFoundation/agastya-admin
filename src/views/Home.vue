@@ -27,7 +27,7 @@
                 >Close</v-btn
               >
             </v-snackbar>
-            <v-form class="form-reset" @submit.prevent="login">
+            <v-form v-if="step1" class="form-reset" @submit.prevent="login">
               <v-text-field
                 v-model="email"
                 type="email"
@@ -54,6 +54,32 @@
                 >Sign up for a new account</v-btn
               >
             </v-form>
+            <div v-if="step2">
+              <v-card-text>
+                Scan the QR code below with any mobile authentication apps like <a href="">Google Authenticator</a> or <a href="">Authy</a>. Alternatively, you can enter the code manually.
+              </v-card-text>
+              <v-card-text class="text-xs-center">
+                <img :src="dialog2FA.imageUrl" />
+                <code style="display: block; width: 60%; margin: 0 auto; box-shadow: none; font-size: 1em; padding: 1.5%; color: #000; overflow: scroll;">{{ dialog2FA.backupCode }}</code>
+              </v-card-text>
+              <v-form class="form-reset" @submit.prevent="authenticate2fa">
+                <v-text-field
+                  v-model="OTPCode"
+                  type="number"
+                  label="OTP"
+                  required
+                />
+                <v-btn
+                  :loading="loading"
+                  :disabled="loading"
+                  color="blue"
+                  class="white--text button-2"
+                  type="submit"
+                  block>
+                  Verify OTP
+                </v-btn>
+              </v-form>
+            </div>
           </v-card-text>
         </v-card>
         <div style="padding: 2rem; text-align: center">
@@ -72,7 +98,15 @@ export default {
       error: "",
       loading: false,
       email: "",
-      password: ""
+      password: "",
+      step1: true,
+      step2: false,
+      OTPCode: "",
+      token_2fa: "",
+      dialog2FA: {
+        imageUrl: "",
+        backupCode: ""
+      }
     };
   },
   watch: {
@@ -93,8 +127,17 @@ export default {
           password: this.password
         })
         .then(response => {
-          this.$store.commit("updateAuth", response.data);
-          this.$router.push("/my-apis");
+          if (response.data.token_2fa) {
+            this.dialog2FA.imageUrl = response.data.imageUrl;
+            this.dialog2FA.backupCode = response.data.backupCode;
+            this.step1 = false;
+            this.step2 = true;
+            this.loading = false;
+            this.$store.commit("updateAuth", { token: response.data.token_2fa });
+          } else {
+            this.$store.commit("updateAuth", response.data);
+            this.$router.push("/my-apis");
+          }
         })
         .catch(error => {
           if (
@@ -109,6 +152,28 @@ export default {
           this.loading = false;
           this.email = "";
           this.password = "";
+        });
+    },
+    authenticate2fa() {
+      if (this.loading) return;
+      this.loading = true;
+      this.$http
+        .post("/auth/2fa/authenticate", { otp_code: this.OTPCode })
+        .then(response => {
+          this.$store.commit("updateAuth", response.data);
+          this.$router.push("/my-apis");
+        })
+        .catch(error => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.error
+          ) {
+            this.error = error.response.data.error;
+          }
+        })
+        .then(() => {
+          this.loading = false;
         });
     }
   }
