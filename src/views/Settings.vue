@@ -102,27 +102,37 @@
             If you want to change your password, you can request a password
             reset: <a @click.prevent="passwordReset">Request</a>
           </p>
-          <v-checkbox
-            v-model="user['2fa']"
-            label="Enable two-factor authentication (2FA)"
-            @click.prevent="toggle2FA()"
-          />
-          
+          <v-btn type="button" :loading="loading" @click.prevent="toggle2FA">
+            <span v-if="user['2fa']">Disable</span><span v-else>Enable</span>
+            &nbsp;2-Factor Authentication
+          </v-btn>
           <v-dialog v-model="enableDialog.show" persistent max-width="600px">
             <v-card>
-              <v-card-title class="headline grey lighten-2" primary-title>Enable 2-Factor Authentication</v-card-title>
+              <v-card-title class="headline grey lighten-2" primary-title
+                >Enable 2-Factor Authentication</v-card-title
+              >
               <v-card-text>
-                Scan the QR code below with any mobile authentication apps like <a href="">Google Authenticator</a> or <a href="">Authy</a>. Alternatively, you can enter the code manually.
+                Scan the QR code below with any mobile authentication app like
+                <a href="">Google Authenticator</a> or <a href="">Authy</a>.
               </v-card-text>
               <v-card-text class="text-xs-center">
                 <img :src="enableDialog.imageUrl" />
-                <code style="display: block; width: 60%; margin: 0 auto; box-shadow: none; font-size: 1em; padding: 1.5%; color: #000; overflow: scroll;">{{ enableDialog.backupCode }}</code>
+                <p>
+                  The code given below is the backup code for this account. It
+                  can be used to access your account in the case that you do not
+                  have access to your mobile authentication app. We recommend
+                  that you store it in a safe place.
+                </p>
+                <code
+                  style="display: block; width: 60%; margin: 0 auto; box-shadow: none; font-size: 1em; padding: 1.5%; color: #000; overflow: scroll;"
+                  >{{ enableDialog.backupCode }}</code
+                >
               </v-card-text>
               <v-form class="form-reset" @submit.prevent="verify2FA()">
                 <v-text-field
                   v-model="OTPCode"
                   type="number"
-                  label="OTP"
+                  label="Enter OTP"
                   required
                 />
                 <v-btn
@@ -131,16 +141,15 @@
                   color="blue"
                   class="white--text button-2"
                   type="submit"
-                  block>
+                  block
+                >
                   Verify OTP
                 </v-btn>
               </v-form>
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                  flat
-                  @click="enableDialog.show = false">
+                <v-btn flat @click="enableDialog.show = false">
                   Cancel
                 </v-btn>
               </v-card-actions>
@@ -149,7 +158,9 @@
 
           <v-dialog v-model="disableDialog.show" persistent max-width="600px">
             <v-card>
-              <v-card-title class="headline grey lighten-2" primary-title>Disable 2-Factor Authentication</v-card-title>
+              <v-card-title class="headline grey lighten-2" primary-title
+                >Disable 2-Factor Authentication</v-card-title
+              >
               <v-card-text>
                 Are you sure you want to disable 2-Factor Authentication?
               </v-card-text>
@@ -160,22 +171,21 @@
                   color="blue"
                   class="white--text button-2"
                   type="submit"
-                  block>
+                  block
+                >
                   Yes, disable 2FA
                 </v-btn>
               </v-form>
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                  flat
-                  @click="disableDialog.show = false">
+                <v-btn flat @click="disableDialog.show = false">
                   Cancel
                 </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
-        
+
           <v-layout align-center justify-center>
             <v-btn
               class="save-button"
@@ -313,30 +323,30 @@ export default {
     toggle2FA() {
       if (this.loading) return;
       this.loading = true;
-      if (this.user['2fa']) {
+      if (this.user["2fa"]) {
         this.loading = false;
         this.disableDialog.show = true;
       } else {
         this.$http
-        .get("/auth/2fa/enable", {})
-        .then(response => {
-          this.enableDialog.show = true;
-          this.enableDialog.imageUrl = response.data.imageUrl;
-          this.enableDialog.backupCode = response.data.backupCode;
-        })
-        .catch(error => errors(error))
-        .catch(error => {
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.error
-          ) {
-            this.message = error.response.data.error;
-          }
-        })
-        .then(() => {
-          this.loading = false;
-        });
+          .get("/auth/2fa/enable", {})
+          .then(response => {
+            this.enableDialog.show = true;
+            this.enableDialog.imageUrl = response.data.imageUrl;
+            this.enableDialog.backupCode = response.data.backupCode;
+          })
+          .catch(error => errors(error))
+          .catch(error => {
+            if (
+              error.response &&
+              error.response.data &&
+              error.response.data.error
+            ) {
+              this.message = error.response.data.error;
+            }
+          })
+          .then(() => {
+            this.loading = false;
+          });
       }
     },
     verify2FA() {
@@ -345,8 +355,11 @@ export default {
       this.$http
         .post("/auth/2fa/verify", { otp_code: this.OTPCode })
         .then(response => {
-          this.user['2fa'] = 1;
-          this.enableDialog.show = false;
+          if (response && response.data.success) {
+            this.message = "2FA has been enabled.";
+            this.user["2fa"] = 1;
+            this.enableDialog.show = false;
+          }
         })
         .catch(error => {
           if (
@@ -367,8 +380,11 @@ export default {
       this.$http
         .post("/auth/2fa/disable")
         .then(response => {
-          this.user['2fa'] = 0;
-          this.disableDialog.show = false; 
+          if (response && response.data.success) {
+            this.message = "2FA has been disabled.";
+            this.user["2fa"] = 0;
+            this.disableDialog.show = false;
+          }
         })
         .catch(error => {
           if (
