@@ -477,6 +477,13 @@
                   label="Cookie Policy link"
                   messages="Link to your cookie policy for EU cookie law compliance"
                 />
+                <v-text-field
+                  @input="forceUpdate"
+                  v-model="key.links.websiteSettings"
+                  type="text"
+                  label="Website settings link"
+                  messages="Link to your website's settings page"
+                />
                 <v-btn
                   type="submit"
                   class="small-submit"
