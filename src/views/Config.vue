@@ -433,7 +433,7 @@
                 </v-layout>
                 <v-data-table
                   :headers="[
-                    { text: 'Accessibility mode', value: 'mode' },
+                    { text: 'Accessibility mode', value: 'title' },
                     { text: 'CSS', value: 'css' },
                     { text: 'Edit', value: 'edit' },
                     { text: 'Delete', value: 'delete' }
