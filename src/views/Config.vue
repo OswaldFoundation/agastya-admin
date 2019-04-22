@@ -725,7 +725,7 @@ export default {
     },
     addNewCss() {
       this.key.customCss.push({
-        mode: this.newCss.mode,
+        title: this.newCss.mode,
         css: this.newCss.css
       });
       this.newCss.mode = "";
