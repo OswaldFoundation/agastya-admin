@@ -149,7 +149,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout class="margin">
+    <!--<v-layout class="margin">
       <v-flex xs12 sm8 offset-sm2>
         <v-layout>
           <v-flex md6 style="padding-right: 1rem">
@@ -178,7 +178,7 @@
           </v-flex>
         </v-layout>
       </v-flex>
-    </v-layout>
+    </v-layout>-->
   </div>
 </template>
 
