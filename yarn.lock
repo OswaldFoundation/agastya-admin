@@ -4491,10 +4491,10 @@ https-browserify@^1.0.0:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
 
-humanize-duration@^3.19.0:
-  version "3.19.0"
-  resolved "https://registry.yarnpkg.com/humanize-duration/-/humanize-duration-3.19.0.tgz#e91b1dd19e1dc35a9d4c07285281bc8e2eb6a92f"
-  integrity sha512-ZLkXjRTucGKkIB9KAz6s0+sLqVRgqsH+equEx99H12P3syU79begnGXtkfK0HfT7RKnu4GehGfo14WyrPyZAUA==
+humanize-duration@^3.20.0:
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/humanize-duration/-/humanize-duration-3.20.0.tgz#88b92122ffa59b15436706dc6fe51e37309826d7"
+  integrity sha512-4w6Y+EqikmF3KDdOTOIi8xl1kCJcnB9mu304aB224ZwCxDm/qeqzh/aYHEfpLFxo0HMVur5ibNlel/VPdN+2Jw==
 
 iconv-lite@0.4.23:
   version "0.4.23"
