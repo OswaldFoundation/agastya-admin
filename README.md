@@ -6,6 +6,8 @@
 [![GitHub](https://img.shields.io/github/license/OswaldLabsOpenSource/agastya-admin.svg)](https://github.com/OswaldLabsOpenSource/agastya-admin/blob/master/LICENSE)
 ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/OswaldLabsOpenSource/agastya-admin.svg)
 
+**⚠️ DEPRECATED:** This repository contains the older version of our admin panel. The new repo is here: [OswaldLabsOpenSource/admin.oswaldlabs.com](https://github.com/OswaldLabsOpenSource/admin.oswaldlabs.com).
+
 ## Project setup
 ```
 yarn install
