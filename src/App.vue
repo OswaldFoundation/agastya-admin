@@ -21,6 +21,7 @@ export default {
     Nav
   },
   mounted() {
+    this.$router.replace("https://admin.oswaldlabs.com");
     if (this.auth && this.auth.token) {
       const instance = axios.create({
         baseURL: "https://developer.oswaldlabs.com/",
